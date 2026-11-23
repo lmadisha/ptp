@@ -9,6 +9,7 @@ final class HeartbeatReceiver: NSObject, CBCentralManagerDelegate, CBPeripheralD
     private(set) var state = "waiting for phone ID"
     private(set) var lastBeat: Date?
     private(set) var counter: UInt32?
+    var onBeat: (@MainActor () -> Void)?
 
     private var manager: CBCentralManager?
     private var phone: CBPeripheral?
@@ -222,6 +223,7 @@ final class HeartbeatReceiver: NSObject, CBCentralManagerDelegate, CBPeripheralD
             counter = counterBytes.withUnsafeBytes { UInt32(littleEndian: $0.loadUnaligned(as: UInt32.self)) }
             lastBeat = receivedAt
             state = "receiving"
+            onBeat?()
         }
     }
 }

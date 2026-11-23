@@ -6,6 +6,7 @@ import Observation
 @Observable
 final class HeartbeatSender: NSObject, CBPeripheralManagerDelegate {
     private(set) var state = "Heartbeat: starting…"
+    var onBeat: (@MainActor () -> Void)?
 
     private var manager: CBPeripheralManager?
     private var service: CBMutableService?
@@ -113,5 +114,8 @@ final class HeartbeatSender: NSObject, CBPeripheralManagerDelegate {
         }
         if let value { request.value = value }
         peripheral.respond(to: request, withResult: result)
+        if result == .success {
+            MainActor.assumeIsolated { onBeat?() }
+        }
     }
 }

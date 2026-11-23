@@ -8,6 +8,7 @@ final class Ranging: NSObject, NISessionDelegate {
     private(set) var distanceMeters: Float?
     private(set) var state = "Waiting to range…"
     var onChange: (@MainActor (String, Float?) -> Void)?
+    var onSample: (@MainActor (Float?) -> Void)?
 
     private weak var exchange: TokenExchange?
     private var session: NISession?
@@ -48,6 +49,7 @@ final class Ranging: NSObject, NISessionDelegate {
     }
 
     private func setReading(state: String, distance: Float?) {
+        onSample?(distance)
         guard state != self.state || distance != distanceMeters else { return }
         self.state = state
         distanceMeters = distance

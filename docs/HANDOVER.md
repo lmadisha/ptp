@@ -16,52 +16,31 @@ For the next AI agent (or human) picking up PTP. Read **AGENTS.md** first; every
   |---|---|
   | Token exchange over WatchConnectivity (#25, PR #26) | Merged, ticked |
   | NISession on both devices with live distance (#27, PR #28) | Merged. **Not ticked**: needs a device check |
-  | Live Activity keeps iPhone ranging (#29) | **In progress** on branch `feat/29-live-activity` (see below) |
-  | Watch keep-alive: extended runtime + workout session (#35) | Implemented (spike buttons on the watch). Device timing needed |
-  | Bluetooth heartbeat as a second signal (#37) | Implemented (phone sends, watch receives). Device check needed |
-- **Phase 0, task 0.3 (measurement):** not started.
+  | Live Activity keeps iPhone ranging (#29, PR #34) | Merged. **Not ticked**: needs a device check |
+  | Watch keep-alive: extended runtime + workout session (#35, PR #36) | Merged (spike buttons on the watch). **Not ticked**: device timing needed |
+  | Bluetooth heartbeat as a second signal (#37, PR #38) | Merged (the watch reads, the phone answers). **Not ticked**: device check needed |
+- **Phase 0, task 0.3 (measurement):**
+  - CSV reading log (#39): implemented on `feat/39-reading-log`. Files are `ptp-<phone|watch>-<unix seconds>.diagnostics.csv` in each app's Documents folder; the phone's show in the Files app, and the watch sends its file with "Send logs to phone". Device check needed.
+  - The 4-hour sessions and the trace recordings need the owner.
 - **Storage decision:** ADR-0005 (merged in PR #31) switches on-device stores to SQLite in a `Packages/PTPStore` package. It's **Proposed**, so the owner must accept it.
 - **Apple Developer portal:**
   - Registered on the owner's team: App Group `group.com.lmadisha.ptp`, and App IDs `com.lmadisha.ptp` and `com.lmadisha.ptp.LiveActivity` (both with App Groups linked), plus `com.lmadisha.ptp.watchkitapp`.
   - The team ID is deliberately **not** committed, because the repo is public. The owner sets the team in Xcode for device builds.
 
-### PR #34, `feat/29-live-activity` (if it isn't merged yet)
-- **Plan:** in the issue #29 comment.
-- **Code:** written by Codex.
-  - `ActivityShared/PTPActivityAttributes.swift`, compiled into `PTPApp` and `PTPLiveActivity`;
-  - `PTPApp/LiveActivityController.swift`;
-  - `Ranging.onChange`;
-  - the widget's `ActivityConfiguration`, which replaces the placeholder.
-- **Status:**
-  - Reviewed, built, and Simulator evidence attached (Dynamic Island shown).
-  - Round 2 fixed the Codex review: `nearby-interaction` background mode, recovery after dismissal or expiry, and a PRIVACY.md row for Live Activity data.
-  - The re-review is clean. It merges once CI passes.
-  - Leave the plan checkbox unticked: it needs a device.
-
 ## Next tasks, in order
-1. **Finish #29** (above).
-2. **Watch keep-alive (0.2).** `apple-skills:watchos`, `health-fitness.md`, lists these limits:
-   - `selfCare` and `mindfulness`: up to 10 min;
-   - `smartAlarm`: up to 30 min;
-   - `physicalTherapy`: up to 1 h;
-   - only an `HKWorkoutSession` runs unlimited.
-   Gate 0 needs **2+ hours**, so implement both an extended runtime session (the type comes from the watch's `WKBackgroundModes` Info.plist key) and a workout-session fallback. Record the App Review risk in the PR. Check Apple's docs before relying on the skill's table.
-3. **Bluetooth heartbeat (0.2).** One packet per second, phone to watch, as a second signal.
-   - It needs `NSBluetoothAlwaysUsageDescription` on both apps, plus background modes as needed.
-   - Update `docs/PRIVACY.md` and run `/privacy-review`.
-   - The 1 s interval must not be hard-coded (hard rule 4). Introduce `DetectionConfig` in `PTPCore` first, as Phase 1.1 would, or pass the value in.
-4. **CSV reading log (0.3).** Timestamp, distance, source, app state and battery %, on each device.
-   - **No coordinates.** It's "Export diagnostics" data: update PRIVACY.md, and never commit real exports (hard rule 6; the hook blocks `diagnostics/`).
-5. **Gate 0 needs the owner:**
+1. **Gate 0 needs the owner:**
    - 4-hour armed sessions on two watch models;
    - recording the trace scenarios;
    - the measurements in the Gate 0 table.
    Write exact steps for the owner and wait. Don't guess. Use `/log-field-drill` once results come back.
-6. **Phase 1 starts only after Gate 0 passes** (plan rule). If it fails, follow the plan's fallback (Bluetooth heartbeat only) and re-plan.
+2. **Phase 1 starts only after Gate 0 passes** (plan rule). If it fails, follow the plan's fallback (Bluetooth heartbeat only) and re-plan.
 
 ## Device checks the owner still owes
 - **#25 and #27:** install both apps with the team set. Both screens should show "Peer token received", then "Ranging" with a distance that changes as you walk apart. Note the largest distance before "Peer out of range".
 - **#29:** lock the phone while ranging. The Lock Screen distance should keep updating. Time how long it keeps going.
+- **#35:** on the watch, try "Keep alive: runtime", then "Keep alive: workout", each with the wrist down. Note how long each keeps running.
+- **#37:** the watch shows "Last beat" at about 1 s with the phone locked; it grows when the phone is out of range.
+- **#39:** run both apps for a few minutes, lock the phone, walk away and back. In Files › On My iPhone › PTP the phone's CSV has rows through the locked period. Tap "Send logs to phone" on the watch; its CSV appears in the same folder (a transfer can take a minute).
 
 ## Workflow as actually run (see AGENTS.md for the rules)
 - **Roles:** Claude Opus plans and reviews; **Codex GPT-6.2 Sol implements** (the owner's choice); Claude Haiku captures Simulator evidence.

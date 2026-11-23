@@ -9,6 +9,7 @@ struct ContentView: View {
     @State private var ranging = Ranging()
     @State private var liveActivity = LiveActivityController()
     @State private var heartbeat = HeartbeatSender(sessionID: ContentView.heartbeatID)
+    private let readingLog = ReadingLog.shared
 
     var body: some View {
         VStack {
@@ -20,10 +21,13 @@ struct ContentView: View {
             Text(ranging.state).font(.footnote)
             Text(ranging.distanceMeters.map { String(format: "%.1f m", $0) } ?? "—")
             Text(heartbeat.state).font(.footnote)
+            Text("Log: \(readingLog.rows) rows").font(.footnote)
         }
         .padding()
         .task {
             ranging.onChange = { [liveActivity] in liveActivity.update(state: $0, distance: $1) }
+            ranging.onSample = { [readingLog] in readingLog.log(distance: $0, source: .uwb) }
+            heartbeat.onBeat = { [readingLog] in readingLog.log(distance: nil, source: .ble) }
             exchange.publishHeartbeatID(Self.heartbeatID)
             ranging.start(exchange: exchange)
             exchange.start()
