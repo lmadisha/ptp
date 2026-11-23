@@ -10,6 +10,14 @@ Scope: whole repo. Docs only: ADR-0005 plus one-line updates in the plan, archit
 | Tag | Finding | Status |
 |---|---|---|
 | `native` | ADR-0005 uses the system `SQLite3` library rather than a third-party wrapper (for example GRDB). | `applied`: no new dependency. The thin wrapper gets written in Phase 1.3, when the first store needs it. |
+## 2026-11-23 · #29 Live Activity
+
+Scope: whole repo, mainly `ActivityShared/`, `PTPApp/LiveActivityController.swift`, the widget bundle and `Ranging.setReading`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `delete` | Placeholder widget (open since #10). | `applied`: the real `ActivityConfiguration` replaces it. |
+| `shrink` | `Ranging` set `state` and `distanceMeters` in eight places. | `applied` (Codex): one `setReading` funnel, which also drives `onChange` for the Live Activity. |
 
 ## 2026-11-23 · #27 live distance (NISession)
 
@@ -86,7 +94,7 @@ Scope: whole repo, mainly the new `PTP.xcodeproj` and three placeholder targets.
 
 | Tag | Finding | Status |
 |---|---|---|
-| `yagni` | The widget's `PlaceholderProvider`, entry and static widget exist only so the extension builds. | `open`: replace them with the real `ActivityConfiguration` in task 0.2 (Live Activity), then delete them. |
+| `yagni` | The widget's `PlaceholderProvider`, entry and static widget exist only so the extension builds. | `applied` in #29: replaced by the `ActivityConfiguration`, and the placeholder is deleted. |
 | `delete` | XcodeGen spec. | `applied`: generated the project once and kept the spec out of the repo, so there's one source of truth (`PTP.xcodeproj`). |
 
 ## 2026-11-23 · #8 model roles

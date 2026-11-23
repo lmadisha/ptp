@@ -7,6 +7,7 @@ import Observation
 final class Ranging: NSObject, NISessionDelegate {
     private(set) var distanceMeters: Float?
     private(set) var state = "Waiting to range…"
+    var onChange: (@MainActor (String, Float?) -> Void)?
 
     private weak var exchange: TokenExchange?
     private var session: NISession?
@@ -16,7 +17,7 @@ final class Ranging: NSObject, NISessionDelegate {
     func start(exchange: TokenExchange) {
         guard session == nil else { return }
         guard NISession.deviceCapabilities.supportsPreciseDistanceMeasurement else {
-            state = "Nearby Interaction not available on this device"
+            setReading(state: "Nearby Interaction not available on this device", distance: nil)
             return
         }
 
@@ -34,7 +35,7 @@ final class Ranging: NSObject, NISessionDelegate {
         session.delegate = self
         self.session = session
         guard let token = session.discoveryToken else {
-            state = "Discovery token unavailable"
+            setReading(state: "Discovery token unavailable", distance: nil)
             return
         }
         exchange.publish(token)
@@ -46,13 +47,19 @@ final class Ranging: NSObject, NISessionDelegate {
         session?.run(configuration)
     }
 
+    private func setReading(state: String, distance: Float?) {
+        guard state != self.state || distance != distanceMeters else { return }
+        self.state = state
+        distanceMeters = distance
+        onChange?(state, distance)
+    }
+
     nonisolated func session(_ session: NISession, didUpdate nearbyObjects: [NINearbyObject]) {
         let id = ObjectIdentifier(session)
         let distance = nearbyObjects.first?.distance
         Task { @MainActor in
             guard self.session.map(ObjectIdentifier.init) == id else { return }
-            distanceMeters = distance
-            state = "Ranging"
+            setReading(state: "Ranging", distance: distance)
         }
     }
 
@@ -63,15 +70,14 @@ final class Ranging: NSObject, NISessionDelegate {
         let id = ObjectIdentifier(session)
         Task { @MainActor in
             guard self.session.map(ObjectIdentifier.init) == id else { return }
-            distanceMeters = nil
             switch reason {
             case .timeout:
-                state = "Peer out of range"
+                setReading(state: "Peer out of range", distance: nil)
                 runConfiguration()
             case .peerEnded:
-                state = "Peer ended session"
+                setReading(state: "Peer ended session", distance: nil)
             @unknown default:
-                state = "Peer removed"
+                setReading(state: "Peer removed", distance: nil)
             }
         }
     }
@@ -81,8 +87,7 @@ final class Ranging: NSObject, NISessionDelegate {
         Task { @MainActor in
             guard self.session.map(ObjectIdentifier.init) == id else { return }
             isSuspended = true
-            distanceMeters = nil
-            state = "Suspended"
+            setReading(state: "Suspended", distance: nil)
         }
     }
 
@@ -100,21 +105,20 @@ final class Ranging: NSObject, NISessionDelegate {
         let code = (error as? NIError)?.code
         Task { @MainActor in
             guard self.session.map(ObjectIdentifier.init) == id else { return }
-            distanceMeters = nil
             self.session = nil
             isSuspended = false
             switch code {
             case .userDidNotAllow:
-                state = "Nearby Interaction not allowed. Turn it on in Settings."
+                setReading(state: "Nearby Interaction not allowed. Turn it on in Settings.", distance: nil)
             case .unsupportedPlatform:
-                state = "Nearby Interaction not available on this device"
+                setReading(state: "Nearby Interaction not available on this device", distance: nil)
             case .invalidConfiguration:
                 // The peer token was rejected: drop it and wait for a fresh one instead of rerunning it.
                 configuration = nil
-                state = "Waiting for a new peer token"
+                setReading(state: "Waiting for a new peer token", distance: nil)
                 if let exchange { startSession(exchange: exchange) }
             default:
-                state = "Session ended"
+                setReading(state: "Session ended", distance: nil)
                 if let exchange { startSession(exchange: exchange) }
             }
         }

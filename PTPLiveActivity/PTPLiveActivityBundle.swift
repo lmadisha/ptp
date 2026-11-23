@@ -1,29 +1,50 @@
+import ActivityKit
 import SwiftUI
 import WidgetKit
 
-struct PlaceholderEntry: TimelineEntry { let date: Date }
-
-struct PlaceholderProvider: TimelineProvider {
-    func placeholder(in context: Context) -> PlaceholderEntry { PlaceholderEntry(date: .now) }
-    func getSnapshot(in context: Context, completion: @escaping @Sendable (PlaceholderEntry) -> Void) {
-        completion(PlaceholderEntry(date: .now))
-    }
-    func getTimeline(in context: Context, completion: @escaping @Sendable (Timeline<PlaceholderEntry>) -> Void) {
-        completion(Timeline(entries: [PlaceholderEntry(date: .now)], policy: .never))
-    }
-}
-
-struct PlaceholderWidget: Widget {
-    var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "PTPPlaceholder", provider: PlaceholderProvider()) { _ in
-            Text("PTP").containerBackground(.fill.tertiary, for: .widget)
-        }
-        .configurationDisplayName("PTP")
-        .description("Placeholder.")
-    }
-}
-
 @main
 struct PTPLiveActivityBundle: WidgetBundle {
-    var body: some Widget { PlaceholderWidget() }
+    var body: some Widget { PTPLiveActivity() }
+}
+
+private struct PTPLiveActivity: Widget {
+    var body: some WidgetConfiguration {
+        ActivityConfiguration(for: PTPActivityAttributes.self) { context in
+            VStack(alignment: .leading) {
+                Text("PTP").font(.headline)
+                Text(context.state.state)
+                distanceLabel(context.state.distanceMeters)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(14)
+            .foregroundStyle(.white)
+            .activityBackgroundTint(.black)
+        } dynamicIsland: { context in
+            DynamicIsland {
+                DynamicIslandExpandedRegion(.leading) {
+                    Text(context.state.state)
+                }
+                DynamicIslandExpandedRegion(.trailing) {
+                    distanceLabel(context.state.distanceMeters)
+                }
+            } compactLeading: {
+                glyph
+            } compactTrailing: {
+                distanceLabel(context.state.distanceMeters)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
+            } minimal: {
+                glyph
+            }
+        }
+    }
+
+    private var glyph: some View {
+        Image(systemName: "applewatch").accessibilityLabel("PTP")
+    }
+
+    private func distanceLabel(_ distance: Float?) -> some View {
+        Text(distance.map { String(format: "%.1f m", $0) } ?? "—")
+            .monospacedDigit()
+    }
 }

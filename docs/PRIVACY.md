@@ -9,7 +9,8 @@
 | Place areas you visit, with a visit count (rounded, not exact trails) | To tell when you're somewhere unfamiliar | iPhone only, in an on-device SQLite database that's file-protected and not backed up to iCloud | Deleted after 60 days |
 | Safe places and risky places you choose | To arm or not arm automatically | iPhone only | Until you remove them |
 | Alarm history | To tune detection and show you past alerts | iPhone only | About 30 days |
-| Phone–watch distance | To detect separation | In memory only, never saved (except in diagnostics you export yourself) | Not kept |
+| Phone–watch distance | To detect separation | In the app's memory only, never written to a file by the app (except in diagnostics you export yourself) | Not kept by the app |
+| Latest distance and ranging state shown in the Live Activity | So you can see the link on the Lock Screen and in the Dynamic Island while the phone is locked | Handed to the system's Live Activity on your iPhone (no push server, nothing leaves the phone) | Replaced on every update; the system removes it when the activity ends or is dismissed (at most 8 hours, plus up to 4 hours on the Lock Screen after ending) |
 | Nearby Interaction discovery token (a random identifier for one ranging session; no location or personal data) | So the phone and watch can find each other to measure distance | Handed to the system's WatchConnectivity link, which keeps the latest token on your iPhone and watch and passes it to the other device | Replaced by each new ranging session; removed when you delete the app |
 
 ## Permissions
