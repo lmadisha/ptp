@@ -1,9 +1,5 @@
 import Foundation
 
-public enum ReadingSource: String, Sendable {
-    case uwb, ble
-}
-
 public struct ReadingRow: Sendable, Equatable {
     public static let csvHeader = "t_ms,distance_m,source,app_state,battery_pct"
 
