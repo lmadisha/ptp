@@ -2,11 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>PTP uses Bluetooth to check that your iPhone is still near your Apple Watch. Nothing is sent anywhere else.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
 		<string>location</string>
 		<string>nearby-interaction</string>
+		<string>bluetooth-peripheral</string>
 	</array>
 </dict>
 </plist>

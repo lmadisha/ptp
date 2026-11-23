@@ -5,6 +5,7 @@ struct ContentView: View {
     @State private var exchange = TokenExchange()
     @State private var ranging = Ranging()
     @State private var keepAlive = KeepAlive()
+    @State private var heartbeat = HeartbeatReceiver()
 
     var body: some View {
         ScrollView {
@@ -16,6 +17,10 @@ struct ContentView: View {
                 Text(exchange.linkStatus).font(.footnote)
                 Text(ranging.state).font(.footnote)
                 Text(ranging.distanceMeters.map { String(format: "%.1f m", $0) } ?? "—")
+                Text("Heartbeat: \(heartbeat.state)").font(.footnote)
+                if let lastBeat = heartbeat.lastBeat {
+                    Text("Last beat: \(Text(lastBeat, style: .relative))").font(.footnote)
+                }
 
                 Button("Keep alive: runtime") { keepAlive.startRuntime() }
                     .disabled(keepAlive.mode != .off)
@@ -36,6 +41,7 @@ struct ContentView: View {
         .task {
             exchange.start()
             ranging.start(exchange: exchange)
+            heartbeat.start()
         }
     }
 }

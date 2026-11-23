@@ -3,6 +3,15 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-23 · #37 Bluetooth heartbeat
+
+Scope: whole repo, mainly `HeartbeatSender`, `HeartbeatReceiver`, `Shared/Heartbeat.swift` and the new `DetectionConfig`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | `DetectionConfig` holds only `heartbeatInterval` for now. | `applied`: the smallest version that keeps hard rule 4. Phase 1.1 adds the thresholds to the same struct. |
+| `shrink` | A beat is skipped when the transmit queue is full (`updateValue` returns false), with no `peripheralManagerIsReady` retry. | `open`: fine for the spike. Add the retry if device logs show missed beats. |
+
 ## 2026-11-23 · #35 watch keep-alive spike
 
 Scope: whole repo, mainly `PTPWatch/KeepAlive.swift` (about 190 lines) and the watch's `Info.plist` and entitlements.

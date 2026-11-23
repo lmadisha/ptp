@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1188B7A7CB703AA845D84D42 /* Heartbeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE0C732F363A5835C547BFB /* Heartbeat.swift */; };
 		15C196EF32ADCB201CE971F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FF939DE52093130D66282A0 /* Assets.xcassets */; };
 		1CE6F7745BCD829F06F5D113 /* KeepAlive.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E91A60E8376CDA1E61000D /* KeepAlive.swift */; };
 		350DE470EA194A98E6104FEA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE1254E228F5E03BB309A86 /* ContentView.swift */; };
@@ -22,9 +23,12 @@
 		8CF95EA27831C833883E4F7F /* PTPLiveActivityBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8AA489A53E02A83F770E19 /* PTPLiveActivityBundle.swift */; };
 		90E6FCA2A3C4C3686D8A8F55 /* PTPActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD51424032AF0607100B00CF /* PTPActivityAttributes.swift */; };
 		9BA36035BBBE0BE851B52D6B /* PTPActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD51424032AF0607100B00CF /* PTPActivityAttributes.swift */; };
+		9F9D940F940A759F1D42DAB7 /* HeartbeatSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A4AF4C1CDC23382F25EA7A /* HeartbeatSender.swift */; };
+		AA6EADFCA75B25BFFE6F6AFD /* HeartbeatReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F727274378F79784E341B380 /* HeartbeatReceiver.swift */; };
 		AB1A9AC4D4DC2132142856F2 /* TokenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F532A2D9DD67A01321558C6 /* TokenExchange.swift */; };
 		C5A07ADE785A5B6CE6BD9AC8 /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879A82DC70CBBE82E466B936 /* LiveActivityController.swift */; };
 		CE14F63F34E5B123BF3F7B37 /* PTPCore in Frameworks */ = {isa = PBXBuildFile; productRef = B6F8AE64C1E544B0D5B1F95F /* PTPCore */; };
+		DE2D5BA1BFAF92B7FC2FB2A2 /* Heartbeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE0C732F363A5835C547BFB /* Heartbeat.swift */; };
 		E4C48889C03EBEFD1E8B705C /* PTPCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8CB63A8E9277B0A1F1B70E43 /* PTPCore */; };
 /* End PBXBuildFile section */
 
@@ -80,6 +84,7 @@
 		614F760EA90091ACA23A0C6A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		6ECD754A7CB5F75C34EFFC11 /* PTPCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PTPCore; path = Packages/PTPCore; sourceTree = SOURCE_ROOT; };
 		7BF39E944AB4BE0073FF035B /* PTPApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PTPApp.entitlements; sourceTree = "<group>"; };
+		7CE0C732F363A5835C547BFB /* Heartbeat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Heartbeat.swift; sourceTree = "<group>"; };
 		851C2CF80BF665872BF7DA59 /* PTPWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PTPWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		879A82DC70CBBE82E466B936 /* LiveActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityController.swift; sourceTree = "<group>"; };
 		8AF10FB1769F0E2D31F3E07A /* Ranging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ranging.swift; sourceTree = "<group>"; };
@@ -92,6 +97,8 @@
 		D3B8946706855FBA2066EC81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DA8AA489A53E02A83F770E19 /* PTPLiveActivityBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPLiveActivityBundle.swift; sourceTree = "<group>"; };
 		EEE1254E228F5E03BB309A86 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F0A4AF4C1CDC23382F25EA7A /* HeartbeatSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartbeatSender.swift; sourceTree = "<group>"; };
+		F727274378F79784E341B380 /* HeartbeatReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartbeatReceiver.swift; sourceTree = "<group>"; };
 		FDDF95AB4B898308373648ED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -130,6 +137,7 @@
 			children = (
 				4FF939DE52093130D66282A0 /* Assets.xcassets */,
 				EEE1254E228F5E03BB309A86 /* ContentView.swift */,
+				F727274378F79784E341B380 /* HeartbeatReceiver.swift */,
 				D3B8946706855FBA2066EC81 /* Info.plist */,
 				B5E91A60E8376CDA1E61000D /* KeepAlive.swift */,
 				22EC6397C3D878282050329F /* PTPWatch.entitlements */,
@@ -153,6 +161,7 @@
 			children = (
 				FDDF95AB4B898308373648ED /* Assets.xcassets */,
 				614F760EA90091ACA23A0C6A /* ContentView.swift */,
+				F0A4AF4C1CDC23382F25EA7A /* HeartbeatSender.swift */,
 				A301009B857214162AAF4542 /* Info.plist */,
 				879A82DC70CBBE82E466B936 /* LiveActivityController.swift */,
 				7BF39E944AB4BE0073FF035B /* PTPApp.entitlements */,
@@ -193,6 +202,7 @@
 		CBA268C54FE3652B933F77FD /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				7CE0C732F363A5835C547BFB /* Heartbeat.swift */,
 				8AF10FB1769F0E2D31F3E07A /* Ranging.swift */,
 				4F532A2D9DD67A01321558C6 /* TokenExchange.swift */,
 			);
@@ -332,6 +342,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F225B0952B62C14F3E020D9 /* ContentView.swift in Sources */,
+				1188B7A7CB703AA845D84D42 /* Heartbeat.swift in Sources */,
+				9F9D940F940A759F1D42DAB7 /* HeartbeatSender.swift in Sources */,
 				C5A07ADE785A5B6CE6BD9AC8 /* LiveActivityController.swift in Sources */,
 				90E6FCA2A3C4C3686D8A8F55 /* PTPActivityAttributes.swift in Sources */,
 				6CE07088BD25FE699EE1322C /* PTPApp.swift in Sources */,
@@ -345,6 +357,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				350DE470EA194A98E6104FEA /* ContentView.swift in Sources */,
+				DE2D5BA1BFAF92B7FC2FB2A2 /* Heartbeat.swift in Sources */,
+				AA6EADFCA75B25BFFE6F6AFD /* HeartbeatReceiver.swift in Sources */,
 				1CE6F7745BCD829F06F5D113 /* KeepAlive.swift in Sources */,
 				52127AC36FBF895C95C89CBB /* PTPWatchApp.swift in Sources */,
 				716FE153161E4159C405C3A2 /* Ranging.swift in Sources */,

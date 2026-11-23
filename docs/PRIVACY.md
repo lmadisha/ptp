@@ -19,6 +19,7 @@
 | Nearby Interaction | Measuring the distance between phone and watch | The app can't work; Bluetooth-only mode is offered |
 | Location (Always) | New-area prompt and risky or safe places | Event mode and manual arming still work |
 | Notifications | New-area prompt and alarms | Alarms only show while the app is open |
+| Bluetooth | A heartbeat from the iPhone to the watch (a plain counter, nothing else), so the watch notices when the phone is gone | Distance falls back to UWB only; the heartbeat signal is lost |
 | Health (workouts, write only) | Phase 0 spike: a workout session is started only to keep the watch app running while armed. No health data is read, and no workout is saved to Health. | The workout keep-alive mode can't start; the extended-runtime mode still works |
 
 ## Sharing

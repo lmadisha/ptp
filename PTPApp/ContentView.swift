@@ -6,6 +6,7 @@ struct ContentView: View {
     @State private var exchange = TokenExchange()
     @State private var ranging = Ranging()
     @State private var liveActivity = LiveActivityController()
+    @State private var heartbeat = HeartbeatSender()
 
     var body: some View {
         VStack {
@@ -16,12 +17,14 @@ struct ContentView: View {
             Text(exchange.linkStatus).font(.footnote)
             Text(ranging.state).font(.footnote)
             Text(ranging.distanceMeters.map { String(format: "%.1f m", $0) } ?? "—")
+            Text(heartbeat.state).font(.footnote)
         }
         .padding()
         .task {
             ranging.onChange = { [liveActivity] in liveActivity.update(state: $0, distance: $1) }
             exchange.start()
             ranging.start(exchange: exchange)
+            heartbeat.start()
         }
         .onChange(of: scenePhase, initial: true) {
             guard scenePhase == .active else { return }
