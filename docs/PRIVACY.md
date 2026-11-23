@@ -19,6 +19,7 @@
 | Nearby Interaction | Measuring the distance between phone and watch | The app can't work; Bluetooth-only mode is offered |
 | Location (Always) | New-area prompt and risky or safe places | Event mode and manual arming still work |
 | Notifications | New-area prompt and alarms | Alarms only show while the app is open |
+| Bluetooth | A heartbeat between your iPhone and watch. The watch asks once per interval, and the phone answers with a random session ID plus a counter, so the watch notices when the phone is gone. The session ID is new every time the app starts, isn't stored, and is shared with the watch only over its private link. Any nearby Bluetooth device could read that random ID, but it identifies nothing and changes every launch | Distance falls back to UWB only; the heartbeat signal is lost |
 | Health (workouts, write only) | Phase 0 spike: a workout session is started only to keep the watch app running while armed. No health data is read, and no workout is saved to Health. | The workout keep-alive mode can't start; the extended-runtime mode still works |
 
 ## Sharing
