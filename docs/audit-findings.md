@@ -3,6 +3,14 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-23 · #8 model roles
+
+Scope: whole repo. Docs only: `docs/MODEL_ROLES.md` and summaries in AGENTS.md and CLAUDE.md.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | Considered adding `.claude/agents/implementer.md` and `reviewer.md` subagent files. | `wontfix` for now: the Agent tool's `model` parameter and `opusplan` already cover the roles. Add the files if the same prompts get retyped often. |
+
 ## 2026-11-23 · #6 ignore graphify-out
 
 Scope: whole repo. Change is one `.gitignore` rule.

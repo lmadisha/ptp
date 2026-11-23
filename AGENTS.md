@@ -54,6 +54,22 @@ Never break these. If a task seems to need it, stop and ask.
 - **Tests:** test the state machine with an injected clock. No `sleep`, no `Date()` in tests.
 - **Git:** follow the issue, branch and PR workflow below. Conventional Commits. Never push to `main` or `develop`, never force-push.
 
+## Model roles
+A strong model plans and reviews; a cheaper model implements. Full table, IDs and hand-off: [docs/MODEL_ROLES.md](docs/MODEL_ROLES.md).
+
+| Role | Claude Code | Codex |
+|---|---|---|
+| Orchestrator, planner, architect | Opus 5.5 or Fable 5.2 | GPT-6.2 Astra |
+| Implementer | Sonnet 5.5 (Opus 5.5 for hard changes) | GPT-6.2 Sol (Astra for hard changes) |
+| Reviewer | Opus 5.5 or Fable 5.2, fresh context | GPT-6.2 Astra |
+| Test runner, evidence | Haiku 5.5 | GPT-6 Luna |
+| Device testing | The human | The human |
+
+- The planner writes the plan on the GitHub issue, so either tool can pick it up.
+- The reviewer is never the run that implemented the change. Prefer cross-vendor review.
+- Detection changes are planned and reviewed by the top tier, trace replay included.
+- If the implementer fails the same check twice, hand back to the planner.
+
 ## GitHub issue, backlog, branch, and PR workflow
 
 Every implementation must be tied to a GitHub issue and follow this
@@ -227,3 +243,4 @@ with `git config core.hooksPath .githooks` (worktrees share the setting).
 - [Testing](docs/TESTING.md): traces, expected outcomes, field drills
 - [Privacy](docs/PRIVACY.md): what is stored, where, for how long
 - [ADRs](docs/adr/README.md): why things are the way they are
+- [Model roles](docs/MODEL_ROLES.md): which model plans, implements, reviews and tests

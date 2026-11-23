@@ -36,11 +36,18 @@ These run automatically. Don't work around them. If one blocks you, fix the caus
 - Start a session with `/phase-status`. Keep each change to one plan task and one GitHub issue.
 - When device testing is needed, write the steps for the human to run and wait for the results. Don't guess.
 
+### Model roles (Claude Code specifics)
+See the Model roles section in AGENTS.md and [docs/MODEL_ROLES.md](docs/MODEL_ROLES.md).
+- **Main session:** run it on `opus` (or `fable` for detection and architecture work) as the orchestrator. `opusplan` (Opus plans, Sonnet executes) suits a single-session task.
+- **Delegation:** hand implementation to a subagent with `model: sonnet`, review to a fresh subagent with `model: opus`, and test runs and Simulator evidence to `model: haiku`. Subagents inherit the main model unless you set one.
+- **Effort:** set `high` for planning and review, because current models default to `medium`. Implementation stays at `medium`, QA at `low`.
+- **Cross-vendor review:** when Codex implemented the change, review it here on Opus or Fable before the PR is marked ready.
+
 ### GitHub workflow (Claude Code specifics)
 The full issue, backlog, branch, PR, evidence, Graphify and git-hook rules are in AGENTS.md above and apply to Claude Code unchanged. In particular:
 - Every implementation follows the issue → Backlog → `<type>/<issue>-<slug>` branch from `develop` → PR into `develop` sequence.
 - `main` and `develop` are protected: never commit or push to them directly. `develop` → `main` is production promotion, by PR only.
 - PRs: assignee `lmadisha`, the issue's labels and milestone, `Closes #<n>`, an Evidence section. Never add Claude as co-author.
-- Evidence: delegate simulator capture to a Haiku subagent; you review the images and attach them with `gh pr edit --attach`.
+- Evidence: delegate simulator capture to a `haiku` subagent; you review the images and attach them with `gh pr edit --attach`.
 - After every merge, run `/graphify . --update` and check `graphify-out/` was updated.
 - Merging, approving, closing or deleting issues or PRs needs the user's explicit OK.
