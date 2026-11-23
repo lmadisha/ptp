@@ -3,6 +3,15 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-23 · #19 capabilities and Info.plist keys
+
+Scope: whole repo. Change is a 1-key `PTPApp/Info.plist` and build-setting keys for the two app targets.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `native` | `PTPApp/Info.plist` exists only for `UIBackgroundModes`. Xcode's `INFOPLIST_KEY_*` settings can't hold an array. | `applied`: kept the file to that single key, and every other key stays a generated build setting. |
+| `yagni` | The `location` background mode is declared before any location code exists (it arrives in Phase 2). | `open`: the plan lists it in task 0.1. Remove it if Phase 2 changes course, because App Review rejects background modes that aren't used. |
+
 ## 2026-11-23 · #17 App Group
 
 Scope: whole repo. Change is two `.entitlements` files, two `CODE_SIGN_ENTITLEMENTS` settings and one README line.
