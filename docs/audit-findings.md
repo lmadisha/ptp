@@ -3,6 +3,14 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-23 · #32 handover document
+
+Scope: whole repo. Docs only.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `delete` | The XcodeGen spec was kept outside the repo (#10), so a new agent couldn't regenerate the project. | `applied`: a copy is in `docs/HANDOVER.md`. `PTP.xcodeproj` stays the source of truth. |
+
 ## 2026-11-23 · #27 live distance (NISession)
 
 Scope: whole repo, mainly the new `Shared/Ranging.swift` (about 110 lines) and the `TokenExchange` refactor.
