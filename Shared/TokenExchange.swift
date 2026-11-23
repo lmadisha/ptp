@@ -28,6 +28,18 @@ final class TokenExchange: NSObject {
         }
     }
 
+    #if os(watchOS)
+    func send(file: URL) {
+        let session = WCSession.default
+        guard session.activationState == .activated, session.isCompanionAppInstalled else { return }
+        // Send a snapshot, because the log itself is still being appended to.
+        let copy = URL.temporaryDirectory.appending(path: file.lastPathComponent)
+        try? FileManager.default.removeItem(at: copy)
+        guard (try? FileManager.default.copyItem(at: file, to: copy)) != nil else { return }
+        session.transferFile(copy, metadata: nil)
+    }
+    #endif
+
     func publish(_ token: NIDiscoveryToken) {
         contextPublished = false
         pendingToken = try? NSKeyedArchiver.archivedData(
@@ -152,6 +164,18 @@ extension TokenExchange: WCSessionDelegate {
     }
 
     #if os(iOS)
+    nonisolated func session(_ session: WCSession, didReceive file: WCSessionFile) {
+        // WatchConnectivity removes the Inbox file when this callback returns.
+        let name = file.fileURL.lastPathComponent
+        guard name.hasPrefix("ptp-watch-"), name.hasSuffix(".diagnostics.csv") else { return }
+        var destination = URL.documentsDirectory.appending(path: name)
+        try? FileManager.default.removeItem(at: destination)  // a newer snapshot of the same log
+        guard (try? FileManager.default.moveItem(at: file.fileURL, to: destination)) != nil else { return }
+        var values = URLResourceValues()
+        values.isExcludedFromBackup = true
+        try? destination.setResourceValues(values)
+    }
+
     nonisolated func sessionWatchStateDidChange(_ session: WCSession) {
         let reachable = session.isReachable
         let installed = session.isWatchAppInstalled

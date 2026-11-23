@@ -6,6 +6,7 @@ struct ContentView: View {
     @State private var ranging = Ranging()
     @State private var keepAlive = KeepAlive()
     @State private var heartbeat = HeartbeatReceiver()
+    private let readingLog = ReadingLog.shared
 
     var body: some View {
         ScrollView {
@@ -21,6 +22,11 @@ struct ContentView: View {
                 if let lastBeat = heartbeat.lastBeat {
                     Text("Last beat: \(Text(lastBeat, style: .relative))").font(.footnote)
                 }
+                Text("Log: \(readingLog.rows) rows").font(.footnote)
+                Button("Send log to phone") {
+                    if let file = readingLog.fileURL { exchange.send(file: file) }
+                }
+                .disabled(readingLog.fileURL == nil)
 
                 Button("Keep alive: runtime") { keepAlive.startRuntime() }
                     .disabled(keepAlive.mode != .off)
@@ -39,6 +45,8 @@ struct ContentView: View {
             .padding()
         }
         .task {
+            ranging.onSample = { [readingLog] in readingLog.log(distance: $0, source: .uwb) }
+            heartbeat.onBeat = { [readingLog] in readingLog.log(distance: nil, source: .ble) }
             exchange.onHeartbeatID = { [heartbeat] in heartbeat.expect($0) }
             exchange.start()
             ranging.start(exchange: exchange)
