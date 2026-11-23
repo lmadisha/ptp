@@ -13,6 +13,7 @@ final class TokenExchange: NSObject {
     private(set) var peerToken: NIDiscoveryToken?
 
     private var nearbySession: NISession?
+    private var tokenPublished = false
 
     func start() {
         if WCSession.isSupported() {
@@ -29,6 +30,7 @@ final class TokenExchange: NSObject {
         }
         if nearbySession == nil {
             nearbySession = NISession()
+            tokenPublished = false
         }
     }
 
@@ -45,6 +47,7 @@ final class TokenExchange: NSObject {
     }
 
     private func sendToken() {
+        guard !tokenPublished else { return }
         let session = WCSession.default
         guard session.activationState == .activated, let nearbySession else { return }
         guard let token = nearbySession.discoveryToken else {
@@ -56,9 +59,17 @@ final class TokenExchange: NSObject {
             let data = try NSKeyedArchiver.archivedData(
                 withRootObject: token, requiringSecureCoding: true)
             try session.updateApplicationContext([Self.tokenKey: data])
+            tokenPublished = true
             tokenStatus = "Token sent"
         } catch {
-            tokenStatus = "Could not send discovery token"
+            switch (error as? WCError)?.code {
+            case .watchAppNotInstalled:
+                tokenStatus = "Token not sent yet: watch app not installed"
+            case .companionAppNotInstalled:
+                tokenStatus = "Token not sent yet: companion app not installed"
+            default:
+                tokenStatus = "Token not sent yet"
+            }
         }
     }
 
@@ -71,6 +82,7 @@ final class TokenExchange: NSObject {
             return
         }
         peerToken = token
+        sendToken()  // the peer exists now, so retry an unpublished token first
         tokenStatus = "Peer token received"
     }
 }
@@ -96,7 +108,10 @@ extension TokenExchange: WCSessionDelegate {
 
     nonisolated func sessionReachabilityDidChange(_ session: WCSession) {
         let reachable = session.isReachable
-        Task { @MainActor in updateLinkStatus(reachable: reachable) }
+        Task { @MainActor in
+            updateLinkStatus(reachable: reachable)
+            sendToken()
+        }
     }
 
     nonisolated func session(
@@ -107,10 +122,28 @@ extension TokenExchange: WCSessionDelegate {
     }
 
     #if os(iOS)
+    nonisolated func sessionWatchStateDidChange(_ session: WCSession) {
+        let reachable = session.isReachable
+        let installed = session.isWatchAppInstalled
+        Task { @MainActor in
+            updateLinkStatus(reachable: reachable)
+            if installed { sendToken() }
+        }
+    }
+
     nonisolated func sessionDidBecomeInactive(_ session: WCSession) {}
 
     nonisolated func sessionDidDeactivate(_ session: WCSession) {
-        session.activate()
+        Task { @MainActor in
+            tokenPublished = false
+            WCSession.default.activate()
+        }
+    }
+    #endif
+
+    #if os(watchOS)
+    nonisolated func sessionCompanionAppInstalledDidChange(_ session: WCSession) {
+        Task { @MainActor in sendToken() }
     }
     #endif
 }

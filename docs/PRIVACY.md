@@ -10,6 +10,7 @@
 | Safe places and risky places you choose | To arm or not arm automatically | iPhone only | Until you remove them |
 | Alarm history | To tune detection and show you past alerts | iPhone only | About 30 days |
 | Phone–watch distance | To detect separation | In memory only, never saved (except in diagnostics you export yourself) | Not kept |
+| Nearby Interaction discovery token (a random identifier for one ranging session; no location or personal data) | So the phone and watch can find each other to measure distance | Handed to the system's WatchConnectivity link, which keeps the latest token on your iPhone and watch and passes it to the other device | Replaced by each new ranging session; removed when you delete the app |
 
 ## Permissions
 | Permission | Used for | If you refuse |
