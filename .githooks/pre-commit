@@ -1,0 +1,8 @@
+#!/bin/sh
+# Block commits on protected branches. Work on an issue branch instead.
+branch=$(git branch --show-current)
+case "$branch" in
+  main|develop)
+    echo "pre-commit: '$branch' is protected. Create <type>/<issue>-<slug> from develop and commit there." >&2
+    exit 1 ;;
+esac

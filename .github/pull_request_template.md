@@ -12,6 +12,9 @@
 - [ ] Big design change? New ADR added
 - [ ] `CHANGELOG.md` updated under Unreleased
 
+## Evidence
+<!-- At least one real Simulator screenshot, captioned with what it shows and what it can't prove. -->
+
 ## Trace replay results (detection changes only)
 | Trace | Expected | Result |
 |---|---|---|
