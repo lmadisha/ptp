@@ -18,5 +18,8 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - Spike: phone and watch exchange Nearby Interaction discovery tokens over WatchConnectivity (`Shared/TokenExchange.swift`), with status on both screens (#25).
 - Spike: an `NISession` on both devices ranges against the peer token and shows the live distance in metres (`Shared/Ranging.swift`). Nearby Interaction moved out of `TokenExchange` (#27).
 
+### Changed
+- On-device stores (places, alarm log) will use SQLite through the system `SQLite3` library in a `PTPStore` package, not SwiftData (ADR-0005, #30).
+
 ### Fixed
 - `guard_bash.py` no longer blocks commands that only mention a push (`chmod +x`, `rm -f`, heredocs), and now checks every unquoted push in a command, so it also catches `git -C … push -f`, `-fu`, and pushes behind `command`, `sudo`, `then`, `xargs`, subshells, `env` or `bash -c` (#2).

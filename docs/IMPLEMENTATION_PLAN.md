@@ -84,7 +84,7 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
 ### 1.3 iPhone app
 - [ ] Live Activity showing state and distance; it turns red on Alarm.
 - [ ] Sync arm state between phone and watch over WatchConnectivity (`updateApplicationContext` for state, `sendMessage` for alarm events).
-- [ ] Local alarm event log (SwiftData), capped at about 30 days.
+- [ ] Local alarm event log (SQLite in `Packages/PTPStore`, ADR-0005), capped at about 30 days.
 
 ### Gate 1
 | Check | Pass |
@@ -101,7 +101,7 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
 
 ### 2.1 Arming triggers
 - [ ] **Event mode:** start from watch or phone; durations of 2 h, 4 h, or until home; auto-disarm when the timer ends or the owner arrives at a safe place. Event defaults: 4 m threshold, haptics first.
-- [ ] **Visit learning:** use `CLLocationManager` visit monitoring. Store rounded place areas with visit counts in SwiftData; delete anything older than 60 days.
+- [ ] **Visit learning:** use `CLLocationManager` visit monitoring. Store rounded place areas with visit counts in SQLite (`PTPStore`, ADR-0005); delete anything older than 60 days.
 - [ ] **New-area prompt:** on arrival somewhere visited fewer than 3 times in 60 days, the watch asks "New area. Arm PTP?". During the first 2–3 weeks, treat everywhere except home and work as unfamiliar.
 - [ ] **Risky regulars and safe places:** region monitoring (iOS allows 20 regions per app); arm on arrival at a risky place, never at a safe one.
 - [ ] Quick-arm complication on the watch face.

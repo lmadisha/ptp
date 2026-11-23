@@ -6,7 +6,7 @@
 | Data | Why | Where | How long |
 |---|---|---|---|
 | Settings | To work the way you set it up | iPhone + watch | Until you delete the app |
-| Place areas you visit, with a visit count (rounded, not exact trails) | To tell when you're somewhere unfamiliar | iPhone only, encrypted while locked | Deleted after 60 days |
+| Place areas you visit, with a visit count (rounded, not exact trails) | To tell when you're somewhere unfamiliar | iPhone only, in an on-device SQLite database that's file-protected and not backed up to iCloud | Deleted after 60 days |
 | Safe places and risky places you choose | To arm or not arm automatically | iPhone only | Until you remove them |
 | Alarm history | To tune detection and show you past alerts | iPhone only | About 30 days |
 | Phone–watch distance | To detect separation | In memory only, never saved (except in diagnostics you export yourself) | Not kept |
