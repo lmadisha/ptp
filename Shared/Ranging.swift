@@ -81,6 +81,7 @@ final class Ranging: NSObject, NISessionDelegate {
         Task { @MainActor in
             guard self.session.map(ObjectIdentifier.init) == id else { return }
             isSuspended = true
+            distanceMeters = nil
             state = "Suspended"
         }
     }
@@ -96,13 +97,21 @@ final class Ranging: NSObject, NISessionDelegate {
 
     nonisolated func session(_ session: NISession, didInvalidateWith error: any Error) {
         let id = ObjectIdentifier(session)
+        let code = (error as? NIError)?.code
         Task { @MainActor in
             guard self.session.map(ObjectIdentifier.init) == id else { return }
             distanceMeters = nil
-            state = "Session ended"
             self.session = nil
             isSuspended = false
-            if let exchange { startSession(exchange: exchange) }
+            switch code {
+            case .userDidNotAllow:
+                state = "Nearby Interaction not allowed. Turn it on in Settings."
+            case .unsupportedPlatform:
+                state = "Nearby Interaction not available on this device"
+            default:
+                state = "Session ended"
+                if let exchange { startSession(exchange: exchange) }
+            }
         }
     }
 }
