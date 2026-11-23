@@ -3,6 +3,12 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-23 · #6 ignore graphify-out
+
+Scope: whole repo. Change is one `.gitignore` rule.
+
+No findings. Lean already.
+
 ## 2026-11-23 · #4 apple-skills plugin
 
 Scope: whole repo. Change is 11 lines of settings plus a CLAUDE.md section.
