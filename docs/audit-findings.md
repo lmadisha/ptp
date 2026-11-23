@@ -3,6 +3,13 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-23 · #30 SQLite instead of SwiftData
+
+Scope: whole repo. Docs only: ADR-0005 plus one-line updates in the plan, architecture, privacy and ADR index.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `native` | ADR-0005 uses the system `SQLite3` library rather than a third-party wrapper (for example GRDB). | `applied`: no new dependency. The thin wrapper gets written in Phase 1.3, when the first store needs it. |
 ## 2026-11-23 · #29 Live Activity
 
 Scope: whole repo, mainly `ActivityShared/`, `PTPApp/LiveActivityController.swift`, the widget bundle and `Ranging.setReading`.

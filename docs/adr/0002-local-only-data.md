@@ -1,6 +1,6 @@
 # ADR-0002: No backend; all data stays on the device
 
-- **Status:** Accepted
+- **Status:** Accepted. The storage technology (SwiftData) is superseded by ADR-0005 (SQLite).
 - **Date:** 2026-11-23
 
 ## Context
