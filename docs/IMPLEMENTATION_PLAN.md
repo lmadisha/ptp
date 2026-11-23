@@ -33,7 +33,7 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
 - [x] Set minimum versions: iOS 18.4, watchOS 11 (see ADR-0004).
 
 ### 0.2 Distance spike
-- [ ] Exchange discovery tokens between phone and watch over WatchConnectivity.
+- [x] Exchange discovery tokens between phone and watch over WatchConnectivity.
 - [ ] Run an `NISession` on both devices and show live distance on each screen.
 - [ ] Start a Live Activity on iPhone. Confirm ranging keeps going when the app is backgrounded and the phone is locked.
 - [ ] On the watch, test keeping the app alive with:
