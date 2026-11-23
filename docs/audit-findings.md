@@ -9,6 +9,14 @@ Scope: whole repo. Change is two lines in `phase-status/SKILL.md` and `IMPLEMENT
 
 No findings. Lean already.
 
+## 2026-11-23 · #2 guard_bash force-push false positive
+
+Scope: whole repo, mainly `.claude/hooks/guard_bash.py`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `shrink` | After the Codex cloud review (round 3), the hook grew from 34 to 120 lines. Most of it is `shell_source()`, a small heredoc and comment stripper that runs before `shlex`. | `wontfix`: a regex that only checks the start of a command missed every shell prefix (`command`, `sudo`, `then`, ...), and stdlib `shlex` can't skip heredoc bodies. 51 cases in `test_guard_bash.py` cover it, and a `ponytail:` comment names what remains (`eval`, aliases, variables). |
+
 ## 2026-11-23 · #10 Xcode project
 
 Scope: whole repo, mainly the new `PTP.xcodeproj` and three placeholder targets.
