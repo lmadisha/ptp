@@ -3,6 +3,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var exchange = TokenExchange()
+    @State private var ranging = Ranging()
 
     var body: some View {
         VStack {
@@ -11,9 +12,13 @@ struct ContentView: View {
                 .font(.footnote)
                 .multilineTextAlignment(.center)
             Text(exchange.linkStatus).font(.footnote)
-            Text(exchange.tokenStatus).font(.footnote)
+            Text(ranging.state).font(.footnote)
+            Text(ranging.distanceMeters.map { String(format: "%.1f m", $0) } ?? "—")
         }
         .padding()
-        .task { exchange.start() }
+        .task {
+            exchange.start()
+            ranging.start(exchange: exchange)
+        }
     }
 }
