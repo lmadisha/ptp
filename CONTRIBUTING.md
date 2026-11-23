@@ -1,8 +1,10 @@
 # Contributing
 
 ## Branches
-- `main` is always buildable. Never commit to it directly.
-- Branch names: `phase-<n>/<short-topic>`, e.g. `phase-1/state-machine`, or `fix/<topic>`.
+- `main` (production) and `develop` (integration) are protected. Never commit or push to them directly.
+- Every change starts from a GitHub issue. Branch from `develop` as `<type>/<issue-number>-<short-slug>`, e.g. `feat/12-state-machine`. Types: `feat`, `fix`, `chore`, `docs`.
+- PRs go into `develop`. Releases are a PR from `develop` into `main`. Hotfixes branch from `main`, PR into `main`, then sync back into `develop` by PR.
+- Install the git hooks once: `git config core.hooksPath .githooks`.
 
 ## Commits
 Use Conventional Commits:

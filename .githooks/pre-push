@@ -1,0 +1,10 @@
+#!/bin/sh
+# Block direct pushes to protected branches. Open a pull request instead.
+# stdin lines: <local ref> <local sha> <remote ref> <remote sha>
+while read -r _ _ remote_ref _; do
+  case "$remote_ref" in
+    refs/heads/main|refs/heads/develop)
+      echo "pre-push: direct push to ${remote_ref#refs/heads/} is blocked. Push your issue branch and open a PR." >&2
+      exit 1 ;;
+  esac
+done

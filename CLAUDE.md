@@ -19,11 +19,20 @@ These run automatically. Don't work around them. If one blocks you, fix the caus
 | Hook | What it does |
 |---|---|
 | `protect_files.py` (before Edit/Write) | Blocks writing secrets or diagnostics, network APIs in Swift, private lock APIs, and UI/device imports in `PTPCore` |
-| `guard_bash.py` (before Bash) | Blocks pushing to `main`, force-pushing, and `--no-verify` |
+| `guard_bash.py` (before Bash) | Blocks pushing to `main` or `develop`, force-pushing, and `--no-verify` |
 | `after_edit.py` (after Edit/Write) | Formats Swift if `swift-format` is installed; reminds you to replay traces after detection changes |
 | `core_tests_on_stop.py` (on Stop) | If `PTPCore` changed, runs its tests before you finish; failures must be fixed |
 
 ### Working style
 - Use plan mode for detection changes and anything in Phase 0's feasibility spike.
-- Start a session with `/phase-status`. Keep each change to one plan task.
+- Start a session with `/phase-status`. Keep each change to one plan task and one GitHub issue.
 - When device testing is needed, write the steps for the human to run and wait for the results. Don't guess.
+
+### GitHub workflow (Claude Code specifics)
+The full issue, backlog, branch, PR, evidence, Graphify and git-hook rules are in AGENTS.md above and apply to Claude Code unchanged. In particular:
+- Every implementation follows the issue → Backlog → `<type>/<issue>-<slug>` branch from `develop` → PR into `develop` sequence.
+- `main` and `develop` are protected: never commit or push to them directly. `develop` → `main` is production promotion, by PR only.
+- PRs: assignee `lmadisha`, the issue's labels and milestone, `Closes #<n>`, an Evidence section. Never add Claude as co-author.
+- Evidence: delegate simulator capture to a Haiku subagent; you review the images and attach them with `gh pr edit --attach`.
+- After every merge, run `/graphify . --update` and check `graphify-out/` was updated.
+- Merging, approving, closing or deleting issues or PRs needs the user's explicit OK.

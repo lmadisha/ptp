@@ -20,10 +20,10 @@ def block(reason: str) -> None:
 if re.search(r"\bgit\s+push\b", command):
     if re.search(r"(--force\b|--force-with-lease\b|\s-f\b|\s\+\S)", command):
         block("force-push is not allowed. Push a new commit instead.")
-    if re.search(r"\bgit\s+push\b.*(\s|:)(main|master)(\s|$)", command) or \
+    if re.search(r"\bgit\s+push\b.*(\s|:)(main|master|develop)(\s|$)", command) or \
        re.search(r"\bgit\s+push\s*$", command.strip()):
-        block("never push to main, and name the branch explicitly: git push -u origin phase-<n>/<topic>, "
-              "then open a pull request.")
+        block("never push to main or develop, and name the branch explicitly: "
+              "git push -u origin <type>/<issue>-<slug>, then open a pull request into develop.")
 
 if re.search(r"\bgit\s+(commit|push)\b.*--no-verify", command):
     block("--no-verify skips the repo's checks. Fix the failing check instead.")
