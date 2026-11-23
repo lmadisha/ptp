@@ -3,6 +3,12 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-23 · #11 branch-flow docs
+
+Scope: whole repo. Change is two lines in `phase-status/SKILL.md` and `IMPLEMENTATION_PLAN.md`.
+
+No findings. Lean already.
+
 ## 2026-11-23 · #10 Xcode project
 
 Scope: whole repo, mainly the new `PTP.xcodeproj` and three placeholder targets.
