@@ -10,9 +10,9 @@ final class TokenExchange: NSObject {
 
     private(set) var linkStatus = "Connecting to companion device…"
     private(set) var tokenStatus = "Waiting to exchange tokens…"
-    private(set) var peerToken: NIDiscoveryToken?
+    var onPeerToken: (@MainActor (NIDiscoveryToken) -> Void)?
 
-    private var nearbySession: NISession?
+    private var pendingToken: Data?
     private var tokenPublished = false
 
     func start() {
@@ -23,15 +23,17 @@ final class TokenExchange: NSObject {
         } else {
             linkStatus = "WatchConnectivity not available on this device"
         }
+    }
 
-        guard NISession.deviceCapabilities.supportsPreciseDistanceMeasurement else {
-            tokenStatus = "Nearby Interaction not available on this device"
+    func publish(_ token: NIDiscoveryToken) {
+        tokenPublished = false
+        pendingToken = try? NSKeyedArchiver.archivedData(
+            withRootObject: token, requiringSecureCoding: true)
+        guard pendingToken != nil else {
+            tokenStatus = "Token not sent yet"
             return
         }
-        if nearbySession == nil {
-            nearbySession = NISession()
-            tokenPublished = false
-        }
+        sendToken()
     }
 
     private func updateLinkStatus(reachable: Bool) {
@@ -49,16 +51,10 @@ final class TokenExchange: NSObject {
     private func sendToken() {
         guard !tokenPublished else { return }
         let session = WCSession.default
-        guard session.activationState == .activated, let nearbySession else { return }
-        guard let token = nearbySession.discoveryToken else {
-            tokenStatus = "Discovery token unavailable"
-            return
-        }
+        guard session.activationState == .activated, let pendingToken else { return }
 
         do {
-            let data = try NSKeyedArchiver.archivedData(
-                withRootObject: token, requiringSecureCoding: true)
-            try session.updateApplicationContext([Self.tokenKey: data])
+            try session.updateApplicationContext([Self.tokenKey: pendingToken])
             tokenPublished = true
             tokenStatus = "Token sent"
         } catch {
@@ -74,16 +70,15 @@ final class TokenExchange: NSObject {
     }
 
     private func receiveToken(_ data: Data) {
-        guard nearbySession != nil else { return }
         guard let token = try? NSKeyedUnarchiver.unarchivedObject(
             ofClass: NIDiscoveryToken.self, from: data)
         else {
             tokenStatus = "Could not read peer discovery token"
             return
         }
-        peerToken = token
         sendToken()  // the peer exists now, so retry an unpublished token first
         tokenStatus = "Peer token received"
+        onPeerToken?(token)
     }
 }
 

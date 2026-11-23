@@ -15,6 +15,8 @@
 		4F225B0952B62C14F3E020D9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614F760EA90091ACA23A0C6A /* ContentView.swift */; };
 		52127AC36FBF895C95C89CBB /* PTPWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1327A94653C126A8DEC47CB8 /* PTPWatchApp.swift */; };
 		6CE07088BD25FE699EE1322C /* PTPApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962AF51CF4EFC39B43AD6F10 /* PTPApp.swift */; };
+		716FE153161E4159C405C3A2 /* Ranging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF10FB1769F0E2D31F3E07A /* Ranging.swift */; };
+		8001D6CAD3E8C4ABF9A3EC06 /* Ranging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF10FB1769F0E2D31F3E07A /* Ranging.swift */; };
 		8CDE70C5142936DEEB07C32D /* PTPWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 851C2CF80BF665872BF7DA59 /* PTPWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8CF95EA27831C833883E4F7F /* PTPLiveActivityBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8AA489A53E02A83F770E19 /* PTPLiveActivityBundle.swift */; };
 		AB1A9AC4D4DC2132142856F2 /* TokenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F532A2D9DD67A01321558C6 /* TokenExchange.swift */; };
@@ -74,6 +76,7 @@
 		6ECD754A7CB5F75C34EFFC11 /* PTPCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PTPCore; path = Packages/PTPCore; sourceTree = SOURCE_ROOT; };
 		7BF39E944AB4BE0073FF035B /* PTPApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PTPApp.entitlements; sourceTree = "<group>"; };
 		851C2CF80BF665872BF7DA59 /* PTPWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PTPWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8AF10FB1769F0E2D31F3E07A /* Ranging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ranging.swift; sourceTree = "<group>"; };
 		962AF51CF4EFC39B43AD6F10 /* PTPApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPApp.swift; sourceTree = "<group>"; };
 		9C16D94875D63FC71B21C4C2 /* PTPLiveActivity.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = PTPLiveActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A301009B857214162AAF4542 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -168,6 +171,7 @@
 		CBA268C54FE3652B933F77FD /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				8AF10FB1769F0E2D31F3E07A /* Ranging.swift */,
 				4F532A2D9DD67A01321558C6 /* TokenExchange.swift */,
 			);
 			path = Shared;
@@ -307,6 +311,7 @@
 			files = (
 				4F225B0952B62C14F3E020D9 /* ContentView.swift in Sources */,
 				6CE07088BD25FE699EE1322C /* PTPApp.swift in Sources */,
+				8001D6CAD3E8C4ABF9A3EC06 /* Ranging.swift in Sources */,
 				AB1A9AC4D4DC2132142856F2 /* TokenExchange.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -317,6 +322,7 @@
 			files = (
 				350DE470EA194A98E6104FEA /* ContentView.swift in Sources */,
 				52127AC36FBF895C95C89CBB /* PTPWatchApp.swift in Sources */,
+				716FE153161E4159C405C3A2 /* Ranging.swift in Sources */,
 				4C431BDC4EA5A020E09DE1F0 /* TokenExchange.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

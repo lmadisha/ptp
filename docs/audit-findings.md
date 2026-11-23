@@ -3,6 +3,15 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-23 · #27 live distance (NISession)
+
+Scope: whole repo, mainly the new `Shared/Ranging.swift` (about 110 lines) and the `TokenExchange` refactor.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `delete` | `TokenExchange` owned an `NISession` only to get a token. | `applied`: `Ranging` now owns the session, and `TokenExchange` is WatchConnectivity only (`publish(_:)`, `onPeerToken`). That's one owner per framework. |
+| `yagni` | `tokenStatus` is still computed but no longer shown on screen. | `open`: show it again if device testing needs it, otherwise delete it when the Phase 1 screens replace the spike lines. |
+
 ## 2026-11-23 · #25 discovery-token exchange
 
 Scope: whole repo, mainly `Shared/TokenExchange.swift` (about 120 lines) and two `ContentView` lines.
