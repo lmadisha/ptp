@@ -30,7 +30,7 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
   - Background modes: audio (siren), location updates (Phase 2)
   - Live Activities enabled (started locally, no push server)
 - [ ] Set up CI: build both targets and run `PTPCore` tests on every push (GitHub Actions or Xcode Cloud).
-- [ ] Set minimum versions: iOS 18.4, watchOS 11 (see ADR-0004).
+- [x] Set minimum versions: iOS 18.4, watchOS 11 (see ADR-0004).
 
 ### 0.2 Distance spike
 - [ ] Exchange discovery tokens between phone and watch over WatchConnectivity.
