@@ -33,7 +33,7 @@ WC = WatchConnectivity. BLE = Bluetooth Low Energy heartbeat.
 | `PairingService` | iOS + watchOS | Exchanges discovery tokens and arm state over WatchConnectivity |
 | `Watchdog` | watchOS | Raises Alarm on signal loss, independent of the phone |
 | `ArmingService` | iOS | Event mode timers, visit learning, new-area prompt, region triggers |
-| `PlaceStore` | iOS | SwiftData store of place areas and visit counts |
+| `PlaceStore` | iOS | SQLite store of place areas and visit counts (`Packages/PTPStore`, ADR-0005) |
 | `SirenService` | iOS | Audio session and full-screen alarm |
 | `EventLog` | iOS | Local alarm history and diagnostics export |
 

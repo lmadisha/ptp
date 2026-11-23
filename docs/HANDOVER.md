@@ -20,23 +20,23 @@ For the next AI agent (or human) picking up PTP. Read **AGENTS.md** first; every
   | Watch keep-alive: extended runtime + workout session | Not started |
   | Bluetooth heartbeat as a second signal | Not started |
 - **Phase 0, task 0.3 (measurement):** not started.
-- **Storage decision:** ADR-0005 (PR #31) switches on-device stores to SQLite in a `Packages/PTPStore` package. It's **Proposed**, so the owner must accept it.
+- **Storage decision:** ADR-0005 (merged in PR #31) switches on-device stores to SQLite in a `Packages/PTPStore` package. It's **Proposed**, so the owner must accept it.
 - **Apple Developer portal:**
   - Registered on the owner's team: App Group `group.com.lmadisha.ptp`, and App IDs `com.lmadisha.ptp` and `com.lmadisha.ptp.LiveActivity` (both with App Groups linked), plus `com.lmadisha.ptp.watchkitapp`.
   - The team ID is deliberately **not** committed, because the repo is public. The owner sets the team in Xcode for device builds.
 
-### `feat/29-live-activity` (if it isn't merged yet)
+### PR #34, `feat/29-live-activity` (if it isn't merged yet)
 - **Plan:** in the issue #29 comment.
 - **Code:** written by Codex.
   - `ActivityShared/PTPActivityAttributes.swift`, compiled into `PTPApp` and `PTPLiveActivity`;
   - `PTPApp/LiveActivityController.swift`;
   - `Ranging.onChange`;
   - the widget's `ActivityConfiguration`, which replaces the placeholder.
-- **Remaining:**
-  1. Review and build it.
-  2. Have Haiku capture the Simulator Dynamic Island and Lock Screen.
-  3. Write the audit and changelog entries. Leave the plan checkbox unticked: it needs a device.
-  4. Open the PR, wait for the Codex review and CI, then merge.
+- **Status:**
+  - Reviewed, built, and Simulator evidence attached (Dynamic Island shown).
+  - Round 2 fixed the Codex review: `nearby-interaction` background mode, recovery after dismissal or expiry, and a PRIVACY.md row for Live Activity data.
+  - The re-review is clean. It merges once CI passes.
+  - Leave the plan checkbox unticked: it needs a device.
 
 ## Next tasks, in order
 1. **Finish #29** (above).

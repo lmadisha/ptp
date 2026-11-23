@@ -10,6 +10,13 @@ Scope: whole repo. Docs only.
 | Tag | Finding | Status |
 |---|---|---|
 | `delete` | The XcodeGen spec was kept outside the repo (#10), so a new agent couldn't regenerate the project. | `applied`: a copy is in `docs/HANDOVER.md`. `PTP.xcodeproj` stays the source of truth. |
+## 2026-11-23 · #30 SQLite instead of SwiftData
+
+Scope: whole repo. Docs only: ADR-0005 plus one-line updates in the plan, architecture, privacy and ADR index.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `native` | ADR-0005 uses the system `SQLite3` library rather than a third-party wrapper (for example GRDB). | `applied`: no new dependency. The thin wrapper gets written in Phase 1.3, when the first store needs it. |
 
 ## 2026-11-23 · #27 live distance (NISession)
 
