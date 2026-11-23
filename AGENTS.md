@@ -242,6 +242,7 @@ with `git config core.hooksPath .githooks` (worktrees share the setting).
 ## Key docs
 - [Architecture](docs/ARCHITECTURE.md): components, state machine, design rules
 - [Testing](docs/TESTING.md): traces, expected outcomes, field drills
+- [Gate 0 runbook](docs/GATE0_RUNBOOK.md): exact device steps for the owner
 - [Privacy](docs/PRIVACY.md): what is stored, where, for how long
 - [ADRs](docs/adr/README.md): why things are the way they are
 - [Model roles](docs/MODEL_ROLES.md): which model plans, implements, reviews and tests

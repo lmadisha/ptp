@@ -3,6 +3,15 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-23 · #41 Gate 0 runbook
+
+Scope: whole repo. Docs only.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `shrink` | The log is read with two `awk` commands in the runbook, not a script or a Swift tool. | `applied`: Gate 0 is run a handful of times. Write a tool only if Phase 3's weekly log reviews need one. |
+| `delete` | HANDOVER.md keeps a short list of the device checks next to the runbook. | `open`: delete the list once Gate 0 is logged in `docs/drills/`. |
+
 ## 2026-11-23 · #39 CSV reading log
 
 Scope: whole repo, mainly `Shared/ReadingLog.swift`, `PTPCore/ReadingRow.swift` and the watch-to-phone file transfer in `TokenExchange`.

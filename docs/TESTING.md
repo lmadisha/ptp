@@ -39,6 +39,8 @@ Run these before each phase gate, on at least two watch models:
 | 4 h armed, normal use | 2 | Under 15% watch battery |
 | Club or crowd simulation, phone in pocket | 3 sessions | No false alarm |
 
+For Gate 0, follow [GATE0_RUNBOOK.md](GATE0_RUNBOOK.md): it has the exact steps for the 4-hour sessions and the trace recordings.
+
 Log each drill in `docs/drills/YYYY-MM-DD.md`: device models, OS versions, results, notes.
 
 ## Safety during drills
