@@ -39,9 +39,9 @@ struct ContentView: View {
             .padding()
         }
         .task {
+            exchange.onHeartbeatID = { [heartbeat] in heartbeat.expect($0) }
             exchange.start()
             ranging.start(exchange: exchange)
-            heartbeat.start()
         }
     }
 }

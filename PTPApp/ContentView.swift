@@ -2,11 +2,13 @@ import PTPCore
 import SwiftUI
 
 struct ContentView: View {
+    private static let heartbeatID = UUID()
+
     @Environment(\.scenePhase) private var scenePhase
     @State private var exchange = TokenExchange()
     @State private var ranging = Ranging()
     @State private var liveActivity = LiveActivityController()
-    @State private var heartbeat = HeartbeatSender()
+    @State private var heartbeat = HeartbeatSender(sessionID: ContentView.heartbeatID)
 
     var body: some View {
         VStack {
@@ -22,8 +24,9 @@ struct ContentView: View {
         .padding()
         .task {
             ranging.onChange = { [liveActivity] in liveActivity.update(state: $0, distance: $1) }
-            exchange.start()
+            exchange.publishHeartbeatID(Self.heartbeatID)
             ranging.start(exchange: exchange)
+            exchange.start()
             heartbeat.start()
         }
         .onChange(of: scenePhase, initial: true) {

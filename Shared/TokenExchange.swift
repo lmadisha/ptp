@@ -7,13 +7,16 @@ import WatchConnectivity
 @Observable
 final class TokenExchange: NSObject {
     private nonisolated static let tokenKey = "niDiscoveryToken"
+    private nonisolated static let heartbeatIDKey = "heartbeatID"
 
     private(set) var linkStatus = "Connecting to companion device…"
     private(set) var tokenStatus = "Waiting to exchange tokens…"
     var onPeerToken: (@MainActor (NIDiscoveryToken) -> Void)?
+    var onHeartbeatID: (@MainActor (UUID) -> Void)?
 
     private var pendingToken: Data?
-    private var tokenPublished = false
+    private var pendingHeartbeatID: Data?
+    private var contextPublished = false
 
     func start() {
         if WCSession.isSupported() {
@@ -26,14 +29,23 @@ final class TokenExchange: NSObject {
     }
 
     func publish(_ token: NIDiscoveryToken) {
-        tokenPublished = false
+        contextPublished = false
         pendingToken = try? NSKeyedArchiver.archivedData(
             withRootObject: token, requiringSecureCoding: true)
         guard pendingToken != nil else {
             tokenStatus = "Token not sent yet"
             return
         }
-        sendToken()
+        sendContext()
+    }
+
+    func publishHeartbeatID(_ id: UUID) {
+        let data = Heartbeat.encodeID(id)
+        if pendingHeartbeatID != data {
+            pendingHeartbeatID = data
+            contextPublished = false
+        }
+        sendContext()
     }
 
     private func updateLinkStatus(reachable: Bool) {
@@ -48,16 +60,22 @@ final class TokenExchange: NSObject {
         #endif
     }
 
-    private func sendToken() {
-        guard !tokenPublished else { return }
+    private func sendContext() {
+        guard !contextPublished else { return }
         let session = WCSession.default
-        guard session.activationState == .activated, let pendingToken else { return }
+        guard session.activationState == .activated else { return }
+
+        var context: [String: Data] = [:]
+        context[Self.tokenKey] = pendingToken
+        context[Self.heartbeatIDKey] = pendingHeartbeatID
+        guard !context.isEmpty else { return }
 
         do {
-            try session.updateApplicationContext([Self.tokenKey: pendingToken])
-            tokenPublished = true
-            tokenStatus = "Token sent"
+            try session.updateApplicationContext(context)
+            contextPublished = true
+            if pendingToken != nil { tokenStatus = "Token sent" }
         } catch {
+            guard pendingToken != nil else { return }
             switch (error as? WCError)?.code {
             case .watchAppNotInstalled:
                 tokenStatus = "Token not sent yet: watch app not installed"
@@ -69,6 +87,15 @@ final class TokenExchange: NSObject {
         }
     }
 
+    private func receiveContext(token: Data?, heartbeatID: Data?) {
+        guard token != nil || heartbeatID != nil else { return }
+        sendContext()  // the peer exists now, so retry an unpublished context first
+        if let heartbeatID, let id = Heartbeat.decodeID(heartbeatID) {
+            onHeartbeatID?(id)
+        }
+        if let token { receiveToken(token) }
+    }
+
     private func receiveToken(_ data: Data) {
         guard let token = try? NSKeyedUnarchiver.unarchivedObject(
             ofClass: NIDiscoveryToken.self, from: data)
@@ -76,7 +103,6 @@ final class TokenExchange: NSObject {
             tokenStatus = "Could not read peer discovery token"
             return
         }
-        sendToken()  // the peer exists now, so retry an unpublished token first
         tokenStatus = "Peer token received"
         onPeerToken?(token)
     }
@@ -89,21 +115,23 @@ extension TokenExchange: WCSessionDelegate {
     ) {
         let reachable = session.isReachable
         let activated = activationState == .activated && error == nil
-        // The system keeps the last context even after the other app is removed; ignore a stale token then.
+        // The system keeps the last context even after the other app is removed.
         #if os(iOS)
         let counterpartInstalled = session.isWatchAppInstalled
         #else
         let counterpartInstalled = session.isCompanionAppInstalled
         #endif
-        let data = counterpartInstalled ? session.receivedApplicationContext[Self.tokenKey] as? Data : nil
+        let context = counterpartInstalled ? session.receivedApplicationContext : [:]
+        let token = context[Self.tokenKey] as? Data
+        let heartbeatID = context[Self.heartbeatIDKey] as? Data
         Task { @MainActor in
             updateLinkStatus(reachable: reachable)
             guard activated else {
                 linkStatus += " · activation failed"
                 return
             }
-            sendToken()
-            if let data { receiveToken(data) }
+            sendContext()
+            receiveContext(token: token, heartbeatID: heartbeatID)
         }
     }
 
@@ -111,15 +139,16 @@ extension TokenExchange: WCSessionDelegate {
         let reachable = session.isReachable
         Task { @MainActor in
             updateLinkStatus(reachable: reachable)
-            sendToken()
+            sendContext()
         }
     }
 
     nonisolated func session(
         _ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]
     ) {
-        guard let data = applicationContext[Self.tokenKey] as? Data else { return }
-        Task { @MainActor in receiveToken(data) }
+        let token = applicationContext[Self.tokenKey] as? Data
+        let heartbeatID = applicationContext[Self.heartbeatIDKey] as? Data
+        Task { @MainActor in receiveContext(token: token, heartbeatID: heartbeatID) }
     }
 
     #if os(iOS)
@@ -128,7 +157,7 @@ extension TokenExchange: WCSessionDelegate {
         let installed = session.isWatchAppInstalled
         Task { @MainActor in
             updateLinkStatus(reachable: reachable)
-            if installed { sendToken() }
+            if installed { sendContext() }
         }
     }
 
@@ -136,7 +165,7 @@ extension TokenExchange: WCSessionDelegate {
 
     nonisolated func sessionDidDeactivate(_ session: WCSession) {
         Task { @MainActor in
-            tokenPublished = false
+            contextPublished = false
             WCSession.default.activate()
         }
     }
@@ -144,7 +173,7 @@ extension TokenExchange: WCSessionDelegate {
 
     #if os(watchOS)
     nonisolated func sessionCompanionAppInstalledDidChange(_ session: WCSession) {
-        Task { @MainActor in sendToken() }
+        Task { @MainActor in sendContext() }
     }
     #endif
 }

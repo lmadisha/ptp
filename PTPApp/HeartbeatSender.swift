@@ -1,7 +1,6 @@
 import CoreBluetooth
 import Foundation
 import Observation
-import PTPCore
 
 @MainActor
 @Observable
@@ -11,8 +10,12 @@ final class HeartbeatSender: NSObject, CBPeripheralManagerDelegate {
     private var manager: CBPeripheralManager?
     private var service: CBMutableService?
     private var characteristic: CBMutableCharacteristic?
-    private var sendTask: Task<Void, Never>?
+    private let sessionIDBytes: Data
     private var counter: UInt32 = 0
+
+    init(sessionID: UUID) {
+        sessionIDBytes = Heartbeat.encodeID(sessionID)
+    }
 
     func start() {
         guard manager == nil else { return }
@@ -25,43 +28,12 @@ final class HeartbeatSender: NSObject, CBPeripheralManagerDelegate {
         manager.stopAdvertising()
         manager.removeAllServices()
         let characteristic = CBMutableCharacteristic(
-            type: Heartbeat.characteristic, properties: .notify, value: nil, permissions: [])
+            type: Heartbeat.characteristic, properties: .read, value: nil, permissions: .readable)
         let service = CBMutableService(type: Heartbeat.service, primary: true)
         service.characteristics = [characteristic]
         self.characteristic = characteristic
         self.service = service
         manager.add(service)
-    }
-
-    private func startSending() {
-        guard sendTask == nil else { return }
-        state = "Heartbeat: sending"
-        sendTask = Task { [weak self] in
-            while !Task.isCancelled {
-                do {
-                    try await Task.sleep(for: DetectionConfig.standard.heartbeatInterval)
-                } catch {
-                    return
-                }
-                guard !Task.isCancelled, let self else { return }
-                sendBeat()
-            }
-        }
-    }
-
-    private func stopSending() {
-        sendTask?.cancel()
-        sendTask = nil
-    }
-
-    private func sendBeat() {
-        guard let manager, manager.state == .poweredOn, let characteristic else { return }
-        var payload = counter.littleEndian
-        let data = withUnsafeBytes(of: &payload) { Data($0) }
-
-        if manager.updateValue(data, for: characteristic, onSubscribedCentrals: nil) {
-            counter &+= 1
-        }
     }
 
     // The manager delivers delegates on the main queue. Pass only IDs and values into the actor.
@@ -74,7 +46,6 @@ final class HeartbeatSender: NSObject, CBPeripheralManagerDelegate {
                 return
             }
 
-            stopSending()
             service = nil
             characteristic = nil
             switch manager.state {
@@ -115,41 +86,32 @@ final class HeartbeatSender: NSObject, CBPeripheralManagerDelegate {
         let succeeded = error == nil
         MainActor.assumeIsolated {
             guard let manager, ObjectIdentifier(manager) == managerID, manager.state == .poweredOn,
-                sendTask == nil
+                state != "Heartbeat: answering"
             else { return }
             state = succeeded ? "Heartbeat: advertising" : "Heartbeat: could not advertise"
         }
     }
 
     nonisolated func peripheralManager(
-        _ peripheral: CBPeripheralManager, central: CBCentral,
-        didSubscribeTo characteristic: CBCharacteristic
+        _ peripheral: CBPeripheralManager, didReceiveRead request: CBATTRequest
     ) {
-        updateSubscription(
-            managerID: ObjectIdentifier(peripheral), characteristicID: ObjectIdentifier(characteristic))
-    }
-
-    nonisolated func peripheralManager(
-        _ peripheral: CBPeripheralManager, central: CBCentral,
-        didUnsubscribeFrom characteristic: CBCharacteristic
-    ) {
-        updateSubscription(
-            managerID: ObjectIdentifier(peripheral), characteristicID: ObjectIdentifier(characteristic))
-    }
-
-    private nonisolated func updateSubscription(
-        managerID: ObjectIdentifier, characteristicID: ObjectIdentifier
-    ) {
-        MainActor.assumeIsolated {
+        let managerID = ObjectIdentifier(peripheral)
+        let characteristicID = ObjectIdentifier(request.characteristic)
+        let offset = request.offset
+        let (value, result): (Data?, CBATTError.Code) = MainActor.assumeIsolated {
             guard let manager, ObjectIdentifier(manager) == managerID, manager.state == .poweredOn,
                 let characteristic, ObjectIdentifier(characteristic) == characteristicID
-            else { return }
-            if characteristic.subscribedCentrals?.isEmpty == false {
-                startSending()
-            } else {
-                stopSending()
-                state = "Heartbeat: advertising"
-            }
+            else { return (nil, .attributeNotFound) }
+
+            var payload = sessionIDBytes
+            withUnsafeBytes(of: counter.littleEndian) { payload.append(contentsOf: $0) }
+            guard offset <= payload.count else { return (nil, .invalidOffset) }
+
+            counter &+= 1
+            state = "Heartbeat: answering"
+            return (payload.dropFirst(offset), .success)
         }
+        if let value { request.value = value }
+        peripheral.respond(to: request, withResult: result)
     }
 }
