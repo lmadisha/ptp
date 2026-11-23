@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		15C196EF32ADCB201CE971F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FF939DE52093130D66282A0 /* Assets.xcassets */; };
+		1CE6F7745BCD829F06F5D113 /* KeepAlive.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E91A60E8376CDA1E61000D /* KeepAlive.swift */; };
 		350DE470EA194A98E6104FEA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE1254E228F5E03BB309A86 /* ContentView.swift */; };
 		406898674957C5F469A15939 /* PTPLiveActivity.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9C16D94875D63FC71B21C4C2 /* PTPLiveActivity.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		49B1C5F83A584F1CEC99D55D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FDDF95AB4B898308373648ED /* Assets.xcassets */; };
@@ -71,6 +72,7 @@
 
 /* Begin PBXFileReference section */
 		1327A94653C126A8DEC47CB8 /* PTPWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPWatchApp.swift; sourceTree = "<group>"; };
+		22EC6397C3D878282050329F /* PTPWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PTPWatch.entitlements; sourceTree = "<group>"; };
 		4765CC314E6EBAD6A0D65130 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4F532A2D9DD67A01321558C6 /* TokenExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenExchange.swift; sourceTree = "<group>"; };
 		4FF939DE52093130D66282A0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -84,8 +86,10 @@
 		962AF51CF4EFC39B43AD6F10 /* PTPApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPApp.swift; sourceTree = "<group>"; };
 		9C16D94875D63FC71B21C4C2 /* PTPLiveActivity.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = PTPLiveActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A301009B857214162AAF4542 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B5E91A60E8376CDA1E61000D /* KeepAlive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepAlive.swift; sourceTree = "<group>"; };
 		BD4FD2D858C41669F1FE962C /* PTPApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = PTPApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD51424032AF0607100B00CF /* PTPActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPActivityAttributes.swift; sourceTree = "<group>"; };
+		D3B8946706855FBA2066EC81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DA8AA489A53E02A83F770E19 /* PTPLiveActivityBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPLiveActivityBundle.swift; sourceTree = "<group>"; };
 		EEE1254E228F5E03BB309A86 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FDDF95AB4B898308373648ED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -126,6 +130,9 @@
 			children = (
 				4FF939DE52093130D66282A0 /* Assets.xcassets */,
 				EEE1254E228F5E03BB309A86 /* ContentView.swift */,
+				D3B8946706855FBA2066EC81 /* Info.plist */,
+				B5E91A60E8376CDA1E61000D /* KeepAlive.swift */,
+				22EC6397C3D878282050329F /* PTPWatch.entitlements */,
 				1327A94653C126A8DEC47CB8 /* PTPWatchApp.swift */,
 			);
 			path = PTPWatch;
@@ -338,6 +345,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				350DE470EA194A98E6104FEA /* ContentView.swift in Sources */,
+				1CE6F7745BCD829F06F5D113 /* KeepAlive.swift in Sources */,
 				52127AC36FBF895C95C89CBB /* PTPWatchApp.swift in Sources */,
 				716FE153161E4159C405C3A2 /* Ranging.swift in Sources */,
 				4C431BDC4EA5A020E09DE1F0 /* TokenExchange.swift in Sources */,
@@ -438,6 +446,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = PTPWatch/PTPWatch.entitlements;
+				INFOPLIST_FILE = PTPWatch/Info.plist;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "PTP starts a workout session only to keep the watch app running while armed. It doesn't read or save health data.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "PTP starts a workout session only to keep the watch app running while armed. It doesn't read or save health data.";
 				INFOPLIST_KEY_NSNearbyInteractionUsageDescription = "PTP measures the distance between your iPhone and Apple Watch so it can warn you if they are separated. The distance stays on your devices.";
 				INFOPLIST_KEY_WKApplication = YES;
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.lmadisha.ptp;
@@ -531,6 +543,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = PTPWatch/PTPWatch.entitlements;
+				INFOPLIST_FILE = PTPWatch/Info.plist;
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "PTP starts a workout session only to keep the watch app running while armed. It doesn't read or save health data.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "PTP starts a workout session only to keep the watch app running while armed. It doesn't read or save health data.";
 				INFOPLIST_KEY_NSNearbyInteractionUsageDescription = "PTP measures the distance between your iPhone and Apple Watch so it can warn you if they are separated. The distance stays on your devices.";
 				INFOPLIST_KEY_WKApplication = YES;
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.lmadisha.ptp;

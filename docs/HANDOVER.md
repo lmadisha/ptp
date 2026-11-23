@@ -17,7 +17,7 @@ For the next AI agent (or human) picking up PTP. Read **AGENTS.md** first; every
   | Token exchange over WatchConnectivity (#25, PR #26) | Merged, ticked |
   | NISession on both devices with live distance (#27, PR #28) | Merged. **Not ticked**: needs a device check |
   | Live Activity keeps iPhone ranging (#29) | **In progress** on branch `feat/29-live-activity` (see below) |
-  | Watch keep-alive: extended runtime + workout session | Not started |
+  | Watch keep-alive: extended runtime + workout session (#35) | Implemented (spike buttons on the watch). Device timing needed |
   | Bluetooth heartbeat as a second signal | Not started |
 - **Phase 0, task 0.3 (measurement):** not started.
 - **Storage decision:** ADR-0005 (merged in PR #31) switches on-device stores to SQLite in a `Packages/PTPStore` package. It's **Proposed**, so the owner must accept it.

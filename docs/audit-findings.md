@@ -3,6 +3,14 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-23 · #35 watch keep-alive spike
+
+Scope: whole repo, mainly `PTPWatch/KeepAlive.swift` (about 190 lines) and the watch's `Info.plist` and entitlements.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | Both keep-alive modes and their buttons exist only to measure Gate 0. | `open`: once the Gate 0 numbers are in, keep the winning mode (plus an ADR if it's the workout route), and delete the other mode and the spike buttons. |
+
 ## 2026-11-23 · #32 handover document
 
 Scope: whole repo. Docs only.
