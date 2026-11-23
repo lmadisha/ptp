@@ -4,20 +4,45 @@ import ActivityKit
 final class LiveActivityController {
     private var activityID: String?
     private var lastState: PTPActivityAttributes.ContentState?
+    private var activityObserver: Task<Void, Never>?
+
+    deinit {
+        activityObserver?.cancel()
+    }
 
     func start() {
-        guard ActivityAuthorizationInfo().areActivitiesEnabled, activityID == nil else { return }
+        guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
+
+        let activeActivities = Activity<PTPActivityAttributes>.activities.filter {
+            !Self.isTerminal($0.activityState)
+        }
+        if let activityID {
+            // The app may resume before the observer processes a terminal state.
+            guard !activeActivities.contains(where: { $0.id == activityID }) else { return }
+            clearActivity()
+        }
 
         let initialState = PTPActivityAttributes.ContentState(
             state: "Waiting to range…", distanceMeters: nil)
-        let activity = Activity<PTPActivityAttributes>.activities.first
+        let activity = activeActivities.first
             ?? (try? Activity.request(
                 attributes: PTPActivityAttributes(),
                 content: .init(state: initialState, staleDate: nil),
                 pushType: nil))
         guard let activity else { return }
-        activityID = activity.id
+        let id = activity.id
+        activityID = id
         lastState = activity.content.state
+        activityObserver = Task { @MainActor [weak self] in
+            let updates = activity.activityStateUpdates
+            if !Self.isTerminal(activity.activityState) {
+                for await state in updates where Self.isTerminal(state) {
+                    break
+                }
+            }
+            guard !Task.isCancelled, self?.activityID == id else { return }
+            self?.clearActivity()
+        }
     }
 
     func update(state: String, distance: Float?) {
@@ -28,9 +53,22 @@ final class LiveActivityController {
 
         lastState = contentState
         Task { @MainActor in
-            guard let activity = Self.activity(withID: activityID) else { return }
+            guard self.activityID == activityID,
+                let activity = Self.activity(withID: activityID)
+            else { return }
             await activity.update(ActivityContent(state: contentState, staleDate: nil))
         }
+    }
+
+    private func clearActivity() {
+        activityObserver?.cancel()
+        activityObserver = nil
+        activityID = nil
+        lastState = nil
+    }
+
+    private static func isTerminal(_ state: ActivityState) -> Bool {
+        state == .dismissed || state == .ended
     }
 
     // Look up the handle outside actor isolation so it can be transferred to the async update.

@@ -2,6 +2,7 @@ import PTPCore
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.scenePhase) private var scenePhase
     @State private var exchange = TokenExchange()
     @State private var ranging = Ranging()
     @State private var liveActivity = LiveActivityController()
@@ -18,10 +19,13 @@ struct ContentView: View {
         }
         .padding()
         .task {
+            ranging.onChange = { [liveActivity] in liveActivity.update(state: $0, distance: $1) }
             exchange.start()
             ranging.start(exchange: exchange)
+        }
+        .onChange(of: scenePhase, initial: true) {
+            guard scenePhase == .active else { return }
             liveActivity.start()
-            ranging.onChange = { [liveActivity] in liveActivity.update(state: $0, distance: $1) }
             liveActivity.update(state: ranging.state, distance: ranging.distanceMeters)
         }
     }
