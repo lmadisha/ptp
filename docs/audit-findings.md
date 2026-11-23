@@ -11,6 +11,12 @@ Scope: whole repo. Docs only: `docs/MODEL_ROLES.md` and summaries in AGENTS.md a
 |---|---|---|
 | `yagni` | Considered adding `.claude/agents/implementer.md` and `reviewer.md` subagent files. | `wontfix` for now: the Agent tool's `model` parameter and `opusplan` already cover the roles. Add the files if the same prompts get retyped often. |
 
+## 2026-11-23 · #6 ignore graphify-out
+
+Scope: whole repo. Change is one `.gitignore` rule.
+
+No findings. Lean already.
+
 ## 2026-11-23 · #4 apple-skills plugin
 
 Scope: whole repo. Change is 11 lines of settings plus a CLAUDE.md section.
