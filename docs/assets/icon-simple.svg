@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 400 400" role="img" aria-label="PTP logo: a masked robber in a beanie and bandana in front of a phone showing an error log">
+<defs>
+<clipPath id="ptp-tile"><rect width="400" height="400" rx="88"></rect></clipPath>
+</defs>
+<g clip-path="url(#ptp-tile)">
+<rect width="400" height="400" fill="#0E1726"></rect>
+<circle cx="150" cy="250" r="150" fill="#15223A"></circle>
+
+<g transform="rotate(8 290 185)">
+<rect x="222" y="40" width="136" height="290" rx="24" fill="#2B3650" stroke="#46557D" stroke-width="3"></rect>
+<rect x="232" y="58" width="116" height="254" rx="14" fill="#070B12"></rect>
+<rect x="272" y="47" width="36" height="5" rx="2.5" fill="#46557D"></rect>
+<rect x="240" y="66" width="100" height="20" rx="5" fill="#D62839"></rect>
+<path d="M252 81 L257 71 L262 81 Z" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linejoin="round"></path>
+<text x="268" y="80.5" font-family="Menlo, 'SF Mono', Consolas, monospace" font-size="11" font-weight="700" fill="#FFFFFF">ERROR</text>
+<g opacity="0" font-family="Menlo, 'SF Mono', Consolas, monospace" font-size="8.6">
+<text x="241" y="104" fill="#8A94A8">ptp://log</text>
+<text x="241" y="121" fill="#FF5A65">[ERR] link lost</text>
+<text x="241" y="137" fill="#FF5A65">[ERR] dist 14.2m</text>
+<text x="241" y="153" fill="#FFB340">[WRN] moving away</text>
+<text x="241" y="169" fill="#FF5A65">[ERR] owner alerted</text>
+<text x="241" y="185" fill="#30D158">&gt; mark_as_lost()</text>
+<rect x="241" y="192" width="6" height="10" fill="#30D158"></rect>
+</g>
+<g opacity="1">
+<rect x="241" y="98" width="62" height="9" rx="4.5" fill="#8A94A8"></rect>
+<rect x="241" y="116" width="92" height="9" rx="4.5" fill="#FF5A65"></rect>
+<rect x="241" y="134" width="78" height="9" rx="4.5" fill="#FF5A65"></rect>
+<rect x="241" y="152" width="88" height="9" rx="4.5" fill="#FFB340"></rect>
+<rect x="241" y="170" width="70" height="9" rx="4.5" fill="#30D158"></rect>
+</g>
+</g>
+
+<path d="M28 400 Q46 334 150 328 Q254 334 272 400 Z" fill="#1C2230"></path>
+<circle cx="67" cy="252" r="15" fill="#C98B5E"></circle>
+<circle cx="233" cy="252" r="15" fill="#C98B5E"></circle>
+<ellipse cx="150" cy="234" rx="84" ry="92" fill="#E3A979"></ellipse>
+
+<path d="M64 222 C64 140 104 118 150 118 C196 118 236 140 236 222 Z" fill="#23262E"></path>
+<path d="M98 142 L98 206 M124 128 L124 206 M150 124 L150 206 M176 128 L176 206 M202 142 L202 206" stroke="#2E323B" stroke-width="5" stroke-linecap="round"></path>
+<circle cx="150" cy="114" r="15" fill="#3A3F49"></circle>
+<rect x="58" y="198" width="184" height="32" rx="13" fill="#3A3F49"></rect>
+
+<rect x="60" y="238" width="180" height="36" rx="18" fill="#0B0B0D"></rect>
+<ellipse cx="115" cy="256" rx="20" ry="11" fill="#FFFFFF"></ellipse>
+<ellipse cx="185" cy="256" rx="20" ry="11" fill="#FFFFFF"></ellipse>
+<circle cx="124" cy="257" r="6.5" fill="#0B0B0D"></circle>
+<circle cx="194" cy="257" r="6.5" fill="#0B0B0D"></circle>
+<path d="M98 242 L132 247 M168 247 L202 242" stroke="#0B0B0D" stroke-width="5" stroke-linecap="round"></path>
+
+<path d="M60 282 Q150 302 240 282 L237 306 Q222 354 150 366 Q78 354 63 306 Z" fill="#D62839"></path>
+<path d="M116 344 L150 388 L184 344 Z" fill="#B01E2C"></path>
+<path d="M60 282 Q150 302 240 282" fill="none" stroke="#B01E2C" stroke-width="4"></path>
+<g fill="#FFFFFF" opacity="0.85">
+<circle cx="96" cy="308" r="4.5"></circle>
+<circle cx="128" cy="322" r="4"></circle>
+<circle cx="166" cy="320" r="4.5"></circle>
+<circle cx="204" cy="306" r="4"></circle>
+<circle cx="150" cy="346" r="4"></circle>
+<circle cx="112" cy="340" r="3.5"></circle>
+<circle cx="190" cy="338" r="3.5"></circle>
+</g>
+</g>
+</svg>
