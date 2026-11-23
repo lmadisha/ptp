@@ -14,6 +14,7 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - Local Swift package `Packages/PTPCore` (iOS 18.4, watchOS 11, macOS 15) with Swift Testing, linked into `PTPApp` and `PTPWatch` (#15).
 - App Group `group.com.lmadisha.ptp` shared by `PTPApp` and `PTPLiveActivity` (#17).
 - Nearby Interaction usage description (iPhone and watch), `audio` and `location` background modes, and Live Activities support in `PTPApp` (#19).
+- CI (`.github/workflows/ci.yml`): `PTPCore` tests, both app builds for the Simulator, and hook tests on every PR and on pushes to `develop`/`main` (#23).
 - Spike: phone and watch exchange Nearby Interaction discovery tokens over WatchConnectivity (`Shared/TokenExchange.swift`), with status on both screens (#25).
 - Spike: an `NISession` on both devices ranges against the peer token and shows the live distance in metres (`Shared/Ranging.swift`). Nearby Interaction moved out of `TokenExchange` (#27).
 
