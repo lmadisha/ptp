@@ -17,6 +17,7 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - CI (`.github/workflows/ci.yml`): `PTPCore` tests, both app builds for the Simulator, and hook tests on every PR and on pushes to `develop`/`main` (#23).
 - Spike: phone and watch exchange Nearby Interaction discovery tokens over WatchConnectivity (`Shared/TokenExchange.swift`), with status on both screens (#25).
 - Spike: an `NISession` on both devices ranges against the peer token and shows the live distance in metres (`Shared/Ranging.swift`). Nearby Interaction moved out of `TokenExchange` (#27).
+- Spike: a Live Activity (Lock Screen and Dynamic Island) shows the ranging state and distance, so iPhone ranging can continue in the background (ADR-0004). It replaces the placeholder widget (#29).
 
 ### Fixed
 - `guard_bash.py` no longer blocks commands that only mention a push (`chmod +x`, `rm -f`, heredocs), and now checks every unquoted push in a command, so it also catches `git -C … push -f`, `-fu`, and pushes behind `command`, `sudo`, `then`, `xargs`, subshells, `env` or `bash -c` (#2).

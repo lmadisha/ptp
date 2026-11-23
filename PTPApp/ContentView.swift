@@ -4,6 +4,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var exchange = TokenExchange()
     @State private var ranging = Ranging()
+    @State private var liveActivity = LiveActivityController()
 
     var body: some View {
         VStack {
@@ -19,6 +20,9 @@ struct ContentView: View {
         .task {
             exchange.start()
             ranging.start(exchange: exchange)
+            liveActivity.start()
+            ranging.onChange = { [liveActivity] in liveActivity.update(state: $0, distance: $1) }
+            liveActivity.update(state: ranging.state, distance: ranging.distanceMeters)
         }
     }
 }
