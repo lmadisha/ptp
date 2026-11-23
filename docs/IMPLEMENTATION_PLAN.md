@@ -159,4 +159,4 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
 ## Suggested branches and issues
 - One milestone per phase.
 - One issue per checkbox.
-- Branches: `phase-0/nearby-spike`, `phase-1/state-machine`, and so on. Merge to `main` through pull requests with CI green.
+- Branches: use `<type>/<issue>-<slug>` from `develop`. Open pull requests into `develop` and merge with CI green. Release through a pull request from `develop` to `main`. Follow the workflow in [AGENTS.md](../AGENTS.md).

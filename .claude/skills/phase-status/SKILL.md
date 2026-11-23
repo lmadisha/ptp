@@ -16,7 +16,7 @@ allowed-tools: Bash(git log:*) Bash(git branch:*)
    - **Current phase:** name, weeks, tasks done / total
    - **Open tasks** in this phase (max 10, in plan order)
    - **Gate:** each check with its status
-   - **Next task:** exactly one, the first unchecked task whose prerequisites are done, with a suggested branch name `phase-<n>/<topic>`
+   - **Next task:** exactly one, the first unchecked task whose prerequisites are done. Find or create its GitHub issue, then suggest a branch `<type>/<issue-number>-<short-slug>` from `develop`. Use `feat`, `fix`, `chore`, or `docs`.
 4. If a later phase has checked tasks while an earlier gate hasn't passed, flag it. The plan says no phase starts until the previous gate passes.
 
 Do not tick checkboxes yourself. Only tick a task when the human confirms it is done, or when its tests and checks have clearly passed in this session.
