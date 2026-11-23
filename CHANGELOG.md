@@ -11,3 +11,6 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - `apple-skills` Claude Code plugin enabled for the project, with the skills that break the hard rules listed in CLAUDE.md (#4).
 - Model roles: Claude Opus/Fable or GPT-6.2 Astra plan and review, Claude Sonnet or GPT-6.2 Sol implement, Haiku or Luna run QA (`docs/MODEL_ROLES.md`, #8).
 - Xcode project `PTP.xcodeproj` with placeholder `PTPApp` (iOS 18.4), `PTPWatch` (watchOS 11) and `PTPLiveActivity` targets (#10).
+
+### Fixed
+- `guard_bash.py` no longer blocks commands that only mention a push (`chmod +x`, `rm -f`, heredocs), and now also catches `git -C … push -f`, `-fu` and subshell or `env`-prefixed force-pushes (#2).

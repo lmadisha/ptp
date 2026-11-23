@@ -3,6 +3,14 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-23 · #2 guard_bash force-push false positive
+
+Scope: whole repo, mainly `.claude/hooks/guard_bash.py`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `shrink` | The push matcher is one dense regex. A shell parser (`shlex`) would be clearer but longer. | `wontfix`: regex kept, with a `ponytail:` comment naming the ceiling (`bash -c "..."`), and 31 cases in `test_guard_bash.py` cover it. |
+
 ## 2026-11-23 · #10 Xcode project
 
 Scope: whole repo, mainly the new `PTP.xcodeproj` and three placeholder targets.

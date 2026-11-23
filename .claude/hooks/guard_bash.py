@@ -17,11 +17,24 @@ def block(reason: str) -> None:
     sys.exit(2)
 
 
-if re.search(r"\bgit\s+push\b", command):
-    if re.search(r"(--force\b|--force-with-lease\b|\s-f\b|\s\+\S)", command):
+# Check only segments that *run* git push (after optional "(", env/VAR= prefixes and git global
+# options), so text that merely mentions a push is not blocked. Cases: test_guard_bash.py.
+# ponytail: regex shell split; misses pushes inside `bash -c "..."` or quoted separators. Use shlex if that matters.
+for segment in re.split(r"&&|\|\||[;|\n]", command):
+    push = re.match(
+        r"[\s({]*(?:(?:env|[A-Za-z_]\w*=\S*)\s+)*git\s+"
+        r"(?:(?:-[Cc]\s+(?:\"[^\"]*\"|'[^']*'|\S+)"
+        r"|--[\w-]+(?:=\S+)?|-(?![Cc])[A-Za-z])\s+)*"
+        r"push(?=\s|$)(.*)",
+        segment.rstrip(" \t\r)}"),
+    )
+    if not push:
+        continue
+
+    args = push.group(1)
+    if re.search(r"(--force\b|--force-with-lease\b|\s-[A-Za-z]*f[A-Za-z]*\b|\s\+\S)", args):
         block("force-push is not allowed. Push a new commit instead.")
-    if re.search(r"\bgit\s+push\b.*(\s|:)(main|master|develop)(\s|$)", command) or \
-       re.search(r"\bgit\s+push\s*$", command.strip()):
+    if not args.strip() or re.search(r"[\s:](main|master|develop)(\s|$)", args):
         block("never push to main or develop, and name the branch explicitly: "
               "git push -u origin <type>/<issue>-<slug>, then open a pull request into develop.")
 
