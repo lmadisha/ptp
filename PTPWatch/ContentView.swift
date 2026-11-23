@@ -23,10 +23,7 @@ struct ContentView: View {
                     Text("Last beat: \(Text(lastBeat, style: .relative))").font(.footnote)
                 }
                 Text("Log: \(readingLog.rows) rows").font(.footnote)
-                Button("Send log to phone") {
-                    if let file = readingLog.fileURL { exchange.send(file: file) }
-                }
-                .disabled(readingLog.fileURL == nil)
+                Button("Send logs to phone") { exchange.sendLogs() }
 
                 Button("Keep alive: runtime") { keepAlive.startRuntime() }
                     .disabled(keepAlive.mode != .off)

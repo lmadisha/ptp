@@ -14,7 +14,6 @@ final class ReadingLog {
     static let shared = ReadingLog()
 
     private(set) var rows = 0
-    private(set) var fileURL: URL?
 
     @ObservationIgnored private var handle: FileHandle?
 
@@ -59,7 +58,6 @@ final class ReadingLog {
             let handle = try FileHandle(forWritingTo: url)
             try handle.seekToEnd()
             self.handle = handle
-            fileURL = url
         } catch {
             try? FileManager.default.removeItem(at: url)
             throw error

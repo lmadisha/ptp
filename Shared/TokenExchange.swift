@@ -29,14 +29,19 @@ final class TokenExchange: NSObject {
     }
 
     #if os(watchOS)
-    func send(file: URL) {
+    /// Sends every reading log, including those from launches that were killed mid-session.
+    func sendLogs() {
         let session = WCSession.default
         guard session.activationState == .activated, session.isCompanionAppInstalled else { return }
-        // Send a snapshot, because the log itself is still being appended to.
-        let copy = URL.temporaryDirectory.appending(path: file.lastPathComponent)
-        try? FileManager.default.removeItem(at: copy)
-        guard (try? FileManager.default.copyItem(at: file, to: copy)) != nil else { return }
-        session.transferFile(copy, metadata: nil)
+        let files = (try? FileManager.default.contentsOfDirectory(
+            at: .documentsDirectory, includingPropertiesForKeys: nil)) ?? []
+        for file in files where file.lastPathComponent.hasSuffix(".diagnostics.csv") {
+            // Send a snapshot, because the current log is still being appended to.
+            let copy = URL.temporaryDirectory.appending(path: file.lastPathComponent)
+            try? FileManager.default.removeItem(at: copy)
+            guard (try? FileManager.default.copyItem(at: file, to: copy)) != nil else { continue }
+            session.transferFile(copy, metadata: nil)
+        }
     }
     #endif
 

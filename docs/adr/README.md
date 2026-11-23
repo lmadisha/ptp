@@ -9,6 +9,7 @@ One file per significant decision. Never edit an accepted ADR's decision. Write 
 | [0003](0003-occasion-based-arming.md) | Arm for occasions, not all day | Accepted |
 | [0004](0004-detection-uwb-plus-ble.md) | Detect with UWB distance plus a Bluetooth heartbeat | Proposed |
 | [0005](0005-sqlite-for-on-device-data.md) | Store on-device data in SQLite, not SwiftData | Proposed |
+| [0006](0006-test-build-reading-log.md) | Keep a reading log on each device in test builds | Proposed |
 
 ## Template
 ```markdown

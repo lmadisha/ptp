@@ -20,7 +20,7 @@ For the next AI agent (or human) picking up PTP. Read **AGENTS.md** first; every
   | Watch keep-alive: extended runtime + workout session (#35, PR #36) | Merged (spike buttons on the watch). **Not ticked**: device timing needed |
   | Bluetooth heartbeat as a second signal (#37, PR #38) | Merged (the watch reads, the phone answers). **Not ticked**: device check needed |
 - **Phase 0, task 0.3 (measurement):**
-  - CSV reading log (#39): implemented on `feat/39-reading-log`. Files are `ptp-<phone|watch>-<unix seconds>.diagnostics.csv` in each app's Documents folder; the phone's show in the Files app, and the watch sends its file with "Send log to phone". Device check needed.
+  - CSV reading log (#39): implemented on `feat/39-reading-log`. Files are `ptp-<phone|watch>-<unix seconds>.diagnostics.csv` in each app's Documents folder; the phone's show in the Files app, and the watch sends its file with "Send logs to phone". Device check needed.
   - The 4-hour sessions and the trace recordings need the owner.
 - **Storage decision:** ADR-0005 (merged in PR #31) switches on-device stores to SQLite in a `Packages/PTPStore` package. It's **Proposed**, so the owner must accept it.
 - **Apple Developer portal:**
@@ -40,7 +40,7 @@ For the next AI agent (or human) picking up PTP. Read **AGENTS.md** first; every
 - **#29:** lock the phone while ranging. The Lock Screen distance should keep updating. Time how long it keeps going.
 - **#35:** on the watch, try "Keep alive: runtime", then "Keep alive: workout", each with the wrist down. Note how long each keeps running.
 - **#37:** the watch shows "Last beat" at about 1 s with the phone locked; it grows when the phone is out of range.
-- **#39:** run both apps for a few minutes, lock the phone, walk away and back. In Files › On My iPhone › PTP the phone's CSV has rows through the locked period. Tap "Send log to phone" on the watch; its CSV appears in the same folder (a transfer can take a minute).
+- **#39:** run both apps for a few minutes, lock the phone, walk away and back. In Files › On My iPhone › PTP the phone's CSV has rows through the locked period. Tap "Send logs to phone" on the watch; its CSV appears in the same folder (a transfer can take a minute).
 
 ## Workflow as actually run (see AGENTS.md for the rules)
 - **Roles:** Claude Opus plans and reviews; **Codex GPT-6.2 Sol implements** (the owner's choice); Claude Haiku captures Simulator evidence.

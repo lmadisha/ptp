@@ -9,7 +9,7 @@ Scope: whole repo, mainly `Shared/ReadingLog.swift`, `PTPCore/ReadingRow.swift` 
 
 | Tag | Finding | Status |
 |---|---|---|
-| `yagni` | The reading log, its "Log: N rows" lines, the "Send log to phone" button and the two Files-app keys in `PTPApp/Info.plist` exist only to measure Gate 0 and record traces. | `open`: delete them (or fold them into Phase 2's "Export diagnostics") before the beta. PRIVACY.md says the log goes before public release. |
+| `yagni` | The reading log, its "Log: N rows" lines, the "Send logs to phone" button and the two Files-app keys in `PTPApp/Info.plist` exist only to measure Gate 0 and record traces. | `open`: delete them (or fold them into Phase 2's "Export diagnostics") before the beta. PRIVACY.md says the log goes before public release. |
 | `shrink` | The phone's `didReceive file` handler replaced a file with `replaceItemAt` and failed the whole save if setting attributes failed. | `applied`: remove, move, then best-effort backup exclusion. |
 | `shrink` | Log files are never deleted, and every launch starts a new one. | `open`: fine for the spike (a 4-hour session is a few MB). The owner deletes them in Files. |
 | `yagni` | `ReadingLog` is a singleton and writes on the main actor on every reading. | `wontfix`: one log per app is the truth, and a write per reading keeps rows if the app is killed. Revisit only if device logs show dropped readings. |
