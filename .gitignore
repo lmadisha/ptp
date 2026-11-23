@@ -42,3 +42,6 @@ diagnostics/
 
 # Claude Code per-user settings
 .claude/settings.local.json
+
+# Graphify knowledge graph (rebuilt locally after each merge)
+graphify-out/
