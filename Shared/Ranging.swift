@@ -108,6 +108,11 @@ final class Ranging: NSObject, NISessionDelegate {
                 state = "Nearby Interaction not allowed. Turn it on in Settings."
             case .unsupportedPlatform:
                 state = "Nearby Interaction not available on this device"
+            case .invalidConfiguration:
+                // The peer token was rejected: drop it and wait for a fresh one instead of rerunning it.
+                configuration = nil
+                state = "Waiting for a new peer token"
+                if let exchange { startSession(exchange: exchange) }
             default:
                 state = "Session ended"
                 if let exchange { startSession(exchange: exchange) }
