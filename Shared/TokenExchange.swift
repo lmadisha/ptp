@@ -94,7 +94,13 @@ extension TokenExchange: WCSessionDelegate {
     ) {
         let reachable = session.isReachable
         let activated = activationState == .activated && error == nil
-        let data = session.receivedApplicationContext[Self.tokenKey] as? Data
+        // The system keeps the last context even after the other app is removed; ignore a stale token then.
+        #if os(iOS)
+        let counterpartInstalled = session.isWatchAppInstalled
+        #else
+        let counterpartInstalled = session.isCompanionAppInstalled
+        #endif
+        let data = counterpartInstalled ? session.receivedApplicationContext[Self.tokenKey] as? Data : nil
         Task { @MainActor in
             updateLinkStatus(reachable: reachable)
             guard activated else {
