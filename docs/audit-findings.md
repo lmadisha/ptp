@@ -12,6 +12,13 @@ Scope: whole repo, mainly `Shared/TokenExchange.swift` (about 120 lines) and two
 | `yagni` | The link and token status lines on both screens are spike diagnostics, not product UI. | `open`: replace them with the Phase 1 armed screens (task 1.2), and keep the status only where the owner needs it. |
 
 Lean otherwise. The shared folder is the smallest way to give both app targets one WatchConnectivity and Nearby Interaction glue file without breaking `PTPCore` purity.
+## 2026-11-23 · #23 CI workflow
+
+Scope: whole repo, mainly `.github/workflows/ci.yml` (one job, 6 steps).
+
+| Tag | Finding | Status |
+|---|---|---|
+| `shrink` | A push to a branch with an open PR ran CI twice, once for `push` and once for `pull_request`, because their refs fall in different concurrency groups. | `applied`: twice the doubled demand left the `pull_request` job without a macOS arm64 runner (GitHub capacity notice). `push` is now limited to `develop`/`main`. Every change still gets CI through its PR, and every merge through its `develop` push. |
 
 ## 2026-11-23 · #21 minimum versions
 
