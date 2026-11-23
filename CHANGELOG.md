@@ -14,6 +14,7 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - Local Swift package `Packages/PTPCore` (iOS 18.4, watchOS 11, macOS 15) with Swift Testing, linked into `PTPApp` and `PTPWatch` (#15).
 - App Group `group.com.lmadisha.ptp` shared by `PTPApp` and `PTPLiveActivity` (#17).
 - Nearby Interaction usage description (iPhone and watch), `audio` and `location` background modes, and Live Activities support in `PTPApp` (#19).
+- CI (`.github/workflows/ci.yml`): `PTPCore` tests, both app builds for the Simulator, and hook tests on every push (#23).
 
 ### Fixed
 - `guard_bash.py` no longer blocks commands that only mention a push (`chmod +x`, `rm -f`, heredocs), and now checks every unquoted push in a command, so it also catches `git -C … push -f`, `-fu`, and pushes behind `command`, `sudo`, `then`, `xargs`, subshells, `env` or `bash -c` (#2).
