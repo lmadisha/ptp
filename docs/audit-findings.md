@@ -9,7 +9,7 @@ Scope: whole repo, mainly `.github/workflows/ci.yml` (one job, 6 steps).
 
 | Tag | Finding | Status |
 |---|---|---|
-| `shrink` | A push to a branch with an open PR runs CI twice, once for `push` and once for `pull_request`, because their refs fall in different concurrency groups. | `wontfix`: the plan asks for CI on every push, and runs are cheap at this size. Limit `push` to `develop`/`main` if macOS minutes start to matter. |
+| `shrink` | A push to a branch with an open PR ran CI twice, once for `push` and once for `pull_request`, because their refs fall in different concurrency groups. | `applied`: twice the doubled demand left the `pull_request` job without a macOS arm64 runner (GitHub capacity notice). `push` is now limited to `develop`/`main`. Every change still gets CI through its PR, and every merge through its `develop` push. |
 
 ## 2026-11-23 · #21 minimum versions
 
