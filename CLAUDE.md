@@ -13,6 +13,14 @@ The shared rules above apply. This section covers what is specific to Claude Cod
 | `/phase-status` | At the start of a session, to find the next unchecked task |
 | `/log-field-drill` | After running device drills from `docs/TESTING.md` |
 
+### Plugin: `apple-skills`
+`.claude/settings.json` enables `apple-skills@indie-apple-stack` ([rshankras/claude-code-apple-skills](https://github.com/rshankras/claude-code-apple-skills), MIT). It adds 165 Apple-platform skills: SwiftUI, watchOS, Live Activities, concurrency, testing, App Store and more. Claude Code offers to install it when you trust this folder.
+
+The hard rules in AGENTS.md win over any plugin skill. Don't use skills or templates that break them:
+- **Network, analytics or cloud** (hard rule 1): `analytics-setup`, `error-monitoring`, `networking-layer`, `http-cache`, `image-loading`, `cloudkit-sync`, `offline-queue`, `push-notifications`, `auth-flow`, `feature-flags`, `force-update`, `referral-system`.
+- **App Store Connect API** (`_shared/asc-api/asc.py`): it needs an API `.p8` key (hard rule 7). The human runs it, not you.
+- **Location**: skills that store or log coordinates must follow `docs/PRIVACY.md` and hard rule 6.
+
 ### Hooks (`.claude/settings.json`)
 These run automatically. Don't work around them. If one blocks you, fix the cause or ask.
 

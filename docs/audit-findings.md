@@ -3,6 +3,16 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-23 · #4 apple-skills plugin
+
+Scope: whole repo. Change is 11 lines of settings plus a CLAUDE.md section.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `native` | Considered copying the skills into `.claude/skills/`. | `applied`: used the plugin's own marketplace through `extraKnownMarketplaces` instead. That keeps 400+ third-party files out of the repo and lets it update upstream. |
+
+Lean otherwise.
+
 ## 2026-11-23 · #1 workflow rules and git hooks
 
 Scope: whole repo (docs, `.claude/hooks/`, `.githooks/`). No Swift code yet.
