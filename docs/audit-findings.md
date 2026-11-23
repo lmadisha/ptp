@@ -3,6 +3,12 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-23 · #17 App Group
+
+Scope: whole repo. Change is two `.entitlements` files, two `CODE_SIGN_ENTITLEMENTS` settings and one README line.
+
+No findings. Lean already. (The group ID appears in both `.entitlements` files and the README, with no shared constant; none is needed until code reads the container in task 0.2.)
+
 ## 2026-11-23 · #15 PTPCore package
 
 Scope: whole repo, mainly `Packages/PTPCore` and the two `ContentView` files.

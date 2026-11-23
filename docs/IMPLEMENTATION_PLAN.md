@@ -24,7 +24,7 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
   - `PTPWatch` (watchOS)
   - `PTPLiveActivity` (widget extension)
 - [x] Create a local Swift package `PTPCore`. It holds models, the detection engine and the state machine, with no UIKit, SwiftUI or watch imports, so it can be unit-tested.
-- [ ] Set up an App Group shared by the app and the Live Activity.
+- [x] Set up an App Group shared by the app and the Live Activity.
 - [ ] Add capabilities and Info.plist keys:
   - Nearby Interaction usage description
   - Background modes: audio (siren), location updates (Phase 2)

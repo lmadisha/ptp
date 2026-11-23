@@ -39,7 +39,7 @@ docs/                Plan, architecture, decisions, privacy, testing
 
 ## Getting started
 1. Clone the repo and open `PTP.xcodeproj`.
-2. Set your development team on all three targets, and the App Group identifier in Signing & Capabilities.
+2. Set your development team on all three targets. The iOS app and Live Activity use the App Group `group.com.lmadisha.ptp`. If you fork the project, change the identifier in both `.entitlements` files and register the new App Group under your own Apple Developer team.
 3. Run `PTPCore` tests: `swift test --package-path Packages/PTPCore`.
 4. Run `PTPApp` on the iPhone and `PTPWatch` on the paired watch.
 

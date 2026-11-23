@@ -66,8 +66,10 @@
 		1327A94653C126A8DEC47CB8 /* PTPWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPWatchApp.swift; sourceTree = "<group>"; };
 		4765CC314E6EBAD6A0D65130 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4FF939DE52093130D66282A0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5F38234BE3163BD8FB020977 /* PTPLiveActivity.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PTPLiveActivity.entitlements; sourceTree = "<group>"; };
 		614F760EA90091ACA23A0C6A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		6ECD754A7CB5F75C34EFFC11 /* PTPCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PTPCore; path = Packages/PTPCore; sourceTree = SOURCE_ROOT; };
+		7BF39E944AB4BE0073FF035B /* PTPApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PTPApp.entitlements; sourceTree = "<group>"; };
 		851C2CF80BF665872BF7DA59 /* PTPWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PTPWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		962AF51CF4EFC39B43AD6F10 /* PTPApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPApp.swift; sourceTree = "<group>"; };
 		9C16D94875D63FC71B21C4C2 /* PTPLiveActivity.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = PTPLiveActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				4765CC314E6EBAD6A0D65130 /* Info.plist */,
+				5F38234BE3163BD8FB020977 /* PTPLiveActivity.entitlements */,
 				DA8AA489A53E02A83F770E19 /* PTPLiveActivityBundle.swift */,
 			);
 			path = PTPLiveActivity;
@@ -131,6 +134,7 @@
 			children = (
 				FDDF95AB4B898308373648ED /* Assets.xcassets */,
 				614F760EA90091ACA23A0C6A /* ContentView.swift */,
+				7BF39E944AB4BE0073FF035B /* PTPApp.entitlements */,
 				962AF51CF4EFC39B43AD6F10 /* PTPApp.swift */,
 			);
 			path = PTPApp;
@@ -329,6 +333,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = PTPApp/PTPApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -348,6 +353,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = PTPApp/PTPApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -366,6 +372,7 @@
 		57B98875443D6EFB6A5D5FCC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = PTPLiveActivity/PTPLiveActivity.entitlements;
 				INFOPLIST_FILE = PTPLiveActivity/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = PTP;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
@@ -457,6 +464,7 @@
 		ADDBD94B28A4B679BF2F1A9E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = PTPLiveActivity/PTPLiveActivity.entitlements;
 				INFOPLIST_FILE = PTPLiveActivity/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = PTP;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
