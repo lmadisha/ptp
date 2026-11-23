@@ -54,8 +54,8 @@ Use the keep-alive mode that was still running after 15 minutes in part B. If bo
 1. Charge both devices to 80% or more, then unplug them.
 2. Force-quit PTP on both devices, so each starts a new log file.
    - iPhone: swipe up from the bottom, then swipe PTP away.
-   - Watch: press the side button, then swipe PTP left and tap the red X.
-3. Open PTP on the iPhone. Wait for "Ranging". Open PTP on the watch. Wait for "Ranging" and "Heartbeat: receiving".
+   - Watch: double-click the Digital Crown, then swipe PTP left and tap the red X.
+3. Open PTP on the iPhone **and** on the watch (neither can range until both are open). Then wait for "Ranging" on both, and "Heartbeat: receiving" on the watch.
 4. On the watch, tap the keep-alive mode. **Note the time**, and the battery % of both devices from their own status displays.
 5. Lock the iPhone and put it in your pocket or bag. Lower your wrist.
 6. Carry on normally for **4 hours**, keeping the phone on you, within about 2 m of the watch.
@@ -88,7 +88,7 @@ After the last one, tap **Send logs to phone** on the watch and wait for the fil
 Run this on each part C file. It works on both the phone's and the watch's.
 
 ```bash
-awk -F, 'NR>1 && $3=="uwb" && $2!="" { if (p && $1-p>g) g=$1-p; p=$1; n++; if (!f) f=$1; l=$1; if ($2+0>m) m=$2+0 } NR>1 && $5!="" { if (b0=="") b0=$5; b1=$5 } END { printf "UWB readings: %d over %.1f min\nLongest gap between readings: %.1f s\nLargest distance: %.2f m\nBattery: %s%% -> %s%%\n", n, (l-f)/60000, g/1000, m, b0, b1 }' ~/ptp-gate0/FILE.csv
+awk -F, 'NR>1 { if (!a) a=$1; z=$1 } NR>1 && $3=="uwb" && $2!="" { if (p && $1-p>g) g=$1-p; p=$1; n++; if (!f) f=$1; l=$1; if ($2+0>m) m=$2+0 } NR>1 && $5!="" { if (b0=="") b0=$5; b1=$5 } END { printf "Log covers: %.1f min\nUWB readings: %d over %.1f min\nLongest gap between readings: %.1f s\nLargest distance: %.2f m\nBattery in the log: %s%% -> %s%%\n", (z-a)/60000, n, (l-f)/60000, g/1000, m, b0, b1 }' ~/ptp-gate0/FILE.csv
 ```
 
 ```bash
@@ -97,9 +97,10 @@ awk -F, 'NR>1 { c[$3" "$4]++ } END { for (k in c) print c[k], k }' ~/ptp-gate0/F
 
 | Line | Pass for Gate 0 |
 |---|---|
+| "Log covers: N min" | N is about 240. If it's less, the app stopped getting readings before the session ended: the log's battery line then covers only that part, so use the battery percentages you noted at the start and end (part C, steps 4 and 7) |
 | "UWB readings … over N min" (watch file) | N is 120 or more, **and** the second command shows `uwb background` rows |
 | "Longest gap between readings" | Report the number. A gap of minutes means ranging stopped and restarted; the gate says "without stopping" |
-| "Battery: X% -> Y%" (watch file) | X minus Y is under 15 |
+| "Battery in the log: X% -> Y%" (watch file) | X minus Y is under 15, **only if** the log covers the full 4 hours. Otherwise use your noted percentages |
 | "UWB readings … over N min" (phone file) | N is 120 or more, with `uwb background` rows from the locked period |
 | `ble background` rows (both files) | Not a gate check, but it says whether the fallback (heartbeat only) would survive |
 
