@@ -19,6 +19,7 @@
 | Nearby Interaction | Measuring the distance between phone and watch | The app can't work; Bluetooth-only mode is offered |
 | Location (Always) | New-area prompt and risky or safe places | Event mode and manual arming still work |
 | Notifications | New-area prompt and alarms | Alarms only show while the app is open |
+| Health (workouts, write only) | Phase 0 spike: a workout session is started only to keep the watch app running while armed. No health data is read, and no workout is saved to Health. | The workout keep-alive mode can't start; the extended-runtime mode still works |
 
 ## Sharing
 - Nothing is shared automatically.

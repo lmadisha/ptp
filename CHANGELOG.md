@@ -18,6 +18,7 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - Spike: phone and watch exchange Nearby Interaction discovery tokens over WatchConnectivity (`Shared/TokenExchange.swift`), with status on both screens (#25).
 - Spike: an `NISession` on both devices ranges against the peer token and shows the live distance in metres (`Shared/Ranging.swift`). Nearby Interaction moved out of `TokenExchange` (#27).
 - Spike: a Live Activity (Lock Screen and Dynamic Island) shows the ranging state and distance, so iPhone ranging can continue in the background (ADR-0004). It replaces the placeholder widget (#29).
+- Spike: the watch can try two keep-alive modes, an extended runtime session (`physical-therapy`) or an `HKWorkoutSession` that saves nothing to Health, to measure how long it stays armed (#35).
 
 ### Changed
 - On-device stores (places, alarm log) will use SQLite through the system `SQLite3` library in a `PTPStore` package, not SwiftData (ADR-0005, #30).
