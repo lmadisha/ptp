@@ -3,6 +3,15 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-23 · #25 discovery-token exchange
+
+Scope: whole repo, mainly `Shared/TokenExchange.swift` (about 120 lines) and two `ContentView` lines.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | The link and token status lines on both screens are spike diagnostics, not product UI. | `open`: replace them with the Phase 1 armed screens (task 1.2), and keep the status only where the owner needs it. |
+
+Lean otherwise. The shared folder is the smallest way to give both app targets one WatchConnectivity and Nearby Interaction glue file without breaking `PTPCore` purity.
 ## 2026-11-23 · #23 CI workflow
 
 Scope: whole repo, mainly `.github/workflows/ci.yml` (one job, 6 steps).
