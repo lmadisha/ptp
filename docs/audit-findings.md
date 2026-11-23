@@ -3,6 +3,15 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-23 · #10 Xcode project
+
+Scope: whole repo, mainly the new `PTP.xcodeproj` and three placeholder targets.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | The widget's `PlaceholderProvider`, entry and static widget exist only so the extension builds. | `open`: replace them with the real `ActivityConfiguration` in task 0.2 (Live Activity), then delete them. |
+| `delete` | XcodeGen spec. | `applied`: generated the project once and kept the spec out of the repo, so there's one source of truth (`PTP.xcodeproj`). |
+
 ## 2026-11-23 · #8 model roles
 
 Scope: whole repo. Docs only: `docs/MODEL_ROLES.md` and summaries in AGENTS.md and CLAUDE.md.

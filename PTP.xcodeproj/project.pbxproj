@@ -1,0 +1,559 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		15C196EF32ADCB201CE971F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FF939DE52093130D66282A0 /* Assets.xcassets */; };
+		350DE470EA194A98E6104FEA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE1254E228F5E03BB309A86 /* ContentView.swift */; };
+		406898674957C5F469A15939 /* PTPLiveActivity.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9C16D94875D63FC71B21C4C2 /* PTPLiveActivity.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		49B1C5F83A584F1CEC99D55D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FDDF95AB4B898308373648ED /* Assets.xcassets */; };
+		4F225B0952B62C14F3E020D9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614F760EA90091ACA23A0C6A /* ContentView.swift */; };
+		52127AC36FBF895C95C89CBB /* PTPWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1327A94653C126A8DEC47CB8 /* PTPWatchApp.swift */; };
+		6CE07088BD25FE699EE1322C /* PTPApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962AF51CF4EFC39B43AD6F10 /* PTPApp.swift */; };
+		8CDE70C5142936DEEB07C32D /* PTPWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 851C2CF80BF665872BF7DA59 /* PTPWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		8CF95EA27831C833883E4F7F /* PTPLiveActivityBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8AA489A53E02A83F770E19 /* PTPLiveActivityBundle.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5FAFECDD787A1E21D3FEB560 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0746A2EAB413EB4B8B126D65 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6E84B6199E5A7A966BE421D2;
+			remoteInfo = PTPLiveActivity;
+		};
+		AF9BB3039B5805DE046D65D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0746A2EAB413EB4B8B126D65 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3647813BBC68CD1F3FBEFACB;
+			remoteInfo = PTPWatch;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		98703C00D9DCC5104F0B9627 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				8CDE70C5142936DEEB07C32D /* PTPWatch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E57D9BAA478F324B9AF9FC94 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				406898674957C5F469A15939 /* PTPLiveActivity.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1327A94653C126A8DEC47CB8 /* PTPWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPWatchApp.swift; sourceTree = "<group>"; };
+		4765CC314E6EBAD6A0D65130 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4FF939DE52093130D66282A0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		614F760EA90091ACA23A0C6A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		851C2CF80BF665872BF7DA59 /* PTPWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PTPWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		962AF51CF4EFC39B43AD6F10 /* PTPApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPApp.swift; sourceTree = "<group>"; };
+		9C16D94875D63FC71B21C4C2 /* PTPLiveActivity.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = PTPLiveActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD4FD2D858C41669F1FE962C /* PTPApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = PTPApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA8AA489A53E02A83F770E19 /* PTPLiveActivityBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPLiveActivityBundle.swift; sourceTree = "<group>"; };
+		EEE1254E228F5E03BB309A86 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		FDDF95AB4B898308373648ED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0AC46FB841A94CA1D6A3D7F4 /* PTPLiveActivity */ = {
+			isa = PBXGroup;
+			children = (
+				4765CC314E6EBAD6A0D65130 /* Info.plist */,
+				DA8AA489A53E02A83F770E19 /* PTPLiveActivityBundle.swift */,
+			);
+			path = PTPLiveActivity;
+			sourceTree = "<group>";
+		};
+		2D9C29AC12694464F5309F4D /* PTPWatch */ = {
+			isa = PBXGroup;
+			children = (
+				4FF939DE52093130D66282A0 /* Assets.xcassets */,
+				EEE1254E228F5E03BB309A86 /* ContentView.swift */,
+				1327A94653C126A8DEC47CB8 /* PTPWatchApp.swift */,
+			);
+			path = PTPWatch;
+			sourceTree = "<group>";
+		};
+		5DC55408BAD120AE3859436D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BD4FD2D858C41669F1FE962C /* PTPApp.app */,
+				9C16D94875D63FC71B21C4C2 /* PTPLiveActivity.appex */,
+				851C2CF80BF665872BF7DA59 /* PTPWatch.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		81DD2A70676A0683A70E02A4 /* PTPApp */ = {
+			isa = PBXGroup;
+			children = (
+				FDDF95AB4B898308373648ED /* Assets.xcassets */,
+				614F760EA90091ACA23A0C6A /* ContentView.swift */,
+				962AF51CF4EFC39B43AD6F10 /* PTPApp.swift */,
+			);
+			path = PTPApp;
+			sourceTree = "<group>";
+		};
+		9233EEE1AA00DC750718121A = {
+			isa = PBXGroup;
+			children = (
+				81DD2A70676A0683A70E02A4 /* PTPApp */,
+				0AC46FB841A94CA1D6A3D7F4 /* PTPLiveActivity */,
+				2D9C29AC12694464F5309F4D /* PTPWatch */,
+				5DC55408BAD120AE3859436D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		337BE883A0438C56AF0D37A0 /* PTPApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6C7CCA5C30F3F04D7322B3F1 /* Build configuration list for PBXNativeTarget "PTPApp" */;
+			buildPhases = (
+				53393234E0F3558E07815CEC /* Sources */,
+				B29F8143E6822B46DF81B9D1 /* Resources */,
+				E57D9BAA478F324B9AF9FC94 /* Embed Foundation Extensions */,
+				98703C00D9DCC5104F0B9627 /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				51D56FC6AFF2276DEF50BA4F /* PBXTargetDependency */,
+				68BDE55C10FC73B7FA9C059A /* PBXTargetDependency */,
+			);
+			name = PTPApp;
+			packageProductDependencies = (
+			);
+			productName = PTPApp;
+			productReference = BD4FD2D858C41669F1FE962C /* PTPApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3647813BBC68CD1F3FBEFACB /* PTPWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5F5894973B8FA71CC078C885 /* Build configuration list for PBXNativeTarget "PTPWatch" */;
+			buildPhases = (
+				58703D26B7A7EA2E44E5F9B7 /* Sources */,
+				788CFC4A7AED6FB4DE2581FE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PTPWatch;
+			packageProductDependencies = (
+			);
+			productName = PTPWatch;
+			productReference = 851C2CF80BF665872BF7DA59 /* PTPWatch.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6E84B6199E5A7A966BE421D2 /* PTPLiveActivity */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 71F117F22C1C04BA825423B0 /* Build configuration list for PBXNativeTarget "PTPLiveActivity" */;
+			buildPhases = (
+				9BCBDCB1142A187937ACC096 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PTPLiveActivity;
+			packageProductDependencies = (
+			);
+			productName = PTPLiveActivity;
+			productReference = 9C16D94875D63FC71B21C4C2 /* PTPLiveActivity.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0746A2EAB413EB4B8B126D65 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					337BE883A0438C56AF0D37A0 = {
+						ProvisioningStyle = Automatic;
+					};
+					3647813BBC68CD1F3FBEFACB = {
+						ProvisioningStyle = Automatic;
+					};
+					6E84B6199E5A7A966BE421D2 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = C0C9331D6A31BAE2A460AEB1 /* Build configuration list for PBXProject "PTP" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 9233EEE1AA00DC750718121A;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 5DC55408BAD120AE3859436D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				337BE883A0438C56AF0D37A0 /* PTPApp */,
+				3647813BBC68CD1F3FBEFACB /* PTPWatch */,
+				6E84B6199E5A7A966BE421D2 /* PTPLiveActivity */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		788CFC4A7AED6FB4DE2581FE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15C196EF32ADCB201CE971F2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B29F8143E6822B46DF81B9D1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49B1C5F83A584F1CEC99D55D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		53393234E0F3558E07815CEC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F225B0952B62C14F3E020D9 /* ContentView.swift in Sources */,
+				6CE07088BD25FE699EE1322C /* PTPApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		58703D26B7A7EA2E44E5F9B7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				350DE470EA194A98E6104FEA /* ContentView.swift in Sources */,
+				52127AC36FBF895C95C89CBB /* PTPWatchApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9BCBDCB1142A187937ACC096 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8CF95EA27831C833883E4F7F /* PTPLiveActivityBundle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		51D56FC6AFF2276DEF50BA4F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3647813BBC68CD1F3FBEFACB /* PTPWatch */;
+			targetProxy = AF9BB3039B5805DE046D65D0 /* PBXContainerItemProxy */;
+		};
+		68BDE55C10FC73B7FA9C059A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6E84B6199E5A7A966BE421D2 /* PTPLiveActivity */;
+			targetProxy = 5FAFECDD787A1E21D3FEB560 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		065496126EFDDD4592A1D8D0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lmadisha.ptp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		3E63CFADD6354492A9A22292 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lmadisha.ptp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		57B98875443D6EFB6A5D5FCC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = PTPLiveActivity/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PTP;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lmadisha.ptp.LiveActivity;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		5DC01F1B6224AE99726FD9DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_KEY_WKApplication = YES;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.lmadisha.ptp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lmadisha.ptp.watchkitapp;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Debug;
+		};
+		902793213ABC6FCE861C7B10 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		ADDBD94B28A4B679BF2F1A9E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = PTPLiveActivity/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PTP;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lmadisha.ptp.LiveActivity;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		C0F67A1E4862FA632DA0CDE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_KEY_WKApplication = YES;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.lmadisha.ptp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lmadisha.ptp.watchkitapp;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Release;
+		};
+		ECA8B2B460EBA780FCDC4CA0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5F5894973B8FA71CC078C885 /* Build configuration list for PBXNativeTarget "PTPWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5DC01F1B6224AE99726FD9DF /* Debug */,
+				C0F67A1E4862FA632DA0CDE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6C7CCA5C30F3F04D7322B3F1 /* Build configuration list for PBXNativeTarget "PTPApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				065496126EFDDD4592A1D8D0 /* Debug */,
+				3E63CFADD6354492A9A22292 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		71F117F22C1C04BA825423B0 /* Build configuration list for PBXNativeTarget "PTPLiveActivity" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				57B98875443D6EFB6A5D5FCC /* Debug */,
+				ADDBD94B28A4B679BF2F1A9E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C0C9331D6A31BAE2A460AEB1 /* Build configuration list for PBXProject "PTP" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ECA8B2B460EBA780FCDC4CA0 /* Debug */,
+				902793213ABC6FCE861C7B10 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0746A2EAB413EB4B8B126D65 /* Project object */;
+}

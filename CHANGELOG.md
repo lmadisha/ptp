@@ -10,3 +10,4 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - Issue, branch and PR workflow (`develop` → `main`), PR evidence rules, and `.githooks/` that block commits and pushes to `main` and `develop` (#1).
 - `apple-skills` Claude Code plugin enabled for the project, with the skills that break the hard rules listed in CLAUDE.md (#4).
 - Model roles: Claude Opus/Fable or GPT-6.2 Astra plan and review, Claude Sonnet or GPT-6.2 Sol implement, Haiku or Luna run QA (`docs/MODEL_ROLES.md`, #8).
+- Xcode project `PTP.xcodeproj` with placeholder `PTPApp` (iOS 18.4), `PTPWatch` (watchOS 11) and `PTPLiveActivity` targets (#10).

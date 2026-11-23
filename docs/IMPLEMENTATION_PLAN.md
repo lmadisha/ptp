@@ -19,7 +19,7 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
 **Goal:** prove the riskiest assumption before writing product code. Can a watch app keep measuring distance to the iPhone in the background, and at what battery cost?
 
 ### 0.1 Repo and project setup
-- [ ] Create the Xcode project with these targets:
+- [x] Create the Xcode project with these targets:
   - `PTPApp` (iOS)
   - `PTPWatch` (watchOS)
   - `PTPLiveActivity` (widget extension)
