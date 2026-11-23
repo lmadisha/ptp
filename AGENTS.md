@@ -245,3 +245,4 @@ with `git config core.hooksPath .githooks` (worktrees share the setting).
 - [Privacy](docs/PRIVACY.md): what is stored, where, for how long
 - [ADRs](docs/adr/README.md): why things are the way they are
 - [Model roles](docs/MODEL_ROLES.md): which model plans, implements, reviews and tests
+- [Handover](docs/HANDOVER.md): current state, next tasks, and tooling gotchas for a new agent
