@@ -3,6 +3,12 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-23 · #21 minimum versions
+
+Scope: whole repo. Change is one checkbox: the versions were already set by #10 and #15.
+
+No findings. Lean already.
+
 ## 2026-11-23 · #19 capabilities and Info.plist keys
 
 Scope: whole repo. Change is a 1-key `PTPApp/Info.plist` and build-setting keys for the two app targets.
