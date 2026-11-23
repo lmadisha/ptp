@@ -16,6 +16,8 @@
 		6CE07088BD25FE699EE1322C /* PTPApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962AF51CF4EFC39B43AD6F10 /* PTPApp.swift */; };
 		8CDE70C5142936DEEB07C32D /* PTPWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 851C2CF80BF665872BF7DA59 /* PTPWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8CF95EA27831C833883E4F7F /* PTPLiveActivityBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8AA489A53E02A83F770E19 /* PTPLiveActivityBundle.swift */; };
+		CE14F63F34E5B123BF3F7B37 /* PTPCore in Frameworks */ = {isa = PBXBuildFile; productRef = B6F8AE64C1E544B0D5B1F95F /* PTPCore */; };
+		E4C48889C03EBEFD1E8B705C /* PTPCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8CB63A8E9277B0A1F1B70E43 /* PTPCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +67,7 @@
 		4765CC314E6EBAD6A0D65130 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		4FF939DE52093130D66282A0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		614F760EA90091ACA23A0C6A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		6ECD754A7CB5F75C34EFFC11 /* PTPCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PTPCore; path = Packages/PTPCore; sourceTree = SOURCE_ROOT; };
 		851C2CF80BF665872BF7DA59 /* PTPWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PTPWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		962AF51CF4EFC39B43AD6F10 /* PTPApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPApp.swift; sourceTree = "<group>"; };
 		9C16D94875D63FC71B21C4C2 /* PTPLiveActivity.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = PTPLiveActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -73,6 +76,25 @@
 		EEE1254E228F5E03BB309A86 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FDDF95AB4B898308373648ED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7C2CD525EC535FB77CECC5A0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E4C48889C03EBEFD1E8B705C /* PTPCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		984BAB059CEF390D04D50F0E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE14F63F34E5B123BF3F7B37 /* PTPCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		0AC46FB841A94CA1D6A3D7F4 /* PTPLiveActivity */ = {
@@ -117,11 +139,20 @@
 		9233EEE1AA00DC750718121A = {
 			isa = PBXGroup;
 			children = (
+				A98F41F204DCDEA038D2860E /* Packages */,
 				81DD2A70676A0683A70E02A4 /* PTPApp */,
 				0AC46FB841A94CA1D6A3D7F4 /* PTPLiveActivity */,
 				2D9C29AC12694464F5309F4D /* PTPWatch */,
 				5DC55408BAD120AE3859436D /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		A98F41F204DCDEA038D2860E /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				6ECD754A7CB5F75C34EFFC11 /* PTPCore */,
+			);
+			path = Packages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -133,6 +164,7 @@
 			buildPhases = (
 				53393234E0F3558E07815CEC /* Sources */,
 				B29F8143E6822B46DF81B9D1 /* Resources */,
+				984BAB059CEF390D04D50F0E /* Frameworks */,
 				E57D9BAA478F324B9AF9FC94 /* Embed Foundation Extensions */,
 				98703C00D9DCC5104F0B9627 /* Embed Watch Content */,
 			);
@@ -144,6 +176,7 @@
 			);
 			name = PTPApp;
 			packageProductDependencies = (
+				B6F8AE64C1E544B0D5B1F95F /* PTPCore */,
 			);
 			productName = PTPApp;
 			productReference = BD4FD2D858C41669F1FE962C /* PTPApp.app */;
@@ -155,6 +188,7 @@
 			buildPhases = (
 				58703D26B7A7EA2E44E5F9B7 /* Sources */,
 				788CFC4A7AED6FB4DE2581FE /* Resources */,
+				7C2CD525EC535FB77CECC5A0 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -162,6 +196,7 @@
 			);
 			name = PTPWatch;
 			packageProductDependencies = (
+				8CB63A8E9277B0A1F1B70E43 /* PTPCore */,
 			);
 			productName = PTPWatch;
 			productReference = 851C2CF80BF665872BF7DA59 /* PTPWatch.app */;
@@ -213,6 +248,9 @@
 			);
 			mainGroup = 9233EEE1AA00DC750718121A;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				07B2859A3D3137B8669935EB /* XCLocalSwiftPackageReference "Packages/PTPCore" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5DC55408BAD120AE3859436D /* Products */;
 			projectDirPath = "";
@@ -554,6 +592,24 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		07B2859A3D3137B8669935EB /* XCLocalSwiftPackageReference "Packages/PTPCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/PTPCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8CB63A8E9277B0A1F1B70E43 /* PTPCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PTPCore;
+		};
+		B6F8AE64C1E544B0D5B1F95F /* PTPCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PTPCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0746A2EAB413EB4B8B126D65 /* Project object */;
 }

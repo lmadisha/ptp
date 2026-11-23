@@ -3,6 +3,14 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-23 · #15 PTPCore package
+
+Scope: whole repo, mainly `Packages/PTPCore` and the two `ContentView` files.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | `PTPCore.version` exists only to prove the package links and runs in both apps. | `open`: delete it, and its use in the `ContentView` subtitles, once Phase 1 adds real `PTPCore` types for the apps to use. |
+
 ## 2026-11-23 · #11 branch-flow docs
 
 Scope: whole repo. Change is two lines in `phase-status/SKILL.md` and `IMPLEMENTATION_PLAN.md`.
