@@ -17,6 +17,9 @@ public struct DetectionConfig: Sendable, Equatable {
     /// Silence allowed between arming and the first sample, while the link starts up.
     /// Keep it at least as long as `signalLossDelay`.
     public var linkStartupDelay: Duration
+    /// A gap between two calls into the session longer than this means the app was not running.
+    /// Keep it at least as long as `signalLossDelay`, so a late tick can't pass for a suspension.
+    public var suspensionGap: Duration
 
     public static let standard = DetectionConfig(
         heartbeatInterval: .seconds(1),
@@ -29,6 +32,7 @@ public struct DetectionConfig: Sendable, Equatable {
         alarmDelay: .seconds(5),
         alarmRepeatInterval: .seconds(1),
         signalLossDelay: .seconds(3),
-        linkStartupDelay: .seconds(10)
+        linkStartupDelay: .seconds(10),
+        suspensionGap: .seconds(3)
     )
 }

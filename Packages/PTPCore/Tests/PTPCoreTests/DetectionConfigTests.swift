@@ -25,4 +25,6 @@ import Testing
     #expect(config.alarmRepeatInterval == .seconds(1))
     #expect(config.signalLossDelay == .seconds(3))
     #expect(config.linkStartupDelay == .seconds(10))
+    #expect(config.suspensionGap == .seconds(3))
+    #expect(config.suspensionGap >= config.signalLossDelay)
 }

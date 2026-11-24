@@ -5,6 +5,7 @@ struct ContentView: View {
     @State private var ranging = Ranging()
     @State private var session = WatchSession()
     @State private var heartbeat = HeartbeatReceiver()
+    @Environment(\.scenePhase) private var scenePhase
     private let readingLog = ReadingLog.shared
 
     var body: some View {
@@ -30,6 +31,9 @@ struct ContentView: View {
             case .lost:
                 LostView(session: session)
             }
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active { session.appBecameActive() }
         }
         .task {
             ranging.onSample = { [readingLog, session] distance in
