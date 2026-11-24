@@ -3,6 +3,13 @@ public enum PTPState: String, Sendable, Equatable {
     case disarmed, armed, warning, alarm, lost
 }
 
+extension PTPState {
+    /// The word to log when the state changes from `previous`: entering Alarm, or how an Alarm ended. Nil otherwise.
+    public func alarmLogEntry(after previous: PTPState?) -> String? {
+        self != previous && (self == .alarm || previous == .alarm) ? rawValue : nil
+    }
+}
+
 public enum ArmMode: String, Sendable, Equatable {
     case normal, event
 }

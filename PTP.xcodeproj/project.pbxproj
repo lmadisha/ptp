@@ -31,6 +31,8 @@
 		AA6EADFCA75B25BFFE6F6AFD /* HeartbeatReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F727274378F79784E341B380 /* HeartbeatReceiver.swift */; };
 		AB1A9AC4D4DC2132142856F2 /* TokenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F532A2D9DD67A01321558C6 /* TokenExchange.swift */; };
 		C5A07ADE785A5B6CE6BD9AC8 /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879A82DC70CBBE82E466B936 /* LiveActivityController.swift */; };
+		C5A07ADE785A5B6CE6BD9AC9 /* AlarmHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879A82DC70CBBE82E466B937 /* AlarmHistory.swift */; };
+		CE14F63F34E5B123BF3F7B38 /* PTPStore in Frameworks */ = {isa = PBXBuildFile; productRef = B6F8AE64C1E544B0D5B1F960 /* PTPStore */; };
 		CE14F63F34E5B123BF3F7B37 /* PTPCore in Frameworks */ = {isa = PBXBuildFile; productRef = B6F8AE64C1E544B0D5B1F95F /* PTPCore */; };
 		DE2D5BA1BFAF92B7FC2FB2A2 /* Heartbeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE0C732F363A5835C547BFB /* Heartbeat.swift */; };
 		DE2D5BA1BFAF92B7FC2FB2A3 /* ReadingLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE0C732F363A5835C547BFC /* ReadingLog.swift */; };
@@ -93,6 +95,8 @@
 		7CE0C732F363A5835C547BFC /* ReadingLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingLog.swift; sourceTree = "<group>"; };
 		851C2CF80BF665872BF7DA59 /* PTPWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PTPWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		879A82DC70CBBE82E466B936 /* LiveActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityController.swift; sourceTree = "<group>"; };
+		879A82DC70CBBE82E466B937 /* AlarmHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmHistory.swift; sourceTree = "<group>"; };
+		6ECD754A7CB5F75C34EFFC12 /* PTPStore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PTPStore; path = Packages/PTPStore; sourceTree = SOURCE_ROOT; };
 		8AF10FB1769F0E2D31F3E07A /* Ranging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ranging.swift; sourceTree = "<group>"; };
 		962AF51CF4EFC39B43AD6F10 /* PTPApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPApp.swift; sourceTree = "<group>"; };
 		9C16D94875D63FC71B21C4C2 /* PTPLiveActivity.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = PTPLiveActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,6 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE14F63F34E5B123BF3F7B37 /* PTPCore in Frameworks */,
+				CE14F63F34E5B123BF3F7B38 /* PTPStore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +181,7 @@
 				F0A4AF4C1CDC23382F25EA7A /* HeartbeatSender.swift */,
 				A301009B857214162AAF4542 /* Info.plist */,
 				879A82DC70CBBE82E466B936 /* LiveActivityController.swift */,
+				879A82DC70CBBE82E466B937 /* AlarmHistory.swift */,
 				7BF39E944AB4BE0073FF035B /* PTPApp.entitlements */,
 				962AF51CF4EFC39B43AD6F10 /* PTPApp.swift */,
 			);
@@ -207,6 +213,7 @@
 			isa = PBXGroup;
 			children = (
 				6ECD754A7CB5F75C34EFFC11 /* PTPCore */,
+				6ECD754A7CB5F75C34EFFC12 /* PTPStore */,
 			);
 			path = Packages;
 			sourceTree = "<group>";
@@ -244,6 +251,7 @@
 			name = PTPApp;
 			packageProductDependencies = (
 				B6F8AE64C1E544B0D5B1F95F /* PTPCore */,
+				B6F8AE64C1E544B0D5B1F960 /* PTPStore */,
 			);
 			productName = PTPApp;
 			productReference = BD4FD2D858C41669F1FE962C /* PTPApp.app */;
@@ -317,6 +325,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				07B2859A3D3137B8669935EB /* XCLocalSwiftPackageReference "Packages/PTPCore" */,
+				07B2859A3D3137B8669935EC /* XCLocalSwiftPackageReference "Packages/PTPStore" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5DC55408BAD120AE3859436D /* Products */;
@@ -359,6 +368,7 @@
 				1188B7A7CB703AA845D84D43 /* ReadingLog.swift in Sources */,
 				9F9D940F940A759F1D42DAB7 /* HeartbeatSender.swift in Sources */,
 				C5A07ADE785A5B6CE6BD9AC8 /* LiveActivityController.swift in Sources */,
+				C5A07ADE785A5B6CE6BD9AC9 /* AlarmHistory.swift in Sources */,
 				90E6FCA2A3C4C3686D8A8F55 /* PTPActivityAttributes.swift in Sources */,
 				6CE07088BD25FE699EE1322C /* PTPApp.swift in Sources */,
 				8001D6CAD3E8C4ABF9A3EC06 /* Ranging.swift in Sources */,
@@ -702,6 +712,10 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = Packages/PTPCore;
 		};
+		07B2859A3D3137B8669935EC /* XCLocalSwiftPackageReference "Packages/PTPStore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/PTPStore;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -712,6 +726,10 @@
 		B6F8AE64C1E544B0D5B1F95F /* PTPCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PTPCore;
+		};
+		B6F8AE64C1E544B0D5B1F960 /* PTPStore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PTPStore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

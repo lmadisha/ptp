@@ -8,6 +8,7 @@ struct ContentView: View {
     @State private var exchange = TokenExchange()
     @State private var ranging = Ranging()
     @State private var liveActivity = LiveActivityController()
+    @State private var alarmHistory = AlarmHistory()
     @State private var heartbeat = HeartbeatSender(sessionID: ContentView.heartbeatID)
     private let readingLog = ReadingLog.shared
 
@@ -39,6 +40,7 @@ struct ContentView: View {
             Text(heartbeat.state).font(.footnote)
             Text("Watch: \(Self.watchState(exchange)?.capitalized ?? "no state received")").font(.footnote)
             Text("Log: \(readingLog.rows) rows").font(.footnote)
+            Text("Alarm log: \(alarmHistory.count) events").font(.footnote)
         }
         .padding()
         .task {
@@ -47,7 +49,14 @@ struct ContentView: View {
             }
             ranging.onSample = { [readingLog] in readingLog.log(distance: $0, source: .uwb) }
             heartbeat.onBeat = { [readingLog] in readingLog.log(distance: nil, source: .ble) }
-            exchange.onWatchState = { _ in updateLiveActivity() }
+            exchange.onWatchState = { [alarmHistory] in
+                alarmHistory.watchStateChanged(to: $0)
+                updateLiveActivity()
+            }
+            #if DEBUG
+            // Simulator evidence only: feeds the debug argument's state into the log.
+            alarmHistory.watchStateChanged(to: Self.watchState(exchange).flatMap(PTPState.init(rawValue:)))
+            #endif
             exchange.publishHeartbeatID(Self.heartbeatID)
             ranging.start(exchange: exchange)
             exchange.start()

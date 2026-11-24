@@ -28,6 +28,7 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - `WatchSession` on the watch: it keeps the arm mode, feeds UWB and heartbeat samples to `PTPStateMachine` on the watch's own clock and ticks it, so the watch alarms on signal loss without any message from the phone. The tick period is `DetectionConfig.tickInterval` (0.5 s). The setup screen gains Arm, Disarm, "I have it" and "Mark as Lost" buttons. Arming allows 10 s of silence until the first sample (`DetectionConfig.linkStartupDelay`, ADR-0007 decision 5) (#49).
 - The watch shows separate Disarmed, Armed, Warning, Alarm and Lost screens. Armed shows live distance and the alert threshold, Warning adds a countdown, and Alarm repeats the notification haptic. "I have it" returns to Armed from Warning or Alarm. Setup readings and controls are under Diagnostics (#50).
 - `Packages/PTPStore`: a SQLite alarm event log through the system `SQLite3` library, with 30-day retention. Not linked into the app yet (ADR-0005, now Accepted; #63).
+- The iPhone app writes the alarm log: one entry when the watch reports an Alarm and one when it ends. The database is file-protected and excluded from backup (#65).
 
 ### Changed
 - On-device stores (places, alarm log) will use SQLite through the system `SQLite3` library in a `PTPStore` package, not SwiftData (ADR-0005, #30).
