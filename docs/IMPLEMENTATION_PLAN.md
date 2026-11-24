@@ -64,7 +64,7 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
 
 ### 1.1 Detection engine (`PTPCore`)
 - [x] `DistanceSample` model: value, source (UWB or Bluetooth), timestamp.
-- [ ] Smoothing: moving median over about 1 s.
+- [x] Smoothing: moving median over about 1 s.
 - [ ] `PTPStateMachine` with states Disarmed, Armed, Warning, Alarm and Lost, and these transitions:
   - Armed → Warning: over the threshold for 2 s
   - Warning → Alarm: still out of range after 5 s

@@ -3,6 +3,16 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-24 · #45 moving-median smoothing
+
+Scope: whole repo, mainly `PTPCore/MedianSmoother.swift` and `DetectionConfig`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `shrink` | The smoother sorts its window on every sample. | `wontfix`: the window holds about ten readings at UWB rates. Marked with a `ponytail:` comment; switch to an ordered insert only if profiling on the watch says so. |
+| `yagni` | `MedianSmoother` has no user yet. | `open`: `PTPStateMachine` (next task) reads its output. |
+| `yagni` | A reading that arrives out of time order is judged against the newest time seen. | `applied`: one `max`, no reordering buffer. |
+
 ## 2026-11-23 · #43 DistanceSample
 
 Scope: whole repo, mainly `PTPCore/DistanceSample.swift`.
