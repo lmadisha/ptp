@@ -45,6 +45,8 @@ struct ContentView: View {
                 readingLog.log(distance: nil, source: .ble)
             }
             exchange.onHeartbeatID = { [heartbeat] in heartbeat.expect($0) }
+            session.onStateChange = { [exchange] in exchange.publishState($0) }
+            exchange.publishState(session.state)
             session.restore()
             exchange.start()
             ranging.start(exchange: exchange)

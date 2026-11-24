@@ -3,6 +3,17 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-24 · #59 watch state mirrored on the iPhone
+
+Scope: whole repo, mainly `Shared/TokenExchange.swift`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | Arm and Disarm buttons on the phone, sent to the watch as requests. | `applied`: not built. Comes with Event mode (2.1). |
+| `yagni` | A separate sync service and a Codable snapshot type. | `applied`: one string key in the application context `TokenExchange` already publishes. |
+| `stdlib` | Hand-written strings for the stored arm mode and latched state. | `applied`: `String` raw values on `PTPState` and `ArmMode`. |
+| `shrink` | `TokenExchange` now carries tokens, the heartbeat ID, logs and state; the architecture doc calls it `PairingService`. | `open`: rename when the phone starts sending requests. |
+
 ## 2026-11-24 · #57 ranging restart loop
 
 Scope: whole repo, mainly `Shared/Ranging.swift`.

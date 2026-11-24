@@ -424,3 +424,14 @@ private func warning() -> PTPStateMachine {
     machine.restoreLatched(.alarm)
     #expect(machine.state == .disarmed)
 }
+
+@Test func rawValuesAreAStableWireAndStorageFormat() {
+    #expect(PTPState.disarmed.rawValue == "disarmed")
+    #expect(PTPState.armed.rawValue == "armed")
+    #expect(PTPState.warning.rawValue == "warning")
+    #expect(PTPState.alarm.rawValue == "alarm")
+    #expect(PTPState.lost.rawValue == "lost")
+    #expect(ArmMode.normal.rawValue == "normal")
+    #expect(ArmMode.event.rawValue == "event")
+    #expect(PTPState(rawValue: "unknown") == nil)
+}

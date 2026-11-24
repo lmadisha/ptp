@@ -1,8 +1,9 @@
-public enum PTPState: Sendable, Equatable {
+/// The raw values are stored on the watch and sent to the phone. Don't rename them.
+public enum PTPState: String, Sendable, Equatable {
     case disarmed, armed, warning, alarm, lost
 }
 
-public enum ArmMode: Sendable, Equatable {
+public enum ArmMode: String, Sendable, Equatable {
     case normal, event
 }
 
