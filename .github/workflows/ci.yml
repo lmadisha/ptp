@@ -19,6 +19,8 @@ jobs:
         run: xcodebuild -version && swift --version
       - name: PTPCore tests
         run: swift test --package-path Packages/PTPCore
+      - name: PTPStore tests
+        run: swift test --package-path Packages/PTPStore
       - name: Build PTPApp (iOS Simulator)
         run: xcodebuild -project PTP.xcodeproj -scheme PTPApp -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO -quiet build
       - name: Build PTPWatch (watchOS Simulator)

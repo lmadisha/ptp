@@ -15,6 +15,7 @@ PTP (Phone Theft Prevention) is an open-source iPhone + Apple Watch app.
 | Task | Command |
 |---|---|
 | Core unit tests + trace replay | `swift test --package-path Packages/PTPCore` |
+| Store unit tests | `swift test --package-path Packages/PTPStore` |
 | Build iOS app | `xcodebuild -scheme PTPApp -destination 'generic/platform=iOS Simulator' build` |
 | Build watch app | `xcodebuild -scheme PTPWatch -destination 'generic/platform=watchOS Simulator' build` |
 | Device compile check (no team needed) | add `-destination 'generic/platform=iOS'` (or `watchOS`) and `CODE_SIGNING_ALLOWED=NO` |
@@ -29,6 +30,7 @@ PTPWatch/            watchOS app
 PTPLiveActivity/     Live Activity widget extension
 Packages/PTPCore/    Pure Swift logic: models, DetectionEngine, PTPStateMachine, DetectionConfig
   Tests/Fixtures/    Recorded distance traces (CSV), anonymised
+Packages/PTPStore/   SQLite stores (system SQLite3 only): AlarmLog. Retention lives in StoreConfig
 docs/                Plan, architecture, ADRs, privacy, testing
 ```
 
@@ -118,7 +120,8 @@ mention an agent as co-author.
    bugs or technical debt rather than widening the current change.
 5. **Review, audit and verify before committing.** Review the complete
    diff and run the checks relevant to the changed area (see Commands
-   and Definition of done: `PTPCore` tests with trace replay, both app
+   and Definition of done: `PTPCore` tests with trace replay, `PTPStore`
+   tests when the stores changed, both app
    builds). Then run the `ponytail-audit` skill and record every finding
    in `docs/audit-findings.md` (apply the trivial ones in the same
    change; log the rest with a status). Apply the documentation rules
@@ -233,7 +236,7 @@ with `git config core.hooksPath .githooks` (worktrees share the setting).
   requested action, fix the branch or checkout instead.
 
 ## Definition of done
-- [ ] `PTPCore` tests pass, trace replay included.
+- [ ] `PTPCore` tests pass, trace replay included. `PTPStore` tests pass when the stores changed.
 - [ ] Both app targets build.
 - [ ] Hard rules respected.
 - [ ] Docs updated (privacy, ADR, changelog) where relevant.

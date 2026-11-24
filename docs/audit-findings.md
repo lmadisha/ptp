@@ -3,6 +3,17 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-24 · #63 PTPStore alarm log
+
+Scope: whole repo, mainly `Packages/PTPStore`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | ADR-0005 lists a transaction helper in the wrapper. | `applied`: not built. No store writes two statements that must land together yet; add it with `PlaceStore`. |
+| `yagni` | A migration framework with numbered steps. | `applied`: one `PRAGMA user_version` check. Add steps when a second schema version exists. |
+| `yagni` | A typed enum for event kinds and a Codable row type. | `applied`: the kind is one word of text. Type it when the app writes events. |
+| `shrink` | `Database.run` returns every column as text or a number, nothing else. | `open`: fine for two columns; extend when a store needs integers or blobs. |
+
 ## 2026-11-24 · #59 watch state mirrored on the iPhone
 
 Scope: whole repo, mainly `Shared/TokenExchange.swift`.
