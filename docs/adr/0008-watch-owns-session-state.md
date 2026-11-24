@@ -15,6 +15,6 @@ Plan task 1.3 asks for the arm state to be synced between the phone and the watc
    - Rejected: the phone as the owner. A thief holding the phone could disarm it, and the watch would depend on the phone.
 
 ## Consequences
-- The phone's copy can be stale: the application context only arrives when the system delivers it, and it stays as it was if the watch app is killed. The phone must not act on it as if it were live. The Live Activity and the siren (2.2) need a freshness rule before they rely on it.
+- The phone's copy can be stale: the application context only arrives when the system delivers it, and it stays as it was if the watch app is killed. The phone must not act on it as if it were live. The Live Activity shows it as it is (#61), so it can stay red after an Alarm has ended, for example if the phone app is killed. The siren (2.2) needs a freshness rule before it acts on it.
 - The state names (`PTPState` raw values) are now a wire format between app versions on the two devices, and a storage format on the watch. Renaming one is a breaking change.
 - The watch's state (one word) is handed to WatchConnectivity, which keeps the latest value on both devices (`docs/PRIVACY.md`).
