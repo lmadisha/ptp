@@ -11,6 +11,8 @@ final class KeepAlive: NSObject {
     private(set) var mode: Mode = .off
     private(set) var state = "Keep alive off"
     private(set) var startedAt: Date?
+    /// Called only for an end the app did not ask for. `wasRunning` is false when a start failed.
+    var onEnd: ((_ wasRunning: Bool) -> Void)?
 
     private let healthStore = HKHealthStore()
     private var runtimeSession: WKExtendedRuntimeSession?
@@ -88,6 +90,12 @@ final class KeepAlive: NSObject {
         }
     }
 
+    private func ended(_ message: String) {
+        let wasRunning = startedAt != nil
+        finish(message)
+        onEnd?(wasRunning)
+    }
+
     private func finish(_ message: String) {
         runtimeSession = nil
         workoutSession = nil
@@ -129,19 +137,19 @@ extension KeepAlive: WKExtendedRuntimeSessionDelegate {
             guard runtimeSession.map(ObjectIdentifier.init) == id else { return }
             switch reason {
             case .none:
-                finish("Runtime ended")
+                ended("Runtime ended")
             case .expired:
-                finish("Runtime expired")
+                ended("Runtime expired")
             case .sessionInProgress:
-                finish("Runtime ended: another session is in progress")
+                ended("Runtime ended: another session is in progress")
             case .resignedFrontmost:
-                finish("Runtime ended: app lost frontmost status")
+                ended("Runtime ended: app lost frontmost status")
             case .suppressedBySystem:
-                finish("Runtime ended: suppressed by the system")
+                ended("Runtime ended: suppressed by the system")
             case .error:
-                finish("Runtime ended: \(detail ?? "unknown error")")
+                ended("Runtime ended: \(detail ?? "unknown error")")
             @unknown default:
-                finish("Runtime ended: reason \(reason.rawValue)")
+                ended("Runtime ended: reason \(reason.rawValue)")
             }
         }
     }
@@ -173,7 +181,11 @@ extension KeepAlive: HKWorkoutSessionDelegate {
                 state = "Stopping workout…"
                 startedAt = nil
             case .ended:
-                finish(isStoppingWorkout ? "Workout ended: stopped" : "Workout ended")
+                if isStoppingWorkout {
+                    finish("Workout ended: stopped")
+                } else {
+                    ended("Workout ended")
+                }
             case .notStarted, .prepared:
                 break
             @unknown default:
@@ -187,7 +199,7 @@ extension KeepAlive: HKWorkoutSessionDelegate {
         let detail = error.localizedDescription
         Task { @MainActor in
             guard self.workoutSession.map(ObjectIdentifier.init) == id else { return }
-            finish("Workout ended: \(detail)")
+            ended("Workout ended: \(detail)")
         }
     }
 }

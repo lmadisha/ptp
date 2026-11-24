@@ -3,6 +3,17 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-24 · #51 watch session after suspension and relaunch
+
+Scope: whole repo, mainly `PTPWatch/WatchSession.swift`, `PTPWatch/KeepAlive.swift` and `PTPStateMachine.swift`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `shrink` | A stored flag for "not protected", kept in step with the keep-alive by hand. | `applied`: a computed property over `KeepAlive.mode`. |
+| `yagni` | Retry timers or backoff for restarting the keep-alive. | `applied`: not built. One restart when a running session ends, one more each time the app becomes active. |
+| `yagni` | A general "restore any state" initialiser on the state machine. | `applied`: `restoreLatched` takes Alarm or Lost only. |
+| `shrink` | Suspension is detected from the gap between calls, in the app target, where it can't be unit-tested. | `open`: replace with a lifecycle signal if the #51 device drill shows late ticks. |
+
 ## 2026-11-24 · #50 watch screens
 
 Scope: whole repo, mainly `PTPWatch/StateScreens.swift`, `PTPWatch/WatchSession.swift` and `PTPWatch/ContentView.swift`.

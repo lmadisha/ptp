@@ -35,6 +35,9 @@ struct ArmedView: View {
                 ProgressView(value: progress)
                     .accessibilityLabel("Distance relative to alert threshold")
                     .accessibilityValue(Text(progress.formatted(.percent.precision(.fractionLength(0)))))
+                if session.isUnprotected {
+                    Text("Not protected. Keep PTP open.").font(.footnote).foregroundStyle(.orange)
+                }
                 Button("Disarm") { session.disarm() }
             }
         }

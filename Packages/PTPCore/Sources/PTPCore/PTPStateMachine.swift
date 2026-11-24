@@ -32,6 +32,8 @@ public struct PTPStateMachine: Sendable {
     private var overSince: Duration?
     // True from arming until the first sample: the link may still be starting up.
     private var awaitingFirstSignal = false
+    // True from a suspension until the next sample: one allowance per silence.
+    private var resumedSinceSignal = false
 
     public init(config: DetectionConfig) {
         self.config = config
@@ -51,7 +53,10 @@ public struct PTPStateMachine: Sendable {
             restartArmed()
             awaitingFirstSignal = true
         case (.warning, .iHaveIt), (.alarm, .iHaveIt):
+            // No sample yet since arming, a restart or a suspension: the link may still be starting up.
+            let linkStarting = awaitingFirstSignal
             restartArmed()
+            awaitingFirstSignal = linkStarting
         case (.alarm, .markAsLost):
             state = .lost
         case (_, .disarm) where state != .lost:
@@ -67,6 +72,7 @@ public struct PTPStateMachine: Sendable {
         overSince = nil
         lastSignal = latestTime
         awaitingFirstSignal = false
+        resumedSinceSignal = false
         state = .armed
     }
 
@@ -81,6 +87,7 @@ public struct PTPStateMachine: Sendable {
         guard state != .alarm else { return state }
         lastSignal = latestTime
         awaitingFirstSignal = false
+        resumedSinceSignal = false
         var reading = sample
         reading.time = latestTime
         let median = smoother.add(reading)
@@ -105,6 +112,29 @@ public struct PTPStateMachine: Sendable {
         return state
     }
 
+    /// The app was not running for a while, so the silence proves nothing (ADR-0007 decision 7).
+    /// The no-signal timer restarts with the link start-up allowance. The range verdict and its countdown stand.
+    @discardableResult
+    public mutating func resumeAfterSuspension(at time: Duration) -> PTPState {
+        latestTime = max(latestTime, time)
+        guard state == .armed || state == .warning else { return state }
+        // One allowance per silence: gaps with no sample in between can't postpone the Alarm again.
+        if !resumedSinceSignal {
+            resumedSinceSignal = true
+            lastSignal = latestTime
+            awaitingFirstSignal = true
+        }
+        advanceTimers(includingEndpoint: true)
+        return state
+    }
+
+    /// Puts a new machine back in a latched state after the app restarts (ADR-0007 decision 8).
+    /// An Alarm is restored only on an armed machine, so "I have it" returns to the right threshold.
+    public mutating func restoreLatched(_ latched: PTPState) {
+        guard latched == .lost || (latched == .alarm && state == .armed) else { return }
+        state = latched
+    }
+
     private mutating func advanceTimers(includingEndpoint: Bool) {
         guard state == .armed || state == .warning else { return }
         let now = latestTime
@@ -115,6 +145,8 @@ public struct PTPStateMachine: Sendable {
         let allowedSilence = awaitingFirstSignal ? config.linkStartupDelay : config.signalLossDelay
         if reached(lastSignal + allowedSilence) {
             state = .alarm
+            // The allowance is spent: "I have it" after this gets the usual delay.
+            awaitingFirstSignal = false
         } else if let overSince {
             // Use the logical Warning entry time even when ticks arrive late.
             let warningAt = overSince + config.warningDelay
