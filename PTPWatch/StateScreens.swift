@@ -88,8 +88,8 @@ struct LostView: View {
     var body: some View {
         ScrollView {
             VStack {
-                Text("Marked as lost").font(.headline).accessibilityAddTraits(.isHeader)
-                Text("Open Find Devices on this watch, or icloud.com/find on another device, and mark your iPhone as lost.")
+                Text("Mark your iPhone as lost").font(.headline).accessibilityAddTraits(.isHeader)
+                Text("Open Find Devices on this watch, or icloud.com/find on another device.")
                 Button("Done") { session.reset() }
             }
         }
