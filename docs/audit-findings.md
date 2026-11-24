@@ -3,6 +3,17 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-24 · #65 alarm log written by the app
+
+Scope: whole repo, mainly `PTPApp/AlarmHistory.swift`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | A screen listing past alarms. | `applied`: not built. One count line; the list comes with settings and export (2.3). |
+| `yagni` | A separate database-location service with an app-group container. | `applied`: one file in Application Support. Move it only if the widget ever reads it. |
+| `shrink` | Entries are stamped when the phone hears of a change, and two Alarms the phone never saw apart are logged as one. | `open`: needs an alarm time or sequence number from the watch; do it with `sendMessage` for alarm events (2.2). |
+| `shrink` | `AlarmHistory` counts by reading every event after each write. | `open`: fine for a 30-day log; add a `COUNT(*)` query if it ever shows up in a profile. |
+
 ## 2026-11-24 · #63 PTPStore alarm log
 
 Scope: whole repo, mainly `Packages/PTPStore`.
@@ -13,6 +24,7 @@ Scope: whole repo, mainly `Packages/PTPStore`.
 | `yagni` | A migration framework with numbered steps. | `applied`: one `PRAGMA user_version` check. Add steps when a second schema version exists. |
 | `yagni` | A typed enum for event kinds and a Codable row type. | `applied`: the kind is one word of text. Type it when the app writes events. |
 | `shrink` | `Database.run` returns every column as text or a number, nothing else. | `open`: fine for two columns; extend when a store needs integers or blobs. |
+
 ## 2026-11-24 · #61 Live Activity state
 
 Scope: whole repo, mainly `PTPLiveActivity/PTPLiveActivityBundle.swift` and `PTPApp/LiveActivityController.swift`.

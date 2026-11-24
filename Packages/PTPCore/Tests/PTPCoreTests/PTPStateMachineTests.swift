@@ -435,3 +435,16 @@ private func warning() -> PTPStateMachine {
     #expect(ArmMode.event.rawValue == "event")
     #expect(PTPState(rawValue: "unknown") == nil)
 }
+
+@Test func theAlarmLogRecordsEnteringAndLeavingAlarmOnly() {
+    #expect(PTPState.alarm.alarmLogEntry(after: .warning) == "alarm")
+    #expect(PTPState.alarm.alarmLogEntry(after: .armed) == "alarm")
+    #expect(PTPState.alarm.alarmLogEntry(after: nil) == "alarm")
+    #expect(PTPState.armed.alarmLogEntry(after: .alarm) == "armed")
+    #expect(PTPState.lost.alarmLogEntry(after: .alarm) == "lost")
+    #expect(PTPState.disarmed.alarmLogEntry(after: .alarm) == "disarmed")
+    // A repeat of the same state, and changes that don't involve Alarm, are not logged.
+    #expect(PTPState.alarm.alarmLogEntry(after: .alarm) == nil)
+    #expect(PTPState.warning.alarmLogEntry(after: .armed) == nil)
+    #expect(PTPState.armed.alarmLogEntry(after: nil) == nil)
+}

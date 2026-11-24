@@ -35,7 +35,7 @@ WC = WatchConnectivity. BLE = Bluetooth Low Energy heartbeat.
 | `ArmingService` | iOS | Event mode timers, visit learning, new-area prompt, region triggers |
 | `PlaceStore` | iOS | SQLite store of place areas and visit counts (`Packages/PTPStore`, ADR-0005) |
 | `SirenService` | iOS | Audio session and full-screen alarm |
-| `EventLog` | iOS | Local alarm history and diagnostics export. The store is `PTPStore.AlarmLog`: a SQLite log of alarm events (a time and one word), deleted after `StoreConfig.alarmLogRetention` (30 days). Built and tested; not yet linked into the app (ADR-0005) |
+| `EventLog` | iOS | Local alarm history and diagnostics export. The store is `PTPStore.AlarmLog`: a SQLite log of alarm events (a time and one word), deleted after `StoreConfig.alarmLogRetention` (30 days). `AlarmHistory` in the app writes an entry when the watch reports an Alarm and when the Alarm ends (ADR-0005) |
 
 ## State machine
 
