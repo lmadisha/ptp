@@ -3,6 +3,10 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-24 · #54 Gate 0 recorded as passed
+
+Scope: docs only (`docs/IMPLEMENTATION_PLAN.md`, `docs/HANDOVER.md`). No code changed, no findings.
+
 ## 2026-11-24 · #50 watch screens
 
 Scope: whole repo, mainly `PTPWatch/StateScreens.swift`, `PTPWatch/WatchSession.swift` and `PTPWatch/ContentView.swift`.

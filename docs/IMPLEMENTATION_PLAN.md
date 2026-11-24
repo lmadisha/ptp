@@ -34,12 +34,12 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
 
 ### 0.2 Distance spike
 - [x] Exchange discovery tokens between phone and watch over WatchConnectivity.
-- [ ] Run an `NISession` on both devices and show live distance on each screen.
-- [ ] Start a Live Activity on iPhone. Confirm ranging keeps going when the app is backgrounded and the phone is locked.
-- [ ] On the watch, test keeping the app alive with:
+- [x] Run an `NISession` on both devices and show live distance on each screen.
+- [x] Start a Live Activity on iPhone. Confirm ranging keeps going when the app is backgrounded and the phone is locked.
+- [x] On the watch, test keeping the app alive with:
   1. a `WKExtendedRuntimeSession` (try each session type that fits)
   2. an `HKWorkoutSession`, as the fallback, and note the App Review risk
-- [ ] Add a Bluetooth heartbeat (one packet per second) as a second signal.
+- [x] Add a Bluetooth heartbeat (one packet per second) as a second signal.
 
 ### 0.3 Measurement
 - [ ] Log every reading to a CSV file on each device: timestamp, distance, signal source, app state, battery %.
@@ -48,11 +48,13 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
   These traces become the test fixtures for Phase 1.
 
 ### Gate 0
-| Check | Pass |
-|---|---|
-| Watch keeps ranging with the app in the background or screen off | 2+ h without stopping |
-| Watch battery used over 4 h armed | under 15% |
-| iPhone keeps ranging when locked | 2+ h |
+**Passed on 2026-11-24, on the owner's word.** The owner ran the apps on an iPhone and an Apple Watch and reports that ranging, the heartbeat and the keep-alive work. The keep-alive they ran was the extended runtime session, not the workout session; how long it lasted was not reported. The figures below were not recorded in the repo, and neither were the 4-hour logs or the trace files of 0.3, so the trace-replay task in 1.1 stays open until the traces exist.
+
+| Check | Pass | Result |
+|---|---|---|
+| Watch keeps ranging with the app in the background or screen off | 2+ h without stopping | Passed (owner); duration not recorded |
+| Watch battery used over 4 h armed | under 15% | Passed (owner); figure not recorded |
+| iPhone keeps ranging when locked | 2+ h | Passed (owner); duration not recorded |
 
 **If it fails:** switch detection to Bluetooth heartbeat only (less precise distance, but signal loss still works), and re-run the gate.
 

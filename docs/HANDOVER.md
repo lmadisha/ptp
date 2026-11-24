@@ -1,6 +1,6 @@
 # Handover
 
-For the next AI agent (or human) picking up PTP. Read **AGENTS.md** first; every rule there still applies. This file adds what isn't written anywhere else: where things stand, what's next, and the practical gotchas. Last updated: 2026-11-23.
+For the next AI agent (or human) picking up PTP. Read **AGENTS.md** first; every rule there still applies. This file adds what isn't written anywhere else: where things stand, what's next, and the practical gotchas. Last updated: 2026-11-24.
 
 ## Where things stand
 - **Phase 0, task 0.1 (repo and project setup):** all six tasks are done and merged.
@@ -15,10 +15,10 @@ For the next AI agent (or human) picking up PTP. Read **AGENTS.md** first; every
   | Task | State |
   |---|---|
   | Token exchange over WatchConnectivity (#25, PR #26) | Merged, ticked |
-  | NISession on both devices with live distance (#27, PR #28) | Merged. **Not ticked**: needs a device check |
-  | Live Activity keeps iPhone ranging (#29, PR #34) | Merged. **Not ticked**: needs a device check |
-  | Watch keep-alive: extended runtime + workout session (#35, PR #36) | Merged (spike buttons on the watch). **Not ticked**: device timing needed |
-  | Bluetooth heartbeat as a second signal (#37, PR #38) | Merged (the watch reads, the phone answers). **Not ticked**: device check needed |
+  | NISession on both devices with live distance (#27, PR #28) | Merged, ticked (owner's device check, 2026-11-24) |
+  | Live Activity keeps iPhone ranging (#29, PR #34) | Merged, ticked (owner's device check, 2026-11-24) |
+  | Watch keep-alive: extended runtime + workout session (#35, PR #36) | Merged, ticked (owner's device check, 2026-11-24). The owner ran the runtime session; how long it lasts was not recorded |
+  | Bluetooth heartbeat as a second signal (#37, PR #38) | Merged, ticked (owner's device check, 2026-11-24) |
 - **Phase 0, task 0.3 (measurement):**
   - CSV reading log (#39): implemented on `feat/39-reading-log`. Files are `ptp-<phone|watch>-<unix seconds>.diagnostics.csv` in each app's Documents folder; the phone's show in the Files app, and the watch sends its file with "Send logs to phone". Device check needed.
   - The 4-hour sessions and the trace recordings need the owner.
@@ -28,12 +28,9 @@ For the next AI agent (or human) picking up PTP. Read **AGENTS.md** first; every
   - The team ID is deliberately **not** committed, because the repo is public. The owner sets the team in Xcode for device builds.
 
 ## Next tasks, in order
-1. **Gate 0 needs the owner:**
-   - 4-hour armed sessions on two watch models;
-   - recording the trace scenarios;
-   - the measurements in the Gate 0 table.
-   Write exact steps for the owner and wait. Don't guess. Use `/log-field-drill` once results come back.
-2. **Phase 1 starts only after Gate 0 passes** (plan rule). If it fails, follow the plan's fallback (Bluetooth heartbeat only) and re-plan.
+1. **Gate 0 passed on 2026-11-24, on the owner's word** (#54): ranging, the heartbeat and the keep-alive work on an iPhone and a watch. No durations, battery figures or logs were recorded in the repo.
+2. **Still owed from 0.3:** the trace recordings (part D of the runbook). Without them the trace-replay task in 1.1 can't be done, and the detection rules are tested with synthetic samples only. The 4-hour figures are worth writing down too: `/log-field-drill` records them.
+3. **Phase 1 is under way:** 1.1 and 1.2 are built; see the plan for the next unticked task.
 
 ## Device checks the owner still owes
 The full steps, in order, are in [GATE0_RUNBOOK.md](GATE0_RUNBOOK.md). In short:
