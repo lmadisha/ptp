@@ -34,15 +34,15 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
 
 ### 0.2 Distance spike
 - [x] Exchange discovery tokens between phone and watch over WatchConnectivity.
-- [ ] Run an `NISession` on both devices and show live distance on each screen.
+- [x] Run an `NISession` on both devices and show live distance on each screen.
 - [ ] Start a Live Activity on iPhone. Confirm ranging keeps going when the app is backgrounded and the phone is locked.
-- [ ] On the watch, test keeping the app alive with:
+- [x] On the watch, test keeping the app alive with (the runtime session was confirmed on the device; the workout fallback was not tested):
   1. a `WKExtendedRuntimeSession` (try each session type that fits)
   2. an `HKWorkoutSession`, as the fallback, and note the App Review risk
-- [ ] Add a Bluetooth heartbeat (one packet per second) as a second signal.
+- [x] Add a Bluetooth heartbeat (one packet per second) as a second signal.
 
 ### 0.3 Measurement
-- [ ] Log every reading to a CSV file on each device: timestamp, distance, signal source, app state, battery %.
+- [x] Log every reading to a CSV file on each device: timestamp, distance, signal source, app state, battery %.
 - [ ] Run 4-hour armed sessions on at least two watch models (one older UWB model, one Series 9 or later).
 - [ ] Record **trace files** for real scenarios: phone on a table while walking away, phone snatched and carried at a run, phone in a pocket in a crowd, airplane mode switched on mid-session.
   These traces become the test fixtures for Phase 1.
@@ -53,6 +53,11 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
 | Watch keeps ranging with the app in the background or screen off | 2+ h without stopping |
 | Watch battery used over 4 h armed | under 15% |
 | iPhone keeps ranging when locked | 2+ h |
+
+**Result (2026-11-24): recorded as passed on the owner's device check.** The owner reports that ranging, the heartbeat and the keep-alive work on the iPhone and the watch, and asked for Gate 0 to be closed (#54). The gate table is **not** fully measured:
+- **Not recorded:** the 4-hour battery figure and the trace files. The Phase 0.3 tasks for 4-hour sessions on two watch models and for trace files stay open, and so does the trace-replay task in Phase 1.1 until fixtures exist.
+- **Battery is open:** the drill in [docs/drills/2026-11-24.md](drills/2026-11-24.md) ran 152 min with the wrist down and the phone within 2 m. The watch went from 60% to 40%, which projects to about 33 points over 4 h, against the gate's under 15%. This is a straight-line projection, not a 4-hour run, so the battery check stays unverified.
+- **Background ranging:** that same drill ran 152 min with no restart, which is above the 2+ h line for "Watch keeps ranging with the app in the background or screen off". The iPhone-locked check is the owner's report only.
 
 **If it fails:** switch detection to Bluetooth heartbeat only (less precise distance, but signal loss still works), and re-run the gate.
 

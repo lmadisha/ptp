@@ -33,6 +33,7 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - Event mode on the watch: "Event 2 hours" and "Event 4 hours" arm with the 4 m alert distance and disarm by themselves when the time is up, unless a Warning or an Alarm is showing (#69).
 
 ### Changed
+- Gate 0 is recorded as passed on the owner's device check, with the 4-hour battery figure and the trace files still unrecorded (`docs/IMPLEMENTATION_PLAN.md`, #54).
 - On-device stores (places, alarm log) will use SQLite through the system `SQLite3` library in a `PTPStore` package, not SwiftData (ADR-0005, #30).
 - The iPhone shows the watch's state (Disarmed, Armed, Warning, Alarm, Lost), sent over WatchConnectivity. The watch owns the state; the phone only mirrors it (ADR-0008, #59).
 - The Live Activity shows the watch's state above the ranging status and distance, and turns red while the watch reports an Alarm (#61).
