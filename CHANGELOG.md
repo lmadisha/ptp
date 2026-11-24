@@ -32,4 +32,5 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - On-device stores (places, alarm log) will use SQLite through the system `SQLite3` library in a `PTPStore` package, not SwiftData (ADR-0005, #30).
 
 ### Fixed
+- Watch: the keep-alive restarts when it ends, a suspension counts as link start-up instead of signal loss, and Alarm and Lost survive an app restart (ADR-0007 decisions 7 and 8, #51).
 - `guard_bash.py` no longer blocks commands that only mention a push (`chmod +x`, `rm -f`, heredocs), and now checks every unquoted push in a command, so it also catches `git -C … push -f`, `-fu`, and pushes behind `command`, `sudo`, `then`, `xargs`, subshells, `env` or `bash -c` (#2).

@@ -304,3 +304,123 @@ private func warning() -> PTPStateMachine {
     #expect(machine.tick(at: .milliseconds(14999)) == .armed)
     #expect(machine.tick(at: .milliseconds(15000)) == .alarm)
 }
+
+@Test func resumeWhileArmedDoesNotAlarmAndRestartsTheStartupAllowance() {
+    var machine = armed()
+    machine.observe(sample(0))
+    #expect(machine.resumeAfterSuspension(at: .seconds(60)) == .armed)
+    #expect(machine.tick(at: .milliseconds(69_999)) == .armed)
+    #expect(machine.tick(at: .seconds(70)) == .alarm)
+}
+
+@Test func aSampleAfterResumeRestoresTheUsualSignalLossDelay() {
+    var machine = armed()
+    machine.resumeAfterSuspension(at: .seconds(60))
+    #expect(machine.observe(sample(61_000)) == .armed)
+    #expect(machine.tick(at: .milliseconds(63_999)) == .armed)
+    #expect(machine.tick(at: .seconds(64)) == .alarm)
+}
+
+@Test func resumeKeepsAWarningDeadlineThatFellDueDuringTheGap() {
+    var machine = warning()
+    #expect(machine.resumeAfterSuspension(at: .seconds(60)) == .alarm)
+}
+
+@Test func resumeKeepsAnUnexpiredWarningCountdown() {
+    var machine = warning()
+    #expect(machine.resumeAfterSuspension(at: .seconds(3)) == .warning)
+    #expect(machine.alarmDeadline == .seconds(7))
+}
+
+@Test func resumeInAlarmLostAndDisarmedChangesNothing() {
+    var disarmed = PTPStateMachine(config: .standard)
+    #expect(disarmed.resumeAfterSuspension(at: .seconds(60)) == .disarmed)
+
+    var alarm = armed()
+    #expect(alarm.tick(at: .seconds(10)) == .alarm)
+    #expect(alarm.resumeAfterSuspension(at: .seconds(60)) == .alarm)
+
+    #expect(alarm.handle(.markAsLost, at: .seconds(61)) == .lost)
+    #expect(alarm.resumeAfterSuspension(at: .seconds(120)) == .lost)
+}
+
+@Test func restoredAlarmStaysUntilTheOwnerActsAndKeepsItsThreshold() {
+    var machine = PTPStateMachine(config: .standard)
+    machine.handle(.arm(.event), at: .zero)
+    machine.restoreLatched(.alarm)
+    #expect(machine.state == .alarm)
+    #expect(machine.tick(at: .seconds(1)) == .alarm)
+    #expect(machine.observe(sample(1100, 1)) == .alarm)
+
+    #expect(machine.handle(.iHaveIt, at: .seconds(2)) == .armed)
+    machine.observe(sample(2100, 5))
+    #expect(machine.tick(at: .milliseconds(4100)) == .warning)
+}
+
+@Test func restoredLostIgnoresDisarmAndArm() {
+    var machine = PTPStateMachine(config: .standard)
+    machine.restoreLatched(.lost)
+    #expect(machine.state == .lost)
+    #expect(machine.handle(.disarm, at: .seconds(1)) == .lost)
+    #expect(machine.handle(.arm(.normal), at: .seconds(2)) == .lost)
+}
+
+@Test func restoreLatchedIgnoresOtherStates() {
+    for latched in [PTPState.armed, .warning, .disarmed] {
+        var machine = PTPStateMachine(config: .standard)
+        machine.restoreLatched(latched)
+        #expect(machine.state == .disarmed)
+    }
+}
+
+@Test func repeatedResumesWithoutASampleCannotPostponeTheAlarm() {
+    var machine = armed()
+    machine.observe(sample(0))
+    #expect(machine.resumeAfterSuspension(at: .seconds(60)) == .armed)
+    #expect(machine.resumeAfterSuspension(at: .seconds(65)) == .armed)
+    #expect(machine.resumeAfterSuspension(at: .seconds(70)) == .alarm)
+}
+
+@Test func aSampleAllowsALaterResumeAgain() {
+    var machine = armed()
+    machine.resumeAfterSuspension(at: .seconds(60))
+    machine.observe(sample(61_000))
+    #expect(machine.resumeAfterSuspension(at: .seconds(120)) == .armed)
+    #expect(machine.tick(at: .milliseconds(129_999)) == .armed)
+    #expect(machine.tick(at: .seconds(130)) == .alarm)
+}
+
+@Test func resumeBeforeTheFirstSampleRestartsTheAllowanceOnce() {
+    var machine = armed()
+    #expect(machine.resumeAfterSuspension(at: .seconds(60)) == .armed)
+    #expect(machine.tick(at: .seconds(70)) == .alarm)
+}
+
+@Test func resumeWhileArmedKeepsAnOverThresholdVerdict() {
+    var machine = armed()
+    machine.observe(sample(0, 9))
+    #expect(machine.state == .armed)
+    #expect(machine.resumeAfterSuspension(at: .seconds(60)) == .alarm)
+}
+
+@Test func acknowledgingARestoredAlarmKeepsTheLinkStartupAllowance() {
+    var machine = armed()
+    machine.restoreLatched(.alarm)
+    #expect(machine.handle(.iHaveIt, at: .seconds(1)) == .armed)
+    #expect(machine.tick(at: .milliseconds(10_999)) == .armed)
+    #expect(machine.tick(at: .seconds(11)) == .alarm)
+}
+
+@Test func acknowledgmentAfterAResumeKeepsTheLinkStartupAllowance() {
+    var machine = warning()
+    #expect(machine.resumeAfterSuspension(at: .seconds(60)) == .alarm)
+    #expect(machine.handle(.iHaveIt, at: .seconds(61)) == .armed)
+    #expect(machine.tick(at: .milliseconds(70_999)) == .armed)
+    #expect(machine.tick(at: .seconds(71)) == .alarm)
+}
+
+@Test func anAlarmIsNotRestoredOnADisarmedMachine() {
+    var machine = PTPStateMachine(config: .standard)
+    machine.restoreLatched(.alarm)
+    #expect(machine.state == .disarmed)
+}
