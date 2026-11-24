@@ -16,7 +16,11 @@ final class TokenExchange: NSObject {
     var onPeerToken: (@MainActor (NIDiscoveryToken) -> Void)?
     var onHeartbeatID: (@MainActor (UUID) -> Void)?
     /// The watch owns the session (ADR-0008). This is the last state it reported, which may be stale.
-    private(set) var watchState: PTPState?
+    private(set) var watchState: PTPState? {
+        didSet { if watchState != oldValue { onWatchState?(watchState) } }
+    }
+    /// A callback, not SwiftUI observation, so it also runs while the phone is locked.
+    var onWatchState: (@MainActor (PTPState?) -> Void)?
 
     private var pendingToken: Data?
     private var pendingHeartbeatID: Data?

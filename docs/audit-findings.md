@@ -13,6 +13,15 @@ Scope: whole repo, mainly `Packages/PTPStore`.
 | `yagni` | A migration framework with numbered steps. | `applied`: one `PRAGMA user_version` check. Add steps when a second schema version exists. |
 | `yagni` | A typed enum for event kinds and a Codable row type. | `applied`: the kind is one word of text. Type it when the app writes events. |
 | `shrink` | `Database.run` returns every column as text or a number, nothing else. | `open`: fine for two columns; extend when a store needs integers or blobs. |
+## 2026-11-24 · #61 Live Activity state
+
+Scope: whole repo, mainly `PTPLiveActivity/PTPLiveActivityBundle.swift` and `PTPApp/LiveActivityController.swift`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | Linking `PTPCore` into the widget extension to pass a typed state. | `applied`: not done. The activity carries the raw string. |
+| `yagni` | A stale date and an "out of date" look for an old Alarm. | `open`: needs a freshness rule (ADR-0008); decide with the siren (2.2). |
+| `delete` | `demoWatchState`, a debug-only launch argument that feeds a watch state for Simulator screenshots. | `open`: delete with `demoDistance` once fixtures or a paired Simulator can drive the UI. |
 
 ## 2026-11-24 · #59 watch state mirrored on the iPhone
 

@@ -32,6 +32,7 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 ### Changed
 - On-device stores (places, alarm log) will use SQLite through the system `SQLite3` library in a `PTPStore` package, not SwiftData (ADR-0005, #30).
 - The iPhone shows the watch's state (Disarmed, Armed, Warning, Alarm, Lost), sent over WatchConnectivity. The watch owns the state; the phone only mirrors it (ADR-0008, #59).
+- The Live Activity shows the watch's state above the ranging status and distance, and turns red while the watch reports an Alarm (#61).
 
 ### Fixed
 - A Nearby Interaction session that ends, and a heartbeat connection to a phone that isn't serving the heartbeat, are retried after `linkRestartDelay` (2 s) instead of at once, so a link that keeps failing can't spin until the system stops the app (#57).
