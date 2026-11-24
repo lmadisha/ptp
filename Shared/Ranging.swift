@@ -1,6 +1,7 @@
 import Foundation
 import NearbyInteraction
 import Observation
+import PTPCore
 
 @MainActor
 @Observable
@@ -14,6 +15,7 @@ final class Ranging: NSObject, NISessionDelegate {
     private var session: NISession?
     private var configuration: NINearbyPeerConfiguration?
     private var isSuspended = false
+    private var restartTask: Task<Void, Never>?
 
     func start(exchange: TokenExchange) {
         guard session == nil else { return }
@@ -41,6 +43,16 @@ final class Ranging: NSObject, NISessionDelegate {
         }
         exchange.publish(token)
         runConfiguration()
+    }
+
+    /// A session that keeps ending (the watch can't range in the background) must not restart in a tight loop.
+    private func restartSessionAfterDelay() {
+        restartTask?.cancel()
+        restartTask = Task { [weak self] in
+            try? await Task.sleep(for: DetectionConfig.standard.linkRestartDelay)
+            guard !Task.isCancelled, let self, session == nil, let exchange else { return }
+            startSession(exchange: exchange)
+        }
     }
 
     private func runConfiguration() {
@@ -118,10 +130,10 @@ final class Ranging: NSObject, NISessionDelegate {
                 // The peer token was rejected: drop it and wait for a fresh one instead of rerunning it.
                 configuration = nil
                 setReading(state: "Waiting for a new peer token", distance: nil)
-                if let exchange { startSession(exchange: exchange) }
+                restartSessionAfterDelay()
             default:
                 setReading(state: "Session ended", distance: nil)
-                if let exchange { startSession(exchange: exchange) }
+                restartSessionAfterDelay()
             }
         }
     }

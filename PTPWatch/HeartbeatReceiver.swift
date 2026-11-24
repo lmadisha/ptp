@@ -56,6 +56,15 @@ final class HeartbeatReceiver: NSObject, CBCentralManagerDelegate, CBPeripheralD
         }
     }
 
+    /// The phone is connected but isn't serving the heartbeat (its app isn't running). Dropping the
+    /// connection reconnects at once, so wait first or the two steps spin.
+    private func dropAfterDelay(_ phone: CBPeripheral) {
+        Task { [weak self] in
+            try? await Task.sleep(for: DetectionConfig.standard.linkRestartDelay)
+            self?.manager?.cancelPeripheralConnection(phone)
+        }
+    }
+
     private func scan(using manager: CBCentralManager) {
         phone = nil
         rescanAfterDisconnect = false
@@ -171,7 +180,7 @@ final class HeartbeatReceiver: NSObject, CBCentralManagerDelegate, CBPeripheralD
             guard let phone, ObjectIdentifier(phone) == phoneID, !rescanAfterDisconnect else { return }
             guard succeeded, let service = phone.services?.first(where: { $0.uuid == Heartbeat.service })
             else {
-                manager?.cancelPeripheralConnection(phone)
+                dropAfterDelay(phone)
                 return
             }
             phone.discoverCharacteristics([Heartbeat.characteristic], for: service)
@@ -192,7 +201,7 @@ final class HeartbeatReceiver: NSObject, CBCentralManagerDelegate, CBPeripheralD
                 let characteristic = service.characteristics?.first(where: { $0.uuid == Heartbeat.characteristic }),
                 characteristic.properties.contains(.read)
             else {
-                manager?.cancelPeripheralConnection(phone)
+                dropAfterDelay(phone)
                 return
             }
             self.characteristic = characteristic

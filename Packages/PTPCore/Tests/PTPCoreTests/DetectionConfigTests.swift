@@ -11,6 +11,10 @@ import Testing
     #expect(DetectionConfig.standard.smoothingWindow == .seconds(1))
 }
 
+@Test func standardLinkRestartDelayIsTwoSeconds() {
+    #expect(DetectionConfig.standard.linkRestartDelay == .seconds(2))
+}
+
 @Test func standardSeparationThresholdsAndDelays() {
     let config = DetectionConfig.standard
     #expect(config.tickInterval == .milliseconds(500))
