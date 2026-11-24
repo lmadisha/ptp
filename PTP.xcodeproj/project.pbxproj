@@ -11,6 +11,7 @@
 		1188B7A7CB703AA845D84D43 /* ReadingLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE0C732F363A5835C547BFC /* ReadingLog.swift */; };
 		15C196EF32ADCB201CE971F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FF939DE52093130D66282A0 /* Assets.xcassets */; };
 		1CE6F7745BCD829F06F5D113 /* KeepAlive.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E91A60E8376CDA1E61000D /* KeepAlive.swift */; };
+		F65947E62B7A4F87BB60D17F /* WatchSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B43F032093F4ECD91A48C0A /* WatchSession.swift */; };
 		350DE470EA194A98E6104FEA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE1254E228F5E03BB309A86 /* ContentView.swift */; };
 		406898674957C5F469A15939 /* PTPLiveActivity.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9C16D94875D63FC71B21C4C2 /* PTPLiveActivity.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		49B1C5F83A584F1CEC99D55D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FDDF95AB4B898308373648ED /* Assets.xcassets */; };
@@ -95,6 +96,7 @@
 		9C16D94875D63FC71B21C4C2 /* PTPLiveActivity.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = PTPLiveActivity.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A301009B857214162AAF4542 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B5E91A60E8376CDA1E61000D /* KeepAlive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepAlive.swift; sourceTree = "<group>"; };
+		0B43F032093F4ECD91A48C0A /* WatchSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSession.swift; sourceTree = "<group>"; };
 		BD4FD2D858C41669F1FE962C /* PTPApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = PTPApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD51424032AF0607100B00CF /* PTPActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPActivityAttributes.swift; sourceTree = "<group>"; };
 		D3B8946706855FBA2066EC81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				F727274378F79784E341B380 /* HeartbeatReceiver.swift */,
 				D3B8946706855FBA2066EC81 /* Info.plist */,
 				B5E91A60E8376CDA1E61000D /* KeepAlive.swift */,
+				0B43F032093F4ECD91A48C0A /* WatchSession.swift */,
 				22EC6397C3D878282050329F /* PTPWatch.entitlements */,
 				1327A94653C126A8DEC47CB8 /* PTPWatchApp.swift */,
 			);
@@ -366,6 +369,7 @@
 				DE2D5BA1BFAF92B7FC2FB2A3 /* ReadingLog.swift in Sources */,
 				AA6EADFCA75B25BFFE6F6AFD /* HeartbeatReceiver.swift in Sources */,
 				1CE6F7745BCD829F06F5D113 /* KeepAlive.swift in Sources */,
+				F65947E62B7A4F87BB60D17F /* WatchSession.swift in Sources */,
 				52127AC36FBF895C95C89CBB /* PTPWatchApp.swift in Sources */,
 				716FE153161E4159C405C3A2 /* Ranging.swift in Sources */,
 				4C431BDC4EA5A020E09DE1F0 /* TokenExchange.swift in Sources */,

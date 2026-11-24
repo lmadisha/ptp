@@ -13,9 +13,11 @@ import Testing
 
 @Test func standardSeparationThresholdsAndDelays() {
     let config = DetectionConfig.standard
+    #expect(config.tickInterval == .milliseconds(500))
     #expect(config.alertDistance == 8)
     #expect(config.eventAlertDistance == 4)
     #expect(config.warningDelay == .seconds(2))
     #expect(config.alarmDelay == .seconds(5))
     #expect(config.signalLossDelay == .seconds(3))
+    #expect(config.linkStartupDelay == .seconds(10))
 }

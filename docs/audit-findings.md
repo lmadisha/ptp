@@ -3,6 +3,18 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-24 · #49 watch session and watchdog
+
+Scope: whole repo, mainly `PTPWatch/WatchSession.swift` and `PTPWatch/ContentView.swift`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `delete` | The architecture named a separate `Watchdog` type. | `applied`: not built. The watchdog is `WatchSession` ticking `PTPStateMachine`; its signal-loss rule already does the job. |
+| `yagni` | A keep-alive mode setting (runtime or workout). | `applied`: one call to `startRuntime()`. Change the line when Gate 0 picks the mode. |
+| `yagni` | A stored, user-set threshold on the watch. | `applied`: only the arm mode is stored; distances come from `DetectionConfig`. Add a stored value with Settings (2.3). |
+| `yagni` | A separate "waiting for link" state after arming. | `applied`: one flag in `PTPStateMachine` and one delay in `DetectionConfig` (ADR-0007 decision 5). |
+| `shrink` | The setup screen still carries the manual keep-alive buttons next to Arm, and they can stop the keep-alive while armed. | `open`: they go behind a Diagnostics link in #50 and leave with the reading log after Gate 0. |
+
 ## 2026-11-24 · #47 state machine
 
 Scope: whole repo, mainly `PTPCore/PTPStateMachine.swift` and `DetectionConfig`.

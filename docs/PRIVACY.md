@@ -6,6 +6,7 @@
 | Data | Why | Where | How long |
 |---|---|---|---|
 | Settings | To work the way you set it up | iPhone + watch | Until you delete the app |
+| Arm mode on the watch (normal or event) | So the watch stays armed and can alarm without the phone if the app restarts | UserDefaults on the watch | Until disarm or marking the phone as lost |
 | Place areas you visit, with a visit count (rounded, not exact trails) | To tell when you're somewhere unfamiliar | iPhone only, in an on-device SQLite database that's file-protected and not backed up to iCloud | Deleted after 60 days |
 | Safe places and risky places you choose | To arm or not arm automatically | iPhone only | Until you remove them |
 | Alarm history | To tune detection and show you past alerts | iPhone only | About 30 days |

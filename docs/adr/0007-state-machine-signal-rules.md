@@ -4,11 +4,11 @@
 - **Date:** 2026-11-24
 
 ## Context
-The state-machine table in [ARCHITECTURE.md](../ARCHITECTURE.md) and ADR-0004 (UWB distance plus a Bluetooth heartbeat) leave four cases open. They decide whether PTP misses a theft or raises a false alarm, so they're recorded here. The owner approved all four on issue #47.
+The state-machine table in [ARCHITECTURE.md](../ARCHITECTURE.md) and ADR-0004 (UWB distance plus a Bluetooth heartbeat) leave some cases open. They decide whether PTP misses a theft or raises a false alarm, so they're recorded here. The owner approved decisions 1 to 4 on issue #47; decision 5 came with #49.
 
 The two test traces that pull in opposite directions (`docs/TESTING.md`):
 - `pocket-crowd`: UWB flickers while the phone never leaves the owner. No alarm.
-- `airplane-mode`: every signal stops at once. Alarm within 3 s.
+- `airplane-mode`: every signal stops at once. Alarm 3 s after the last signal.
 
 ## Decision
 1. **"Signal" means any sample, UWB or heartbeat.** The no-signal timer (`DetectionConfig.signalLossDelay`, 3 s) restarts on either.
@@ -19,6 +19,8 @@ The two test traces that pull in opposite directions (`docs/TESTING.md`):
    - Rejected: only the 5 s Warning timer. Switching the phone off 1 s into a Warning would buy 4 more seconds.
 4. **Alarm latches.** Coming back in range doesn't cancel it. Only "I have it", Mark as Lost or disarming leaves Alarm.
    - Rejected: cancel when back in range. Walking past the owner would silence it.
+5. **Arming allows a longer silence until the first sample** (`DetectionConfig.linkStartupDelay`, 10 s). After arming, or after the watch app restarts while armed, Bluetooth and UWB need a few seconds to connect. Counting the usual 3 s from the tap would alarm with the phone in the owner's pocket. The first sample ends the allowance; from then on decision 1 applies. If no sample ever arrives, the Alarm is raised when the allowance ends. The 10 s default is a guess until the link start-up time is measured on devices. "I have it" doesn't get the allowance: the usual 3 s applies after the tap.
+   - Rejected: count the usual 3 s from the tap (a false alarm on every arm), or wait for the first sample without a limit (a phone taken before the link came up would never alarm).
 
 Also, as the table already says: **Lost is final** for a session. A new session starts at Disarmed.
 

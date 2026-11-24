@@ -25,6 +25,7 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - `DistanceSample` in `PTPCore`: an optional distance in metres, the source (UWB or Bluetooth) and the time since the session started. First Phase 1 type; nothing uses it yet (#43).
 - `MedianSmoother` in `PTPCore`: the median distance over `DetectionConfig.smoothingWindow` (1 s), so one wild reading can't cross a threshold. Nothing uses it yet (#45).
 - `PTPStateMachine` in `PTPCore`: Disarmed, Armed, Warning, Alarm and Lost, driven by samples, ticks and owner actions. Alert distances (8 m, Event mode 4 m) and delays (2 s, 5 s, 3 s) are in `DetectionConfig`. ADR-0007 records the signal-loss rules. Not wired into the apps yet (#47).
+- `WatchSession` on the watch: it keeps the arm mode, feeds UWB and heartbeat samples to `PTPStateMachine` on the watch's own clock and ticks it, so the watch alarms on signal loss without any message from the phone. The tick period is `DetectionConfig.tickInterval` (0.5 s). The setup screen gains Arm, Disarm, "I have it" and "Mark as Lost" buttons. Arming allows 10 s of silence until the first sample (`DetectionConfig.linkStartupDelay`, ADR-0007 decision 5) (#49).
 
 ### Changed
 - On-device stores (places, alarm log) will use SQLite through the system `SQLite3` library in a `PTPStore` package, not SwiftData (ADR-0005, #30).

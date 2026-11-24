@@ -76,11 +76,45 @@ private func warning() -> PTPStateMachine {
 
 @Test func acknowledgmentRestartsSignalLossAtOwnerAction() {
     var machine = armed()
+    machine.observe(sample(0))
     #expect(machine.tick(at: .milliseconds(2999)) == .armed)
     #expect(machine.tick(at: .seconds(3)) == .alarm)
     #expect(machine.handle(.iHaveIt, at: .seconds(8)) == .armed)
     #expect(machine.tick(at: .milliseconds(10999)) == .armed)
     #expect(machine.tick(at: .seconds(11)) == .alarm)
+}
+
+@Test func armingAllowsLinkStartupSilenceUntilTheFirstSample() {
+    var silent = armed()
+    #expect(silent.tick(at: .milliseconds(9999)) == .armed)
+    #expect(silent.tick(at: .seconds(10)) == .alarm)
+
+    var linked = armed()
+    linked.observe(sample(1000))
+    #expect(linked.tick(at: .milliseconds(3999)) == .armed)
+    #expect(linked.tick(at: .seconds(4)) == .alarm)
+
+    var onTime = armed()
+    #expect(onTime.observe(sample(10000)) == .armed)
+    var late = armed()
+    #expect(late.observe(sample(10001)) == .alarm)
+}
+
+@Test func acknowledgmentGetsNoLinkStartupAllowance() {
+    var machine = armed()
+    #expect(machine.tick(at: .seconds(10)) == .alarm)
+    machine.handle(.iHaveIt, at: .seconds(10))
+    #expect(machine.tick(at: .milliseconds(12999)) == .armed)
+    #expect(machine.tick(at: .seconds(13)) == .alarm)
+}
+
+@Test func rearmingAfterASampleAllowsLinkStartupAgain() {
+    var machine = armed()
+    machine.observe(sample(0))
+    machine.handle(.disarm, at: .seconds(1))
+    machine.handle(.arm(.normal), at: .zero)
+    #expect(machine.tick(at: .milliseconds(9999)) == .armed)
+    #expect(machine.tick(at: .seconds(10)) == .alarm)
 }
 
 @Test func acknowledgmentClearsSmootherAndCountdownAndRetainsEventMode() {
@@ -150,6 +184,7 @@ private func warning() -> PTPStateMachine {
 
 @Test func sampleAtDeadlineWinsButLateRecoveryCannotCancelAlarm() {
     var machine = armed()
+    machine.observe(sample(0))
     #expect(machine.observe(sample(3000)) == .armed)
     #expect(machine.observe(sample(6001, 1)) == .alarm)
 
@@ -208,13 +243,14 @@ private func warning() -> PTPStateMachine {
 
     machine.handle(.arm(.normal), at: .seconds(0))
 
-    #expect(machine.tick(at: .milliseconds(2999)) == .armed)
-    #expect(machine.tick(at: .milliseconds(3000)) == .alarm)
+    #expect(machine.tick(at: .milliseconds(9999)) == .armed)
+    #expect(machine.tick(at: .milliseconds(10000)) == .alarm)
 }
 
 @Test func ownerActionAppliesADeadlineThatFellDueFirst() {
     var machine = PTPStateMachine(config: .standard)
     machine.handle(.arm(.normal), at: .seconds(0))
+    machine.observe(sample(0))
 
     // Signal loss fell due at 3 s; the tap at 5 s acknowledges that alarm.
     #expect(machine.handle(.iHaveIt, at: .seconds(5)) == .armed)
@@ -226,6 +262,6 @@ private func warning() -> PTPStateMachine {
     var machine = PTPStateMachine(config: .standard)
     machine.handle(.arm(.normal), at: .seconds(5))
 
-    #expect(machine.tick(at: .milliseconds(7999)) == .armed)
-    #expect(machine.tick(at: .milliseconds(8000)) == .alarm)
+    #expect(machine.tick(at: .milliseconds(14999)) == .armed)
+    #expect(machine.tick(at: .milliseconds(15000)) == .alarm)
 }
