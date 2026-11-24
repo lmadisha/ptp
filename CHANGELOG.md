@@ -29,6 +29,7 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - The watch shows separate Disarmed, Armed, Warning, Alarm and Lost screens. Armed shows live distance and the alert threshold, Warning adds a countdown, and Alarm repeats the notification haptic. "I have it" returns to Armed from Warning or Alarm. Setup readings and controls are under Diagnostics (#50).
 - `Packages/PTPStore`: a SQLite alarm event log through the system `SQLite3` library, with 30-day retention. Not linked into the app yet (ADR-0005, now Accepted; #63).
 - The iPhone app writes the alarm log: one entry when the watch reports an Alarm and one when it ends. The database is file-protected and excluded from backup (#65).
+- The watch reads the heartbeat's signal strength, logs it, and uses it to judge range when it has no UWB distance, for example with PTP off screen. Thresholds are provisional until tuned from device logs (ADR-0009, #67).
 
 ### Changed
 - On-device stores (places, alarm log) will use SQLite through the system `SQLite3` library in a `PTPStore` package, not SwiftData (ADR-0005, #30).

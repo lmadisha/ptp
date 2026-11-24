@@ -3,6 +3,9 @@ public struct MedianSmoother: Sendable {
     private var newestTime: Duration?
     private var readings: [(time: Duration, meters: Float)] = []
 
+    /// How many readings are in the window.
+    public var count: Int { readings.count }
+
     public init(window: Duration) {
         self.window = window
     }

@@ -49,6 +49,16 @@ The full steps, in order, are in [GATE0_RUNBOOK.md](GATE0_RUNBOOK.md). In short:
 - **#59:** with both apps open, the iPhone shows "Watch: Disarmed". Tap Arm on the watch: the phone line changes to "Watch: Armed" (it can take a few seconds). Raise an Alarm by walking away past 8 m and letting the Warning run out (airplane mode on the phone won't do here, because it also cuts the link): the phone shows "Watch: Alarm". Repeat the Alarm with the wrist down and the phone app in the background, then open the phone app: does it show Alarm, and how late? Note how long each change takes to appear, and what the phone shows after the watch app is force-quit (it is expected to keep the last state).
 - **#61:** with the phone locked, the Lock Screen activity reads "PTP · Disarmed". Arm on the watch: it reads "PTP · Armed". Raise an Alarm (walk away past 8 m): it turns red and reads "PTP · Alarm". Tap "I have it" on the watch: it goes back to black. Note how long each change takes with the phone locked, and whether red ever stays after the watch has left Alarm.
 - **#65:** the phone shows "Alarm log: N events". Raise an Alarm on the watch with the phone app open: N goes up by one. Tap "I have it": N goes up by one more. Force-quit and reopen the phone app during an Alarm: N must not go up again. Repeat with the phone locked in a pocket, then open the app: were both entries written?
+- **#67 (do these first; they set the thresholds):** install the build, open Disarmed › Diagnostics on the watch and check "Signal: … dBm" shows a number with the phone app open. Then, for each drill, tap Arm, press the Digital Crown so PTP is off screen, and note the clock time you start and stop:
+  1. **Pocket:** phone in a trouser pocket, walk around and sit, 3 minutes. Expected: no tap on the wrist. Note any.
+  2. **Bag:** phone in a bag on your shoulder, 3 minutes. Expected: none.
+  3. **Walk away:** phone on a table, walk 20 m in a straight line, wait 20 s, walk back. Twice. Expected: a tap (Warning), then repeated taps (Alarm). Note how far you were.
+  4. **Other room:** phone on a table, go behind a wall for 1 minute. Expected: taps.
+  5. **Airplane mode:** PTP off screen, switch the phone to airplane mode. Expected: taps within a few seconds. Nothing until you reopen PTP means the app is not alive in the background (#57).
+  6. **Wrist down:** arm, do not press the crown, lower the wrist, walk away. Does it alarm?
+  7. **Warning, then off screen:** with PTP on screen walk to about 9 m until the Warning shows, then press the crown and keep walking. The Alarm must still come.
+  8. **Pocket after "I have it":** if drill 1 or 2 alarmed, tap "I have it" and keep the phone where it was for 2 minutes. Expected: no second alarm.
+  Afterwards open PTP, Disarm, Diagnostics › "Send logs to phone", and copy the `ptp-watch-…` files from Files › On My iPhone › PTP to the Mac. They are raw logs: do not commit them.
 
 ## Workflow as actually run (see AGENTS.md for the rules)
 - **Roles:** Claude Opus plans and reviews; **Codex GPT-6.2 Sol implements** (the owner's choice); Claude Haiku captures Simulator evidence.

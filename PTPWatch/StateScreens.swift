@@ -30,7 +30,8 @@ struct ArmedView: View {
                     .accessibilityLabel("Distance")
                     .accessibilityValue(Text(distanceText ?? "Unavailable"))
                 if distance == nil {
-                    Text("No distance reading").font(.footnote)
+                    // Without a distance the watch judges by the heartbeat's signal strength (ADR-0009).
+                    Text(session.rssi.map { "No distance. Signal \($0) dBm" } ?? "No distance reading").font(.footnote)
                 }
                 ProgressView(value: progress)
                     .accessibilityLabel("Distance relative to alert threshold")

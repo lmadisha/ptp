@@ -9,7 +9,10 @@ final class HeartbeatReceiver: NSObject, CBCentralManagerDelegate, CBPeripheralD
     private(set) var state = "waiting for phone ID"
     private(set) var lastBeat: Date?
     private(set) var counter: UInt32?
-    var onBeat: (@MainActor () -> Void)?
+    /// Signal strength of the connection in dBm, read after each beat. Nil until the first read.
+    private(set) var rssi: Int?
+    /// Called on every beat with the latest signal strength.
+    var onBeat: (@MainActor (Int?) -> Void)?
 
     private var manager: CBCentralManager?
     private var phone: CBPeripheral?
@@ -26,6 +29,7 @@ final class HeartbeatReceiver: NSObject, CBCentralManagerDelegate, CBPeripheralD
         ignoredPhones.removeAll()
         lastBeat = nil
         counter = nil
+        rssi = nil
 
         guard let manager else {
             state = "starting…"
@@ -39,6 +43,7 @@ final class HeartbeatReceiver: NSObject, CBCentralManagerDelegate, CBPeripheralD
         readTask?.cancel()
         readTask = nil
         characteristic = nil
+        rssi = nil  // a reading from the old connection says nothing about the next one
     }
 
     private func startReading() {
@@ -232,7 +237,18 @@ final class HeartbeatReceiver: NSObject, CBCentralManagerDelegate, CBPeripheralD
             counter = counterBytes.withUnsafeBytes { UInt32(littleEndian: $0.loadUnaligned(as: UInt32.self)) }
             lastBeat = receivedAt
             state = "receiving"
-            onBeat?()
+            onBeat?(rssi)
+            phone.readRSSI()
+        }
+    }
+
+    nonisolated func peripheral(_ peripheral: CBPeripheral, didReadRSSI RSSI: NSNumber, error: (any Error)?) {
+        let phoneID = ObjectIdentifier(peripheral)
+        // A real reading is negative dBm. 127 is Core Bluetooth's "not available"; zero is no reading either.
+        let value = error == nil && RSSI.intValue < 0 ? RSSI.intValue : nil
+        MainActor.assumeIsolated {
+            guard let phone, ObjectIdentifier(phone) == phoneID, characteristic != nil else { return }
+            rssi = value
         }
     }
 }

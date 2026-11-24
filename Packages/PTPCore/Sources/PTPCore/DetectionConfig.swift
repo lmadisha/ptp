@@ -7,6 +7,17 @@ public struct DetectionConfig: Sendable, Equatable {
     /// How often the caller ticks the state machine. A deadline is noticed up to one interval late.
     public var tickInterval: Duration
 
+    /// A UWB distance older than this no longer decides; the heartbeat's signal strength does (ADR-0009).
+    public var uwbFreshness: Duration
+    /// Signal strength is judged by its median over this window. It is noisy, so the window is long.
+    public var rssiWindow: Duration
+    /// Fewer signal readings than this in the window decide nothing.
+    public var rssiMinSamples: Int
+    /// Median signal weaker than this (dBm) counts as out of range. Provisional: tune from device logs.
+    public var farRSSI: Int
+    /// Median signal stronger than this (dBm) counts as in range. Between the two, the last verdict stands.
+    public var nearRSSI: Int
+
     public var alertDistance: Float
     public var eventAlertDistance: Float
     public var warningDelay: Duration
@@ -26,6 +37,11 @@ public struct DetectionConfig: Sendable, Equatable {
         smoothingWindow: .seconds(1),
         linkRestartDelay: .seconds(2),
         tickInterval: .milliseconds(500),
+        uwbFreshness: .seconds(2),
+        rssiWindow: .seconds(5),
+        rssiMinSamples: 3,
+        farRSSI: -85,
+        nearRSSI: -70,
         alertDistance: 8,
         eventAlertDistance: 4,
         warningDelay: .seconds(2),

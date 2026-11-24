@@ -40,9 +40,9 @@ struct ContentView: View {
                 session.observe(distance: distance, source: .uwb)
                 readingLog.log(distance: distance, source: .uwb)
             }
-            heartbeat.onBeat = { [readingLog, session] in
-                session.observe(distance: nil, source: .ble)
-                readingLog.log(distance: nil, source: .ble)
+            heartbeat.onBeat = { [readingLog, session] rssi in
+                session.observe(distance: nil, source: .ble, rssi: rssi)
+                readingLog.log(distance: nil, source: .ble, rssi: rssi)
             }
             exchange.onHeartbeatID = { [heartbeat] in heartbeat.expect($0) }
             session.onStateChange = { [exchange] in exchange.publishState($0) }

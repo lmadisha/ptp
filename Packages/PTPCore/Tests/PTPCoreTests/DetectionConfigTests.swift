@@ -18,6 +18,12 @@ import Testing
 @Test func standardSeparationThresholdsAndDelays() {
     let config = DetectionConfig.standard
     #expect(config.tickInterval == .milliseconds(500))
+    #expect(config.uwbFreshness == .seconds(2))
+    #expect(config.rssiWindow == .seconds(5))
+    #expect(config.rssiMinSamples == 3)
+    #expect(config.farRSSI == -85)
+    #expect(config.nearRSSI == -70)
+    #expect(config.farRSSI < config.nearRSSI)
     #expect(config.alertDistance == 8)
     #expect(config.eventAlertDistance == 4)
     #expect(config.warningDelay == .seconds(2))

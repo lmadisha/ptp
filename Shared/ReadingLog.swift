@@ -25,11 +25,11 @@ final class ReadingLog {
         #endif
     }
 
-    func log(distance: Float?, source: ReadingSource) {
+    func log(distance: Float?, source: ReadingSource, rssi: Int? = nil) {
         let timestamp = Date.now.timeIntervalSince1970
         let row = ReadingRow(
             tMs: Int64(timestamp * 1_000), distanceMeters: distance, source: source,
-            appState: appState, batteryPercent: batteryPercent)
+            appState: appState, batteryPercent: batteryPercent, rssi: rssi)
         do {
             if handle == nil { try openLog(unixSeconds: Int64(timestamp)) }
             guard let handle else { return }

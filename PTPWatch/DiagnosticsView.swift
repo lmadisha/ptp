@@ -21,6 +21,7 @@ struct DiagnosticsView: View {
                 if let lastBeat = heartbeat.lastBeat {
                     Text("Last beat: \(Text(lastBeat, style: .relative))").font(.footnote)
                 }
+                Text("Signal: \(heartbeat.rssi.map { "\($0) dBm" } ?? "—")").font(.footnote)
                 Text("Log: \(readingLog.rows) rows").font(.footnote)
                 Button("Send logs to phone") { exchange.sendLogs() }
 
