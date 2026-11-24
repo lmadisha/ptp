@@ -11,6 +11,7 @@ Scope: whole repo, mainly `Shared/Ranging.swift`.
 |---|---|---|
 | `yagni` | Exponential backoff with a retry cap for restarting ranging. | `applied`: not built. One fixed delay from `DetectionConfig`; add backoff only if a device log shows the 2 s retry still costs too much. |
 | `shrink` | Ranging still retries every 2 s for as long as the watch app is in the background, where it can't range. | `open`: pause the retry until the app is active again, once a device log shows which error repeats. |
+
 ## 2026-11-24 · #51 watch session after suspension and relaunch
 
 Scope: whole repo, mainly `PTPWatch/WatchSession.swift`, `PTPWatch/KeepAlive.swift` and `PTPStateMachine.swift`.
