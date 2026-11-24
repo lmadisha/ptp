@@ -46,7 +46,7 @@ WC = WatchConnectivity. BLE = Bluetooth Low Energy heartbeat.
 | Warning | Armed | Back in range |
 | Warning | Alarm | Still out of range after 5 s |
 | Armed or Warning | Alarm | No signal (UWB or heartbeat) for 3 s; 10 s is allowed between arming and the first signal |
-| Alarm | Armed | Owner taps "I have it" |
+| Warning or Alarm | Armed | Owner taps "I have it" |
 | Alarm | Lost | Owner taps Mark as Lost |
 | Any except Lost | Disarmed | Owner disarms, Event mode ends, or arrival at a safe place |
 

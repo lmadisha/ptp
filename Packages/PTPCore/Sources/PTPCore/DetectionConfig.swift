@@ -8,6 +8,8 @@ public struct DetectionConfig: Sendable, Equatable {
     public var eventAlertDistance: Float
     public var warningDelay: Duration
     public var alarmDelay: Duration
+    /// Gap between alarm haptics.
+    public var alarmRepeatInterval: Duration
     public var signalLossDelay: Duration
     /// Silence allowed between arming and the first sample, while the link starts up.
     /// Keep it at least as long as `signalLossDelay`.
@@ -21,6 +23,7 @@ public struct DetectionConfig: Sendable, Equatable {
         eventAlertDistance: 4,
         warningDelay: .seconds(2),
         alarmDelay: .seconds(5),
+        alarmRepeatInterval: .seconds(1),
         signalLossDelay: .seconds(3),
         linkStartupDelay: .seconds(10)
     )

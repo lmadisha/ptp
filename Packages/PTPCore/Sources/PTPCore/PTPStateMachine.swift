@@ -17,6 +17,12 @@ public enum OwnerAction: Sendable, Equatable {
 public struct PTPStateMachine: Sendable {
     public private(set) var state: PTPState = .disarmed
 
+    /// The over-threshold deadline shown as the Warning countdown. Signal loss can still raise the Alarm sooner.
+    public var alarmDeadline: Duration? {
+        guard state == .warning, let overSince else { return nil }
+        return overSince + config.warningDelay + config.alarmDelay
+    }
+
     private let config: DetectionConfig
     private var smoother: MedianSmoother
     private var threshold: Float
@@ -44,7 +50,7 @@ public struct PTPStateMachine: Sendable {
             threshold = mode == .event ? config.eventAlertDistance : config.alertDistance
             restartArmed()
             awaitingFirstSignal = true
-        case (.alarm, .iHaveIt):
+        case (.warning, .iHaveIt), (.alarm, .iHaveIt):
             restartArmed()
         case (.alarm, .markAsLost):
             state = .lost

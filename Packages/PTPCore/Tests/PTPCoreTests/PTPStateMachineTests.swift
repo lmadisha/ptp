@@ -30,6 +30,45 @@ private func warning() -> PTPStateMachine {
     #expect(machine.observe(sample(7100, 1)) == .alarm)
 }
 
+@Test func alarmDeadlineIsOnlyAvailableDuringWarning() {
+    var machine = armed()
+    machine.observe(sample(0, 9))
+    #expect(machine.alarmDeadline == nil)
+    #expect(machine.tick(at: .seconds(2)) == .warning)
+    #expect(machine.alarmDeadline == .seconds(7))
+    for ms in [2500, 4500, 6500] {
+        machine.observe(sample(ms))
+    }
+    #expect(machine.tick(at: .seconds(7)) == .alarm)
+    #expect(machine.alarmDeadline == nil)
+}
+
+@Test func warningAcknowledgmentRestartsTheWarningDelay() {
+    var machine = warning()
+    #expect(machine.handle(.iHaveIt, at: .seconds(2)) == .armed)
+    #expect(machine.alarmDeadline == nil)
+
+    #expect(machine.observe(sample(2500, 9)) == .armed)
+    #expect(machine.tick(at: .milliseconds(4499)) == .armed)
+    #expect(machine.tick(at: .milliseconds(4500)) == .warning)
+}
+
+@Test func warningAcknowledgmentAfterTheDeadlineAcknowledgesTheAlarm() {
+    var machine = warning()
+    for ms in [2500, 4500, 6500, 8500] {
+        machine.observe(sample(ms))
+    }
+    #expect(machine.state == .alarm)
+    #expect(machine.handle(.iHaveIt, at: .seconds(9)) == .armed)
+}
+
+@Test func warningAcknowledgmentGetsNoLinkStartupAllowance() {
+    var machine = warning()
+    machine.handle(.iHaveIt, at: .seconds(2))
+    #expect(machine.tick(at: .milliseconds(4999)) == .armed)
+    #expect(machine.tick(at: .seconds(5)) == .alarm)
+}
+
 @Test func eitherSignalRestartsArmedSilenceTimer() {
     var machine = armed()
     #expect(machine.observe(sample(2999, 4)) == .armed)
@@ -155,7 +194,7 @@ private func warning() -> PTPStateMachine {
         #expect(machine.handle(action, at: .seconds(1)) == .armed)
     }
     #expect(machine.tick(at: .seconds(2)) == .warning)
-    for action in [OwnerAction.iHaveIt, .markAsLost, .arm(.event)] {
+    for action in [OwnerAction.markAsLost, .arm(.event)] {
         #expect(machine.handle(action, at: .seconds(2)) == .warning)
     }
     #expect(machine.tick(at: .seconds(3)) == .alarm)

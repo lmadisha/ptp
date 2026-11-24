@@ -3,6 +3,18 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-24 · #50 watch screens
+
+Scope: whole repo, mainly `PTPWatch/StateScreens.swift`, `PTPWatch/WatchSession.swift` and `PTPWatch/ContentView.swift`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `shrink` | The issue planned one file per screen in `PTPWatch/Screens/`. | `applied`: five small views in one file, `StateScreens.swift`. Split when a screen grows. |
+| `native` | A custom threshold bar. | `applied`: `ProgressView(value:)`. |
+| `yagni` | A custom alarm tone with its own audio session. | `applied`: not built. System haptics only; a louder tone belongs with the phone siren (2.2). |
+| `shrink` | The setup screen carried manual keep-alive buttons next to Arm (open from #49). | `applied`: moved to Diagnostics, reachable only while Disarmed. Delete with the reading log after Gate 0. |
+| `delete` | `demoDistance`, a debug-only launch argument that feeds a fixed distance for Simulator screenshots. | `open`: delete once trace fixtures can drive the UI. |
+
 ## 2026-11-24 · #49 watch session and watchdog
 
 Scope: whole repo, mainly `PTPWatch/WatchSession.swift` and `PTPWatch/ContentView.swift`.
