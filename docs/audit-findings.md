@@ -3,6 +3,16 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-24 · #73 start an event from the iPhone
+
+Scope: whole repo, mainly `Shared/TokenExchange.swift` and `PTPApp/ContentView.swift`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | A queued request with an expiry time and a request ID, for when the watch app is closed. | `applied`: not built. The request is sent only while the watch is reachable. |
+| `yagni` | A reply from the watch saying whether it armed. | `applied`: not built. The mirrored state already tells the phone. |
+| `yagni` | A command enum for future phone-to-watch requests. | `applied`: one key with a number of seconds. |
+
 ## 2026-11-24 · #69 Event mode timer on the watch
 
 Scope: whole repo, mainly `PTPWatch/WatchSession.swift` and `PTPWatch/StateScreens.swift`.

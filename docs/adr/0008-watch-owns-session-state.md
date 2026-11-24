@@ -10,7 +10,7 @@ Plan task 1.3 asks for the arm state to be synced between the phone and the watc
 1. **The watch runs the only state machine.** Its state is the truth.
 2. **The phone shows the last state the watch reported.** The watch adds its state to the WatchConnectivity application context it already publishes. The plan also names `sendMessage` for alarm events. It is left out for now: a message and the context travel separately and can arrive out of order, so a late "alarm" could overwrite a newer "armed". Add it, with a sequence number, when the phone has to act on an Alarm (siren, 2.2).
 3. **Publishing is fire-and-forget.** Nothing on the watch waits for the phone, and a failed send changes nothing on the watch.
-4. **The phone can't change the state yet.** Arming from the phone comes with Event mode (plan 2.1), as a request the watch decides on.
+4. **The only request the phone can make is to start an event** (#73). The request goes by `sendMessage`, only while the watch app is reachable, and is never queued: a request delivered hours later would arm the watch when nobody expects it. The watch arms only if it is Disarmed, its app is active (the keep-alive can only start then) and the length is one it offers itself. The phone has no message that disarms, clears an Alarm or changes a running session, because the phone is the device that gets stolen. The phone learns the result from the mirrored state.
    - Rejected: a state machine on each device, kept in step. Two clocks and two sets of samples would disagree exactly when it matters.
    - Rejected: the phone as the owner. A thief holding the phone could disarm it, and the watch would depend on the phone.
 

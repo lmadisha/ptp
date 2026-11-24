@@ -43,9 +43,10 @@ final class WatchSession {
         if isUnprotected { keepAlive.startRuntime() }
     }
 
-    /// Arms in Event mode until `duration` from now.
+    /// Arms in Event mode until `duration` from now. Only the lengths the watch itself offers are accepted,
+    /// so a request from the phone can't ask for anything else.
     func armEvent(for duration: Duration) {
-        guard state == .disarmed else { return }
+        guard state == .disarmed, config.eventDurations.contains(duration) else { return }
         let end = Date.now.addingTimeInterval(TimeInterval(duration.components.seconds))
         UserDefaults.standard.set(end.timeIntervalSince1970, forKey: Self.eventEndKey)
         eventEndsAt = end
