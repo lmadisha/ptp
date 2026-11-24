@@ -30,6 +30,7 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - `Packages/PTPStore`: a SQLite alarm event log through the system `SQLite3` library, with 30-day retention. Not linked into the app yet (ADR-0005, now Accepted; #63).
 - The iPhone app writes the alarm log: one entry when the watch reports an Alarm and one when it ends. The database is file-protected and excluded from backup (#65).
 - The watch reads the heartbeat's signal strength, logs it, and uses it to judge range when it has no UWB distance, for example with PTP off screen. Thresholds are provisional until tuned from device logs (ADR-0009, #67).
+- Event mode on the watch: "Event 2 hours" and "Event 4 hours" arm with the 4 m alert distance and disarm by themselves when the time is up, unless a Warning or an Alarm is showing (#69).
 
 ### Changed
 - On-device stores (places, alarm log) will use SQLite through the system `SQLite3` library in a `PTPStore` package, not SwiftData (ADR-0005, #30).

@@ -8,6 +8,7 @@
 | Settings | To work the way you set it up | iPhone + watch | Until you delete the app |
 | Arm mode on the watch (normal or event) | So the watch stays armed and can alarm without the phone if the app restarts | UserDefaults on the watch | Until disarm or marking the phone as lost |
 | The watch's state (one word: disarmed, armed, warning, alarm or lost) | So the iPhone can show what the watch is doing | Handed to the system's WatchConnectivity link, which keeps the latest value on your iPhone and watch | Replaced on every state change; removed from each device when you delete PTP on that device |
+| The end time of a running event on the watch | So Event mode ends when you chose, also after the watch app restarts | UserDefaults on the watch | Until the event ends, you disarm, or you mark the phone as lost. If an Alarm is showing when the event ends, until you leave the Alarm |
 | Alarm or Lost state on the watch | So an Alarm isn't cleared when the watch app restarts | UserDefaults on the watch | Until the owner leaves that state |
 | Place areas you visit, with a visit count (rounded, not exact trails) | To tell when you're somewhere unfamiliar | iPhone only, in an on-device SQLite database that's file-protected and not backed up to iCloud | Deleted after 60 days |
 | Safe places and risky places you choose | To arm or not arm automatically | iPhone only | Until you remove them |

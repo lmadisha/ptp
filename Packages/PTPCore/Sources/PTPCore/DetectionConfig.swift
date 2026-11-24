@@ -20,6 +20,11 @@ public struct DetectionConfig: Sendable, Equatable {
 
     public var alertDistance: Float
     public var eventAlertDistance: Float
+    /// The lengths the owner can pick for Event mode.
+    public var eventDurations: [Duration]
+    /// For this long after an event's end the watch first confirms the phone is still there before it disarms.
+    /// Later than that it just disarms: the owner has long moved on, and the phone may rightly be elsewhere.
+    public var eventEndGrace: Duration
     public var warningDelay: Duration
     public var alarmDelay: Duration
     /// Gap between alarm haptics.
@@ -44,6 +49,8 @@ public struct DetectionConfig: Sendable, Equatable {
         nearRSSI: -70,
         alertDistance: 8,
         eventAlertDistance: 4,
+        eventDurations: [.seconds(2 * 60 * 60), .seconds(4 * 60 * 60)],
+        eventEndGrace: .seconds(15 * 60),
         warningDelay: .seconds(2),
         alarmDelay: .seconds(5),
         alarmRepeatInterval: .seconds(1),

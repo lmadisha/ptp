@@ -26,6 +26,8 @@ import Testing
     #expect(config.farRSSI < config.nearRSSI)
     #expect(config.alertDistance == 8)
     #expect(config.eventAlertDistance == 4)
+    #expect(config.eventDurations == [.seconds(7200), .seconds(14_400)])
+    #expect(config.eventEndGrace == .seconds(900))
     #expect(config.warningDelay == .seconds(2))
     #expect(config.alarmDelay == .seconds(5))
     #expect(config.alarmRepeatInterval == .seconds(1))

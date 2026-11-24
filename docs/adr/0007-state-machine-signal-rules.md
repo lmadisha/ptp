@@ -4,7 +4,7 @@
 - **Date:** 2026-11-24
 
 ## Context
-The state-machine table in [ARCHITECTURE.md](../ARCHITECTURE.md) and ADR-0004 (UWB distance plus a Bluetooth heartbeat) leave some cases open. They decide whether PTP misses a theft or raises a false alarm, so they're recorded here. The owner approved decisions 1 to 4 on issue #47. Decisions 5 to 8 came later (#49, #50, #51).
+The state-machine table in [ARCHITECTURE.md](../ARCHITECTURE.md) and ADR-0004 (UWB distance plus a Bluetooth heartbeat) leave some cases open. They decide whether PTP misses a theft or raises a false alarm, so they're recorded here. The owner approved decisions 1 to 4 on issue #47. Decisions 5 to 9 came later (#49, #50, #51, #69).
 
 The two test traces that pull in opposite directions (`docs/TESTING.md`):
 - `pocket-crowd`: UWB flickers while the phone never leaves the owner. No alarm.
@@ -29,6 +29,10 @@ The two test traces that pull in opposite directions (`docs/TESTING.md`):
    - Rejected: alarm on waking (a false alarm on every wrist raise after a suspension), or wait without a limit.
 8. **Alarm and Lost survive a restart of the watch app.** The watch stores the latched state and restores it. Only an owner action leaves Alarm (decision 4).
    - Rejected: come back Armed (a crash or a force-quit would silence an Alarm).
+9. **The end of an event does not excuse the link check.** When an event's time is up, the watch disarms only if it is Armed, has heard from the phone since arming, restarting or waking, and has no out-of-range verdict pending. Otherwise it waits: the phone answers and it disarms, or the usual Alarm comes. This holds for `DetectionConfig.eventEndGrace` (15 minutes) after the end; later the watch disarms from Armed without asking.
+   - Why: every event is longer than the watch's one-hour background session, so the watch is often suspended when the end passes. A phone taken just before the end would otherwise be met with a silent Disarmed on the next wrist raise.
+   - Cost: after the grace period a theft during the suspension goes unnoticed. Without a grace period, a watch that wakes the next morning with the phone rightly at home would alarm.
+   - Rejected: disarm as soon as the time is up, whatever the link says.
 
 Also, as the table already says: **Lost is final** for a session. A new session starts at Disarmed.
 

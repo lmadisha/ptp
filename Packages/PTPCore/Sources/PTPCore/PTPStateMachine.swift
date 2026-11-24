@@ -4,6 +4,10 @@ public enum PTPState: String, Sendable, Equatable {
 }
 
 extension PTPState {
+    /// An event that has run out disarms the watch only from Armed. A Warning or an Alarm is the owner's to end
+    /// (ADR-0007 decision 4), so the end of the event waits for it.
+    public var allowsAutoDisarm: Bool { self == .armed }
+
     /// The word to log when the state changes from `previous`: entering Alarm, or how an Alarm ended. Nil otherwise.
     public func alarmLogEntry(after previous: PTPState?) -> String? {
         self != previous && (self == .alarm || previous == .alarm) ? rawValue : nil
@@ -29,6 +33,12 @@ public struct PTPStateMachine: Sendable {
     public var alarmDeadline: Duration? {
         guard state == .warning, let overSince else { return nil }
         return overSince + config.warningDelay + config.alarmDelay
+    }
+
+    /// True when the watch is Armed, has heard from the phone since arming, restarting or waking, and has no
+    /// out-of-range verdict pending. Only then may the end of an event disarm it (ADR-0007 decision 9).
+    public var canEndEvent: Bool {
+        state == .armed && !awaitingFirstSignal && overSince == nil
     }
 
     private let config: DetectionConfig
