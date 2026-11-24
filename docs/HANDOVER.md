@@ -42,6 +42,7 @@ The full steps, in order, are in [GATE0_RUNBOOK.md](GATE0_RUNBOOK.md). In short:
 - **#35:** on the watch, try "Keep alive: runtime", then "Keep alive: workout", each with the wrist down. Note how long each keeps running.
 - **#37:** the watch shows "Last beat" at about 1 s with the phone locked; it grows when the phone is out of range.
 - **#39:** run both apps for a few minutes, lock the phone, walk away and back. In Files › On My iPhone › PTP the phone's CSV has rows through the locked period. Tap "Send logs to phone" on the watch; its CSV appears in the same folder (a transfer can take a minute).
+- **#49:** on the watch, tap Arm with the phone app running nearby: it stays "Armed". Note how many seconds pass before "Last beat" and a distance appear; that is the link start-up time, which `linkStartupDelay` (10 s) must cover. Switch the phone to airplane mode (or force-quit the phone app): the watch shows "Alarm" about 3 s later. Tap "I have it", then force-quit the watch app and reopen it: it comes back "Armed" and should stay there once the link is back. Repeat with the wrist down to see whether the alarm still arrives.
 
 ## Workflow as actually run (see AGENTS.md for the rules)
 - **Roles:** Claude Opus plans and reviews; **Codex GPT-6.2 Sol implements** (the owner's choice); Claude Haiku captures Simulator evidence.

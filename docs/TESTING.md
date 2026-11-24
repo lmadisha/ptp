@@ -20,7 +20,7 @@ Each trace has an expected outcome:
 | `table-walk-away.csv` | Warning, then Alarm |
 | `snatch-run.csv` | Alarm within 5 s of separation |
 | `pocket-crowd.csv` | No Alarm (at most one Warning) |
-| `airplane-mode.csv` | Alarm within 3 s of signal loss |
+| `airplane-mode.csv` | Alarm 3 s after the last signal (the app notices it up to one `tickInterval`, 0.5 s, later) |
 | `bag-noise.csv` | No Alarm |
 
 **Rules:**

@@ -24,6 +24,8 @@ public struct PTPStateMachine: Sendable {
     private var lastSignal: Duration = .zero
     // A nil verdict from the smoother leaves this start time intact.
     private var overSince: Duration?
+    // True from arming until the first sample: the link may still be starting up.
+    private var awaitingFirstSignal = false
 
     public init(config: DetectionConfig) {
         self.config = config
@@ -41,6 +43,7 @@ public struct PTPStateMachine: Sendable {
         case (.disarmed, .arm(let mode)):
             threshold = mode == .event ? config.eventAlertDistance : config.alertDistance
             restartArmed()
+            awaitingFirstSignal = true
         case (.alarm, .iHaveIt):
             restartArmed()
         case (.alarm, .markAsLost):
@@ -57,6 +60,7 @@ public struct PTPStateMachine: Sendable {
         smoother = MedianSmoother(window: config.smoothingWindow)
         overSince = nil
         lastSignal = latestTime
+        awaitingFirstSignal = false
         state = .armed
     }
 
@@ -70,6 +74,7 @@ public struct PTPStateMachine: Sendable {
         advanceTimers(includingEndpoint: false)
         guard state != .alarm else { return state }
         lastSignal = latestTime
+        awaitingFirstSignal = false
         var reading = sample
         reading.time = latestTime
         let median = smoother.add(reading)
@@ -101,7 +106,8 @@ public struct PTPStateMachine: Sendable {
             includingEndpoint ? now >= deadline : now > deadline
         }
 
-        if reached(lastSignal + config.signalLossDelay) {
+        let allowedSilence = awaitingFirstSignal ? config.linkStartupDelay : config.signalLossDelay
+        if reached(lastSignal + allowedSilence) {
             state = .alarm
         } else if let overSince {
             // Use the logical Warning entry time even when ticks arrive late.

@@ -31,7 +31,7 @@ WC = WatchConnectivity. BLE = Bluetooth Low Energy heartbeat.
 | `PTPCore.DetectionConfig` | Package | All timings and thresholds in one place |
 | `RangingService` | iOS + watchOS | Wraps `NISession` and the Bluetooth heartbeat; outputs `DistanceSample`s |
 | `PairingService` | iOS + watchOS | Exchanges discovery tokens and arm state over WatchConnectivity |
-| `Watchdog` | watchOS | Raises Alarm on signal loss, independent of the phone |
+| `WatchSession` | watchOS | Ticks `PTPStateMachine` on the watch's own clock so it can raise Alarm on signal loss independently of the phone |
 | `ArmingService` | iOS | Event mode timers, visit learning, new-area prompt, region triggers |
 | `PlaceStore` | iOS | SQLite store of place areas and visit counts (`Packages/PTPStore`, ADR-0005) |
 | `SirenService` | iOS | Audio session and full-screen alarm |
@@ -45,7 +45,7 @@ WC = WatchConnectivity. BLE = Bluetooth Low Energy heartbeat.
 | Armed | Warning | Distance over the threshold for 2 s |
 | Warning | Armed | Back in range |
 | Warning | Alarm | Still out of range after 5 s |
-| Armed or Warning | Alarm | No signal (UWB or heartbeat) for 3 s |
+| Armed or Warning | Alarm | No signal (UWB or heartbeat) for 3 s; 10 s is allowed between arming and the first signal |
 | Alarm | Armed | Owner taps "I have it" |
 | Alarm | Lost | Owner taps Mark as Lost |
 | Any except Lost | Disarmed | Owner disarms, Event mode ends, or arrival at a safe place |
