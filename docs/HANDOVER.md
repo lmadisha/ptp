@@ -17,7 +17,7 @@ For the next AI agent (or human) picking up PTP. Read **AGENTS.md** first; every
   | Token exchange over WatchConnectivity (#25, PR #26) | Merged, ticked |
   | NISession on both devices with live distance (#27, PR #28) | Merged, ticked (owner's device check, 2026-11-24) |
   | Live Activity keeps iPhone ranging (#29, PR #34) | Merged, ticked (owner's device check, 2026-11-24) |
-  | Watch keep-alive: extended runtime + workout session (#35, PR #36) | Merged, ticked (owner's device check, 2026-11-24). How long each mode lasts was not recorded |
+  | Watch keep-alive: extended runtime + workout session (#35, PR #36) | Merged, ticked (owner's device check, 2026-11-24). The owner ran the runtime session; how long it lasts was not recorded |
   | Bluetooth heartbeat as a second signal (#37, PR #38) | Merged, ticked (owner's device check, 2026-11-24) |
 - **Phase 0, task 0.3 (measurement):**
   - CSV reading log (#39): implemented on `feat/39-reading-log`. Files are `ptp-<phone|watch>-<unix seconds>.diagnostics.csv` in each app's Documents folder; the phone's show in the Files app, and the watch sends its file with "Send logs to phone". Device check needed.

@@ -48,7 +48,7 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
   These traces become the test fixtures for Phase 1.
 
 ### Gate 0
-**Passed on 2026-11-24, on the owner's word.** The owner ran the apps on an iPhone and an Apple Watch and reports that ranging, the heartbeat and the keep-alive work. The figures below were not recorded in the repo, and neither were the 4-hour logs or the trace files of 0.3, so the trace-replay task in 1.1 stays open until the traces exist.
+**Passed on 2026-11-24, on the owner's word.** The owner ran the apps on an iPhone and an Apple Watch and reports that ranging, the heartbeat and the keep-alive work. The keep-alive they ran was the extended runtime session, not the workout session; how long it lasted was not reported. The figures below were not recorded in the repo, and neither were the 4-hour logs or the trace files of 0.3, so the trace-replay task in 1.1 stays open until the traces exist.
 
 | Check | Pass | Result |
 |---|---|---|
