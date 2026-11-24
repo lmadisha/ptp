@@ -28,12 +28,11 @@ For the next AI agent (or human) picking up PTP. Read **AGENTS.md** first; every
   - The team ID is deliberately **not** committed, because the repo is public. The owner sets the team in Xcode for device builds.
 
 ## Next tasks, in order
-1. **Gate 0 needs the owner:**
-   - 4-hour armed sessions on two watch models;
-   - recording the trace scenarios;
-   - the measurements in the Gate 0 table.
+1. **Gate 0 is recorded as passed** (2026-11-24, on the owner's device check, #54). Still open, and they need the owner:
+   - 4-hour armed sessions on two watch models. The 2026-11-24 drill projects about 33 points of watch battery over 4 h against the gate's under 15%, so this is the check most likely to fail;
+   - recording the trace scenarios (the trace-replay task in Phase 1.1 stays open until fixtures exist).
    Write exact steps for the owner and wait. Don't guess. Use `/log-field-drill` once results come back.
-2. **Phase 1 starts only after Gate 0 passes** (plan rule). If it fails, follow the plan's fallback (Bluetooth heartbeat only) and re-plan.
+2. **Phase 1 may go ahead** now that Gate 0 is recorded as passed. If the 4-hour battery run fails, follow the plan's fallback (Bluetooth heartbeat only) and re-plan.
 
 ## Device checks the owner still owes
 The full steps, in order, are in [GATE0_RUNBOOK.md](GATE0_RUNBOOK.md). In short:
