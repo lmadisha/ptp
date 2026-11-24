@@ -11,6 +11,7 @@ One file per significant decision. Never edit an accepted ADR's decision. Write 
 | [0005](0005-sqlite-for-on-device-data.md) | Store on-device data in SQLite, not SwiftData | Proposed |
 | [0006](0006-test-build-reading-log.md) | Keep a reading log on each device in test builds | Proposed |
 | [0007](0007-state-machine-signal-rules.md) | How the state machine treats signal loss and UWB dropouts | Proposed |
+| [0008](0008-watch-owns-session-state.md) | The watch owns the session state; the iPhone mirrors it | Proposed |
 
 ## Template
 ```markdown

@@ -21,6 +21,7 @@ struct ContentView: View {
             Text(ranging.state).font(.footnote)
             Text(ranging.distanceMeters.map { String(format: "%.1f m", $0) } ?? "—")
             Text(heartbeat.state).font(.footnote)
+            Text("Watch: \(exchange.watchState?.rawValue.capitalized ?? "no state received")").font(.footnote)
             Text("Log: \(readingLog.rows) rows").font(.footnote)
         }
         .padding()

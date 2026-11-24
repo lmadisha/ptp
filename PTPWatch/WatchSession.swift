@@ -19,6 +19,8 @@ final class WatchSession {
     private var lastActive: Duration = .zero
 
     private(set) var state: PTPState = .disarmed
+    /// Called on every state change, also in the background where SwiftUI may not update.
+    var onStateChange: ((PTPState) -> Void)?
     private(set) var distanceMeters: Float?
     private(set) var armMode: ArmMode?
     private(set) var secondsToAlarm: Int?
@@ -43,7 +45,7 @@ final class WatchSession {
         machine.handle(.arm(mode), at: .zero)
         armMode = mode
         updateState(at: .zero)
-        UserDefaults.standard.set(mode == .event ? "event" : "normal", forKey: Self.armModeKey)
+        UserDefaults.standard.set(mode.rawValue, forKey: Self.armModeKey)
         // Extended runtime is provisional until Gate 0 picks the keep-alive mode (ADR-0004).
         keepAlive.startRuntime()
 
@@ -108,10 +110,8 @@ final class WatchSession {
             updateState(at: .zero)
             return
         }
-        switch UserDefaults.standard.string(forKey: Self.armModeKey) {
-        case "normal": arm(.normal)
-        case "event": arm(.event)
-        default: break
+        if let mode = UserDefaults.standard.string(forKey: Self.armModeKey).flatMap(ArmMode.init(rawValue:)) {
+            arm(mode)
         }
         guard latched == "alarm" else { return }
         // Without a stored arm mode nothing was armed, and an Alarm with no session could never be dismissed.
@@ -168,9 +168,9 @@ final class WatchSession {
 
         guard state != machine.state else { return }
         state = machine.state
-        let latched = state == .alarm ? "alarm" : state == .lost ? "lost" : nil
-        if let latched {
-            UserDefaults.standard.set(latched, forKey: Self.latchedKey)
+        onStateChange?(state)
+        if state == .alarm || state == .lost {
+            UserDefaults.standard.set(state.rawValue, forKey: Self.latchedKey)
         } else {
             UserDefaults.standard.removeObject(forKey: Self.latchedKey)
         }

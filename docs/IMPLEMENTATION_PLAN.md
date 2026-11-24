@@ -83,7 +83,7 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
 
 ### 1.3 iPhone app
 - [ ] Live Activity showing state and distance; it turns red on Alarm.
-- [ ] Sync arm state between phone and watch over WatchConnectivity (`updateApplicationContext` for state, `sendMessage` for alarm events).
+- [x] Sync arm state between phone and watch over WatchConnectivity (`updateApplicationContext` for state, `sendMessage` for alarm events). The watch owns the state and the phone mirrors it through the application context (ADR-0008). Still to come: `sendMessage` for alarm events with the siren (2.2), and arming from the phone with Event mode (2.1).
 - [ ] Local alarm event log (SQLite in `Packages/PTPStore`, ADR-0005), capped at about 30 days.
 
 ### Gate 1
