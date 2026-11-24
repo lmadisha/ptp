@@ -26,7 +26,7 @@ WC = WatchConnectivity. BLE = Bluetooth Low Energy heartbeat.
 
 | Component | Target | Responsibility |
 |---|---|---|
-| `PTPCore.DetectionEngine` | Package | Smooths samples, applies thresholds, emits events |
+| `PTPCore.DetectionEngine` | Package | Smooths samples, applies thresholds, emits events. In code this is `MedianSmoother` plus `PTPStateMachine`; there is no third type |
 | `PTPCore.PTPStateMachine` | Package | Disarmed → Armed → Warning → Alarm → Lost |
 | `PTPCore.DetectionConfig` | Package | All timings and thresholds in one place |
 | `RangingService` | iOS + watchOS | Wraps `NISession` and the Bluetooth heartbeat; outputs `DistanceSample`s |
@@ -45,10 +45,15 @@ WC = WatchConnectivity. BLE = Bluetooth Low Energy heartbeat.
 | Armed | Warning | Distance over the threshold for 2 s |
 | Warning | Armed | Back in range |
 | Warning | Alarm | Still out of range after 5 s |
-| Armed | Alarm | No signal for 3 s |
+| Armed or Warning | Alarm | No signal (UWB or heartbeat) for 3 s |
 | Alarm | Armed | Owner taps "I have it" |
 | Alarm | Lost | Owner taps Mark as Lost |
 | Any except Lost | Disarmed | Owner disarms, Event mode ends, or arrival at a safe place |
+
+Rules the table doesn't show ([ADR-0007](adr/0007-state-machine-signal-rules.md)):
+- If UWB drops out while the heartbeat continues, the last range verdict stands.
+- Alarm latches: coming back in range doesn't cancel it.
+- Lost is final for a session.
 
 Defaults:
 - Normal alert distance: 8 m

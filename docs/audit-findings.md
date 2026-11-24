@@ -3,6 +3,17 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-24 · #47 state machine
+
+Scope: whole repo, mainly `PTPCore/PTPStateMachine.swift` and `DetectionConfig`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `delete` | The architecture names a `DetectionEngine` type between the smoother and the state machine. | `applied`: not built. The state machine owns the smoother; ARCHITECTURE.md says so. |
+| `yagni` | No hysteresis around the alert distance. | `open`: add it only if real traces show Armed and Warning flapping (ADR-0007). |
+| `yagni` | `ArmMode` has two cases chosen by the caller, not a free threshold. | `applied`: the two distances stay in `DetectionConfig`. A user-set alert distance (Phase 2.3 settings) will need a third route. |
+| `shrink` | `PTPStateMachine` isn't wired into `Ranging` or any screen. | `open`: tasks 1.2 and 1.3. |
+
 ## 2026-11-24 · #45 moving-median smoothing
 
 Scope: whole repo, mainly `PTPCore/MedianSmoother.swift` and `DetectionConfig`.

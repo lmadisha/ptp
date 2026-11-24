@@ -24,6 +24,7 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - Gate 0 runbook (`docs/GATE0_RUNBOOK.md`): exact device steps for the short checks, the 4-hour sessions and the trace recordings, with commands that read a log (#41).
 - `DistanceSample` in `PTPCore`: an optional distance in metres, the source (UWB or Bluetooth) and the time since the session started. First Phase 1 type; nothing uses it yet (#43).
 - `MedianSmoother` in `PTPCore`: the median distance over `DetectionConfig.smoothingWindow` (1 s), so one wild reading can't cross a threshold. Nothing uses it yet (#45).
+- `PTPStateMachine` in `PTPCore`: Disarmed, Armed, Warning, Alarm and Lost, driven by samples, ticks and owner actions. Alert distances (8 m, Event mode 4 m) and delays (2 s, 5 s, 3 s) are in `DetectionConfig`. ADR-0007 records the signal-loss rules. Not wired into the apps yet (#47).
 
 ### Changed
 - On-device stores (places, alarm log) will use SQLite through the system `SQLite3` library in a `PTPStore` package, not SwiftData (ADR-0005, #30).
