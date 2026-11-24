@@ -31,6 +31,7 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - The iPhone app writes the alarm log: one entry when the watch reports an Alarm and one when it ends. The database is file-protected and excluded from backup (#65).
 - The watch reads the heartbeat's signal strength, logs it, and uses it to judge range when it has no UWB distance, for example with PTP off screen. Thresholds are provisional until tuned from device logs (ADR-0009, #67).
 - Event mode on the watch: "Event 2 hours" and "Event 4 hours" arm with the 4 m alert distance and disarm by themselves when the time is up, unless a Warning or an Alarm is showing (#69).
+- The iPhone can ask the watch to start an event (2 or 4 hours) while the watch app is open and disarmed. The watch decides; the phone can never disarm it (ADR-0008, #73).
 
 ### Changed
 - Gate 0 is recorded as passed on the owner's device check, with the 4-hour battery figure and the trace files still unrecorded (`docs/IMPLEMENTATION_PLAN.md`, #54).

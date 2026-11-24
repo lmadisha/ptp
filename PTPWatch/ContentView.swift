@@ -1,4 +1,5 @@
 import SwiftUI
+import WatchKit
 
 struct ContentView: View {
     @State private var exchange = TokenExchange()
@@ -46,6 +47,12 @@ struct ContentView: View {
             }
             exchange.onHeartbeatID = { [heartbeat] in heartbeat.expect($0) }
             session.onStateChange = { [exchange] in exchange.publishState($0) }
+            exchange.onArmEventRequest = { [session] in
+                // The keep-alive can only start while the app is active. Arming off screen would leave the
+                // watch armed but suspended, with the phone showing "Armed".
+                guard WKApplication.shared().applicationState == .active else { return }
+                session.armEvent(for: $0)
+            }
             exchange.publishState(session.state)
             session.restore()
             exchange.start()

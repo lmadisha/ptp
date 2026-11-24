@@ -10,9 +10,16 @@ final class TokenExchange: NSObject {
     private nonisolated static let tokenKey = "niDiscoveryToken"
     private nonisolated static let heartbeatIDKey = "heartbeatID"
     private nonisolated static let watchStateKey = "watchState"
+    private nonisolated static let armEventKey = "armEventSeconds"
 
     private(set) var linkStatus = "Connecting to companion device…"
     private(set) var tokenStatus = "Waiting to exchange tokens…"
+    /// True while the other device's app can receive a message right now.
+    private(set) var isReachable = false
+    /// Phone only: the last event request could not be delivered.
+    private(set) var eventRequestFailed = false
+    /// Watch only: the phone asks for an event of this length. The watch decides (ADR-0008).
+    var onArmEventRequest: (@MainActor (Duration) -> Void)?
     var onPeerToken: (@MainActor (NIDiscoveryToken) -> Void)?
     var onHeartbeatID: (@MainActor (UUID) -> Void)?
     /// The watch owns the session (ADR-0008). This is the last state it reported, which may be stale.
@@ -65,6 +72,23 @@ final class TokenExchange: NSObject {
     }
     #endif
 
+    #if os(iOS)
+    /// Asks the watch to start an event. Sent only while the watch app is reachable and never queued:
+    /// a request delivered hours later would arm the watch when nobody expects it.
+    /// The phone has no message that disarms.
+    func requestEvent(for duration: Duration) {
+        let session = WCSession.default
+        eventRequestFailed = false
+        guard session.activationState == .activated, session.isReachable else {
+            eventRequestFailed = true
+            return
+        }
+        session.sendMessage([Self.armEventKey: Int(duration.components.seconds)], replyHandler: nil) { _ in
+            Task { @MainActor [weak self] in self?.eventRequestFailed = true }
+        }
+    }
+    #endif
+
     func publish(_ token: NIDiscoveryToken) {
         contextPublished = false
         pendingToken = try? NSKeyedArchiver.archivedData(
@@ -86,6 +110,7 @@ final class TokenExchange: NSObject {
     }
 
     private func updateLinkStatus(reachable: Bool) {
+        isReachable = reachable
         let reachability = reachable ? "reachable" : "not reachable"
         #if os(iOS)
         let session = WCSession.default
@@ -224,6 +249,7 @@ extension TokenExchange: WCSessionDelegate {
         Task { @MainActor in
             contextPublished = false
             watchState = nil  // a different watch may be paired next
+            isReachable = false
             lastPeerToken = nil
             WCSession.default.activate()
         }
@@ -231,6 +257,11 @@ extension TokenExchange: WCSessionDelegate {
     #endif
 
     #if os(watchOS)
+    nonisolated func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
+        guard let seconds = message[Self.armEventKey] as? Int else { return }
+        Task { @MainActor in onArmEventRequest?(.seconds(seconds)) }
+    }
+
     nonisolated func sessionCompanionAppInstalledDidChange(_ session: WCSession) {
         Task { @MainActor in sendContext() }
     }

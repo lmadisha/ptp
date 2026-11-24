@@ -41,6 +41,27 @@ struct ContentView: View {
             Text("Watch: \(Self.watchState(exchange)?.capitalized ?? "no state received")").font(.footnote)
             Text("Log: \(readingLog.rows) rows").font(.footnote)
             Text("Alarm log: \(alarmHistory.count) events").font(.footnote)
+
+            // The phone can ask the watch to arm, never to disarm (ADR-0008).
+            let watchState = Self.watchState(exchange).flatMap(PTPState.init(rawValue:))
+            let canAsk = exchange.isReachable && watchState == .disarmed
+            let reason =
+                exchange.eventRequestFailed
+                ? "The watch didn't get the request. Open PTP on your watch and try again."
+                : watchState == .disarmed || watchState == nil
+                    ? "Open PTP on your watch to start an event from here."
+                    : "An event can be started when the watch is disarmed."
+            ForEach(DetectionConfig.standard.eventDurations, id: \.self) { duration in
+                Button("Event \(duration.formatted(.units(allowed: [.hours], width: .wide)))") {
+                    exchange.requestEvent(for: duration)
+                }
+                .buttonStyle(.bordered)
+                .disabled(!canAsk)
+                .accessibilityHint(canAsk ? "Asks your watch to arm for this long" : reason)
+            }
+            if !canAsk || exchange.eventRequestFailed {
+                Text(reason).font(.footnote).multilineTextAlignment(.center)
+            }
         }
         .padding()
         .task {
