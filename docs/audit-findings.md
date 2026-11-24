@@ -3,6 +3,15 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-23 · #43 DistanceSample
+
+Scope: whole repo, mainly `PTPCore/DistanceSample.swift`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | `DistanceSample` has no user yet. | `open`: the next two plan tasks (smoothing, `PTPStateMachine`) consume it. Delete it if they end up not needing it. |
+| `shrink` | `ReadingRow` and `DistanceSample` both carry a distance, a source and a time. | `open`: when `ReadingLog` is folded into "Export diagnostics", build the row from a sample instead of separate fields. |
+| `delete` | A separate source enum for samples. | `applied`: reused `ReadingSource` and moved it next to `DistanceSample`. |
 ## 2026-11-23 · #41 Gate 0 runbook
 
 Scope: whole repo. Docs only.
