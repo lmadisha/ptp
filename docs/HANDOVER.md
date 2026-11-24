@@ -36,6 +36,7 @@ For the next AI agent (or human) picking up PTP. Read **AGENTS.md** first; every
 2. **Phase 1 starts only after Gate 0 passes** (plan rule). If it fails, follow the plan's fallback (Bluetooth heartbeat only) and re-plan.
 
 ## Device checks the owner still owes
+The full steps, in order, are in [GATE0_RUNBOOK.md](GATE0_RUNBOOK.md). In short:
 - **#25 and #27:** install both apps with the team set. Both screens should show "Peer token received", then "Ranging" with a distance that changes as you walk apart. Note the largest distance before "Peer out of range".
 - **#29:** lock the phone while ranging. The Lock Screen distance should keep updating. Time how long it keeps going.
 - **#35:** on the watch, try "Keep alive: runtime", then "Keep alive: workout", each with the wrist down. Note how long each keeps running.

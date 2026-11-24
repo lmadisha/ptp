@@ -12,6 +12,14 @@ Scope: whole repo, mainly `PTPCore/DistanceSample.swift`.
 | `yagni` | `DistanceSample` has no user yet. | `open`: the next two plan tasks (smoothing, `PTPStateMachine`) consume it. Delete it if they end up not needing it. |
 | `shrink` | `ReadingRow` and `DistanceSample` both carry a distance, a source and a time. | `open`: when `ReadingLog` is folded into "Export diagnostics", build the row from a sample instead of separate fields. |
 | `delete` | A separate source enum for samples. | `applied`: reused `ReadingSource` and moved it next to `DistanceSample`. |
+## 2026-11-23 · #41 Gate 0 runbook
+
+Scope: whole repo. Docs only.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `shrink` | The log is read with two `awk` commands in the runbook, not a script or a Swift tool. | `applied`: Gate 0 is run a handful of times. Write a tool only if Phase 3's weekly log reviews need one. |
+| `delete` | HANDOVER.md keeps a short list of the device checks next to the runbook. | `open`: delete the list once Gate 0 is logged in `docs/drills/`. |
 
 ## 2026-11-23 · #39 CSV reading log
 
