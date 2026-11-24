@@ -3,6 +3,17 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-24 · #76 visit learning
+
+Scope: whole repo, mainly `Packages/PTPStore/Sources/PTPStore/PlaceStore.swift` and `PTPApp/VisitLearner.swift`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `shrink` | `PlaceStore` repeats `AlarmLog`'s schema-version switch and retention arithmetic, and `VisitLearner` repeats `AlarmHistory`'s file protection and backup exclusion (about 25 lines each). | `open`: two copies; share a helper when a third store arrives (risky and safe places). |
+| `yagni` | `PlaceStore.visitCount(area:now:)` has no caller yet. | `open`: the new-area prompt (next 2.1 task) is its caller. Delete it if that task changes course. |
+| `shrink` | `VisitLearner.init(now:)` took a date nobody passed. | `applied`: plain `init()`. |
+| `yagni` | A row per cell with a running count and a last-visit time, beside the per-visit rows. | `applied`: not built. A `COUNT(*)` over per-day rows answers the question. |
+
 ## 2026-11-24 · #73 start an event from the iPhone
 
 Scope: whole repo, mainly `Shared/TokenExchange.swift` and `PTPApp/ContentView.swift`.

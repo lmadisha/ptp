@@ -10,7 +10,7 @@
 | The watch's state (one word: disarmed, armed, warning, alarm or lost) | So the iPhone can show what the watch is doing | Handed to the system's WatchConnectivity link, which keeps the latest value on your iPhone and watch | Replaced on every state change; removed from each device when you delete PTP on that device |
 | The end time of a running event on the watch | So Event mode ends when you chose, also after the watch app restarts | UserDefaults on the watch | Until the event ends, you disarm, or you mark the phone as lost. If an Alarm is showing when the event ends, until you leave the Alarm |
 | Alarm or Lost state on the watch | So an Alarm isn't cleared when the watch app restarts | UserDefaults on the watch | Until the owner leaves that state |
-| Place areas you visit, with a visit count (rounded, not exact trails) | To tell when you're somewhere unfamiliar | iPhone only, in an on-device SQLite database that's file-protected and not backed up to iCloud | Deleted after 60 days |
+| Place areas you visit: for each visit, a grid cell about 250 m across and the day you arrived. No exact coordinates, no times of day, no departures (ADR-0010) | To tell when you're somewhere unfamiliar | iPhone only, in an on-device SQLite database that's file-protected and not backed up to iCloud | Each visit is deleted 60 days after its day, the next time the app opens or records a visit. "Delete learned places" removes them all |
 | Safe places and risky places you choose | To arm or not arm automatically | iPhone only | Until you remove them |
 | Alarm history: the time the iPhone learned of an Alarm on the watch, the time it learned the Alarm had ended, and one word for each (the watch's state: alarm, armed, warning, lost or disarmed). No distance and no location | To tune detection and show you past alerts | iPhone only, in an on-device SQLite database that's file-protected and not backed up to iCloud | Deleted once older than 30 days, the next time the app opens or logs an event |
 | Phone–watch distance | To detect separation | In the app's memory, plus the test-build reading log in the next row | Not kept by the app, apart from that log |
@@ -32,7 +32,7 @@
 - **Export diagnostics** saves a file on your phone. It goes to the developer only if you choose to send it.
 
 ## Your control
-- Delete all learned places in Settings › Places.
+- Delete all learned places with "Delete learned places" on the iPhone (Settings › Places once settings exist).
 - Deleting the app removes all of its data.
 
 ## Legal
