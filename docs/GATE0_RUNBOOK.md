@@ -21,7 +21,7 @@ Write down as you go: iPhone model and iOS version, watch model and watchOS vers
 ## Part A: install and first run (10 minutes)
 1. In Xcode, run the `PTPApp` scheme on the iPhone. The watch app installs with it; if it doesn't appear on the watch, run the `PTPWatch` scheme on the watch.
 2. Open PTP on the iPhone. Allow every prompt: Nearby Interaction, Bluetooth, Live Activities.
-3. Open PTP on the watch. Allow Nearby Interaction and Bluetooth.
+3. Open PTP on the watch. Allow Nearby Interaction and Bluetooth. It opens on a "Disarmed" screen: tap **Diagnostics**. Every watch reading and button named in this runbook is on that Diagnostics screen. Don't tap Arm during Gate 0: arming replaces the screen and starts its own keep-alive.
 4. Hold the devices within 1 m of each other. Check each screen:
 
    | Screen | Expect |

@@ -75,9 +75,9 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
 - [ ] Unit tests that replay the Phase 0 trace files and assert the expected state at each moment.
 
 ### 1.2 Watch app
-- [ ] Armed screen: live distance, threshold bar, Disarm button.
-- [ ] Warning screen: amber, distance, countdown, "I have it".
-- [ ] Alarm screen: red, repeating haptic plus sound, "Mark as Lost", "I have it".
+- [x] Armed screen: live distance, threshold bar, Disarm button.
+- [x] Warning screen: amber, distance, countdown, "I have it".
+- [x] Alarm screen: red, repeating haptic plus sound, "Mark as Lost", "I have it".
 - [x] Link-loss watchdog that runs on the watch itself. It raises the alarm even if the phone never sends a message.
 - [x] Keep the arm state and threshold on the watch, so it works without the phone.
 

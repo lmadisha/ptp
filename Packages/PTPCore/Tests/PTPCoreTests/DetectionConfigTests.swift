@@ -18,6 +18,7 @@ import Testing
     #expect(config.eventAlertDistance == 4)
     #expect(config.warningDelay == .seconds(2))
     #expect(config.alarmDelay == .seconds(5))
+    #expect(config.alarmRepeatInterval == .seconds(1))
     #expect(config.signalLossDelay == .seconds(3))
     #expect(config.linkStartupDelay == .seconds(10))
 }

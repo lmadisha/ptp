@@ -4,7 +4,7 @@
 - **Date:** 2026-11-24
 
 ## Context
-The state-machine table in [ARCHITECTURE.md](../ARCHITECTURE.md) and ADR-0004 (UWB distance plus a Bluetooth heartbeat) leave some cases open. They decide whether PTP misses a theft or raises a false alarm, so they're recorded here. The owner approved decisions 1 to 4 on issue #47; decision 5 came with #49.
+The state-machine table in [ARCHITECTURE.md](../ARCHITECTURE.md) and ADR-0004 (UWB distance plus a Bluetooth heartbeat) leave some cases open. They decide whether PTP misses a theft or raises a false alarm, so they're recorded here. The owner approved decisions 1 to 4 on issue #47. Decisions 5 and 6 came later (#49, #50).
 
 The two test traces that pull in opposite directions (`docs/TESTING.md`):
 - `pocket-crowd`: UWB flickers while the phone never leaves the owner. No alarm.
@@ -21,6 +21,9 @@ The two test traces that pull in opposite directions (`docs/TESTING.md`):
    - Rejected: cancel when back in range. Walking past the owner would silence it.
 5. **Arming allows a longer silence until the first sample** (`DetectionConfig.linkStartupDelay`, 10 s). After arming, or after the watch app restarts while armed, Bluetooth and UWB need a few seconds to connect. Counting the usual 3 s from the tap would alarm with the phone in the owner's pocket. The first sample ends the allowance; from then on decision 1 applies. If no sample ever arrives, the Alarm is raised when the allowance ends. The 10 s default is a guess until the link start-up time is measured on devices. "I have it" doesn't get the allowance: the usual 3 s applies after the tap.
    - Rejected: count the usual 3 s from the tap (a false alarm on every arm), or wait for the first sample without a limit (a phone taken before the link came up would never alarm).
+6. **"I have it" is accepted in Warning as well as Alarm.** Both return to Armed with the same reset of the range verdict, smoother and timers. The usual signal-loss delay applies after the tap.
+   - Cost: a mistaken tap in Warning cancels a countdown that would otherwise always end in an Alarm. If UWB then drops out while the heartbeat still reaches the watch, nothing fires until the heartbeat is lost too (the gap under Consequences). The same was already true of a mistaken tap in Alarm.
+   - Rejected: ignore "I have it" in Warning. The Warning screen would have a button that does nothing, and the owner would have to wait for the Alarm to dismiss it.
 
 Also, as the table already says: **Lost is final** for a session. A new session starts at Disarmed.
 
