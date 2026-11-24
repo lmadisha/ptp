@@ -1,6 +1,9 @@
 public struct DetectionConfig: Sendable, Equatable {
     public var heartbeatInterval: Duration
     public var smoothingWindow: Duration
+    /// Pause before a ranging session that ended, or a heartbeat connection without the service, is tried again,
+    /// so a link that keeps failing can't spin.
+    public var linkRestartDelay: Duration
     /// How often the caller ticks the state machine. A deadline is noticed up to one interval late.
     public var tickInterval: Duration
 
@@ -21,6 +24,7 @@ public struct DetectionConfig: Sendable, Equatable {
     public static let standard = DetectionConfig(
         heartbeatInterval: .seconds(1),
         smoothingWindow: .seconds(1),
+        linkRestartDelay: .seconds(2),
         tickInterval: .milliseconds(500),
         alertDistance: 8,
         eventAlertDistance: 4,
