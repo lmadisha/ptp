@@ -1,6 +1,6 @@
 # ADR-0005: Store on-device data in SQLite, not SwiftData
 
-- **Status:** Proposed
+- **Status:** Accepted (owner, 2026-11-24)
 - **Date:** 2026-11-23
 
 ## Context
