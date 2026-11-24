@@ -23,6 +23,7 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - Spike: both apps log every reading (time, distance, signal source, app state, battery %) to a CSV file in their Documents folder. The iPhone's folder shows in the Files app, and the watch can send its files to the phone (ADR-0006). `ReadingRow` in `PTPCore` formats the rows (#39).
 - Gate 0 runbook (`docs/GATE0_RUNBOOK.md`): exact device steps for the short checks, the 4-hour sessions and the trace recordings, with commands that read a log (#41).
 - `DistanceSample` in `PTPCore`: an optional distance in metres, the source (UWB or Bluetooth) and the time since the session started. First Phase 1 type; nothing uses it yet (#43).
+- `MedianSmoother` in `PTPCore`: the median distance over `DetectionConfig.smoothingWindow` (1 s), so one wild reading can't cross a threshold. Nothing uses it yet (#45).
 
 ### Changed
 - On-device stores (places, alarm log) will use SQLite through the system `SQLite3` library in a `PTPStore` package, not SwiftData (ADR-0005, #30).

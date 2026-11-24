@@ -6,3 +6,7 @@ import Testing
     #expect(interval == .seconds(1))
     #expect(interval > .zero)
 }
+
+@Test func standardSmoothingWindowIsOneSecond() {
+    #expect(DetectionConfig.standard.smoothingWindow == .seconds(1))
+}
