@@ -1,3 +1,4 @@
+import PTPCore
 import SwiftUI
 
 struct DisarmedView: View {
@@ -9,6 +10,11 @@ struct DisarmedView: View {
             VStack {
                 Text("Disarmed").font(.headline).accessibilityAddTraits(.isHeader)
                 Button("Arm") { session.arm(.normal) }
+                ForEach(DetectionConfig.standard.eventDurations, id: \.self) { duration in
+                    Button("Event \(duration.formatted(.units(allowed: [.hours], width: .wide)))") {
+                        session.armEvent(for: duration)
+                    }
+                }
                 NavigationLink("Diagnostics") { diagnostics }
             }
         }
@@ -26,6 +32,10 @@ struct ArmedView: View {
         ScrollView {
             VStack {
                 Text("Armed").font(.headline).accessibilityAddTraits(.isHeader)
+                if let end = session.eventEndsAt {
+                    let time = end.formatted(date: .omitted, time: .shortened)
+                    Text("Event · ends \(time)").font(.footnote).accessibilityLabel("Event ends at \(time)")
+                }
                 Text(distanceText ?? "—")
                     .accessibilityLabel("Distance")
                     .accessibilityValue(Text(distanceText ?? "Unavailable"))

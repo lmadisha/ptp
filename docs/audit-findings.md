@@ -3,6 +3,16 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-24 · #69 Event mode timer on the watch
+
+Scope: whole repo, mainly `PTPWatch/WatchSession.swift` and `PTPWatch/StateScreens.swift`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | A custom duration picker. | `applied`: two buttons from `DetectionConfig.eventDurations`. |
+| `yagni` | A separate timer task or a scheduled background refresh for the end of the event. | `applied`: the existing tick loop checks the end time. |
+| `yagni` | Putting the event's end inside the state machine's clock. | `applied`: a wall-clock time beside the arm mode, so it survives a restart; the machine keeps one job. |
+
 ## 2026-11-24 · #67 signal strength without UWB
 
 Scope: whole repo, mainly `PTPStateMachine.swift` and `PTPWatch/HeartbeatReceiver.swift`.

@@ -9,6 +9,7 @@ import WatchKit
 final class WatchSession {
     private static let armModeKey = "armMode"
     private static let latchedKey = "latchedState"
+    private static let eventEndKey = "eventEndsAt"
 
     private let config = DetectionConfig.standard
     private var machine = PTPStateMachine(config: .standard)
@@ -25,6 +26,8 @@ final class WatchSession {
     /// The heartbeat's signal strength in dBm, shown when there is no distance.
     private(set) var rssi: Int?
     private(set) var armMode: ArmMode?
+    /// When the running event ends. Wall-clock time, so it survives a restart of the app.
+    private(set) var eventEndsAt: Date?
     private(set) var secondsToAlarm: Int?
     var threshold: Float {
         armMode == .event ? config.eventAlertDistance : config.alertDistance
@@ -38,6 +41,15 @@ final class WatchSession {
 
     func appBecameActive() {
         if isUnprotected { keepAlive.startRuntime() }
+    }
+
+    /// Arms in Event mode until `duration` from now.
+    func armEvent(for duration: Duration) {
+        guard state == .disarmed else { return }
+        let end = Date.now.addingTimeInterval(TimeInterval(duration.components.seconds))
+        UserDefaults.standard.set(end.timeIntervalSince1970, forKey: Self.eventEndKey)
+        eventEndsAt = end
+        arm(.event)
     }
 
     func arm(_ mode: ArmMode) {
@@ -74,6 +86,13 @@ final class WatchSession {
                 let elapsed = self.elapsed(since: armedAt)
                 machine.tick(at: elapsed)
                 updateState(at: elapsed)
+                if eventShouldEnd(at: .now) {
+                    disarm()
+                    // Protection ending is worth a tap: the owner may not be looking.
+                    WKInterfaceDevice.current().play(.stop)
+                    AccessibilityNotification.Announcement("Event ended. PTP is disarmed.").post()
+                    return
+                }
             }
         }
     }
@@ -117,7 +136,16 @@ final class WatchSession {
             return
         }
         if let mode = UserDefaults.standard.string(forKey: Self.armModeKey).flatMap(ArmMode.init(rawValue:)) {
-            arm(mode)
+            // Zero means no event: `double(forKey:)` also reads the value from a launch argument.
+            let end = UserDefaults.standard.double(forKey: Self.eventEndKey)
+            eventEndsAt = end > 0 ? Date(timeIntervalSince1970: end) : nil
+            // An event that ran out long ago while the app was closed is over, unless an Alarm is still waiting
+            // for the owner. One that ran out just now is armed again, so the link is checked before it ends.
+            if let eventEndsAt, Date.now.timeIntervalSince(eventEndsAt) > eventEndGrace, latched != "alarm" {
+                endSession()
+            } else {
+                arm(mode)
+            }
         }
         guard latched == "alarm" else { return }
         // Without a stored arm mode nothing was armed, and an Alarm with no session could never be dismissed.
@@ -155,12 +183,29 @@ final class WatchSession {
         machine.handle(action, at: elapsed)
         updateState(at: elapsed)
         guard state == .disarmed || state == .lost else { return }
+        endSession()
+    }
+
+    private var eventEndGrace: TimeInterval {
+        TimeInterval(config.eventEndGrace.components.seconds)
+    }
+
+    /// Soon after the end, the watch first confirms the phone is still there (ADR-0007 decision 9).
+    /// Long after, it disarms from Armed without asking.
+    private func eventShouldEnd(at now: Date) -> Bool {
+        guard let eventEndsAt, eventEndsAt <= now else { return false }
+        return now.timeIntervalSince(eventEndsAt) > eventEndGrace ? state.allowsAutoDisarm : machine.canEndEvent
+    }
+
+    private func endSession() {
         tickTask?.cancel()
         tickTask = nil
         keepAlive.stop()
         UserDefaults.standard.removeObject(forKey: Self.armModeKey)
-        self.armedAt = nil
+        UserDefaults.standard.removeObject(forKey: Self.eventEndKey)
+        armedAt = nil
         armMode = nil
+        eventEndsAt = nil
         distanceMeters = nil
         rssi = nil
     }

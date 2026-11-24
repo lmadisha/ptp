@@ -59,6 +59,7 @@ The full steps, in order, are in [GATE0_RUNBOOK.md](GATE0_RUNBOOK.md). In short:
   7. **Warning, then off screen:** with PTP on screen walk to about 9 m until the Warning shows, then press the crown and keep walking. The Alarm must still come.
   8. **Pocket after "I have it":** if drill 1 or 2 alarmed, tap "I have it" and keep the phone where it was for 2 minutes. Expected: no second alarm.
   Afterwards open PTP, Disarm, Diagnostics › "Send logs to phone", and copy the `ptp-watch-…` files from Files › On My iPhone › PTP to the Mac. They are raw logs: do not commit them.
+- **#69:** on the watch's Disarmed screen tap "Event 2 hours". The Armed screen shows "Event · ends" with a time two hours ahead, and the Warning now comes at about 4 m, not 8 m. Force-quit and reopen the watch app: the same end time shows. To see the end without waiting two hours, leave it armed and check after the end time: it should read Disarmed. If an Alarm is showing when the time is up, it must stay until you tap "I have it"; the watch then disarms once the phone has answered, with a tap on the wrist. Note what the watch does after the first hour, when the keep-alive runs out (#57).
 
 ## Workflow as actually run (see AGENTS.md for the rules)
 - **Roles:** Claude Opus plans and reviews; **Codex GPT-6.2 Sol implements** (the owner's choice); Claude Haiku captures Simulator evidence.

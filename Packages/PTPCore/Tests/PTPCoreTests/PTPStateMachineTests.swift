@@ -448,3 +448,45 @@ private func warning() -> PTPStateMachine {
     #expect(PTPState.warning.alarmLogEntry(after: .armed) == nil)
     #expect(PTPState.armed.alarmLogEntry(after: nil) == nil)
 }
+
+@Test func anEventOnlyEndsByItselfFromArmed() {
+    #expect(PTPState.armed.allowsAutoDisarm)
+    for state in [PTPState.disarmed, .warning, .alarm, .lost] {
+        #expect(!state.allowsAutoDisarm)
+    }
+}
+
+@Test func anEventCanEndOnlyOnceThePhoneHasBeenHeardAndIsInRange() {
+    var machine = armed(.event)
+    // Armed, but nothing heard yet: the link may still be starting up.
+    #expect(!machine.canEndEvent)
+    machine.observe(sample(1000, 1))
+    #expect(machine.canEndEvent)
+
+    // An out-of-range verdict is pending, though the state still reads Armed.
+    machine.observe(sample(3000, 5))
+    #expect(machine.state == .armed)
+    #expect(!machine.canEndEvent)
+    #expect(machine.tick(at: .seconds(5)) == .warning)
+    #expect(!machine.canEndEvent)
+    #expect(machine.tick(at: .seconds(10)) == .alarm)
+    #expect(!machine.canEndEvent)
+}
+
+@Test func afterASuspensionAnEventCannotEndUntilTheLinkIsBack() {
+    var machine = armed(.event)
+    machine.observe(sample(1000, 1))
+    machine.resumeAfterSuspension(at: .seconds(3600))
+    #expect(machine.state == .armed)
+    #expect(!machine.canEndEvent)
+    // The phone answers: the event may end.
+    machine.observe(sample(3_601_000))
+    #expect(machine.canEndEvent)
+
+    // No answer: the Alarm comes, and the event's end must not have disarmed it first.
+    var taken = armed(.event)
+    taken.observe(sample(1000, 1))
+    taken.resumeAfterSuspension(at: .seconds(3600))
+    #expect(!taken.canEndEvent)
+    #expect(taken.tick(at: .seconds(3610)) == .alarm)
+}
