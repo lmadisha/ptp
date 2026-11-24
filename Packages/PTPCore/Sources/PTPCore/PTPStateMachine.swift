@@ -33,6 +33,14 @@ public struct PTPStateMachine: Sendable {
 
     private let config: DetectionConfig
     private var smoother: MedianSmoother
+    // Signal strength of the heartbeat, used only while there is no fresh UWB distance (ADR-0009).
+    private var signalSmoother: MedianSmoother
+    private var lastDistance: Duration?
+    // True when the current out-of-range verdict came from signal strength. Only then may a strong signal clear it.
+    private var overFromSignal = false
+    // After "I have it", a weak signal can't raise a new verdict until the signal has been strong once
+    // or a distance arrives: a phone in a pocket would otherwise alarm again every few seconds.
+    private var signalMuted = false
     private var threshold: Float
     private var latestTime: Duration = .zero
     private var lastSignal: Duration = .zero
@@ -47,6 +55,7 @@ public struct PTPStateMachine: Sendable {
         self.config = config
         threshold = config.alertDistance
         smoother = MedianSmoother(window: config.smoothingWindow)
+        signalSmoother = MedianSmoother(window: config.rssiWindow)
     }
 
     @discardableResult
@@ -65,6 +74,7 @@ public struct PTPStateMachine: Sendable {
             let linkStarting = awaitingFirstSignal
             restartArmed()
             awaitingFirstSignal = linkStarting
+            signalMuted = true
         case (.alarm, .markAsLost):
             state = .lost
         case (_, .disarm) where state != .lost:
@@ -77,6 +87,10 @@ public struct PTPStateMachine: Sendable {
 
     private mutating func restartArmed() {
         smoother = MedianSmoother(window: config.smoothingWindow)
+        signalSmoother = MedianSmoother(window: config.rssiWindow)
+        lastDistance = nil
+        overFromSignal = false
+        signalMuted = false
         overSince = nil
         lastSignal = latestTime
         awaitingFirstSignal = false
@@ -102,15 +116,39 @@ public struct PTPStateMachine: Sendable {
         // A heartbeat ages the window. Expiring an old reading alone must
         // not reverse the last range verdict while UWB is unavailable.
         if reading.meters?.isFinite == true, let distance = median {
+            lastDistance = latestTime
+            signalMuted = false
             if distance > threshold {
                 overSince = overSince ?? latestTime
+                overFromSignal = false
             } else {
-                overSince = nil
-                state = .armed
+                clearVerdict()
+            }
+        } else if let rssi = reading.rssi {
+            // The smoother works on any number; here it holds dBm.
+            let signal = signalSmoother.add(DistanceSample(meters: Float(rssi), source: .ble, time: latestTime))
+            let distanceIsStale = lastDistance.map { latestTime - $0 > config.uwbFreshness } ?? true
+            if distanceIsStale, let signal, signalSmoother.count >= config.rssiMinSamples {
+                if signal > Float(config.nearRSSI) {
+                    signalMuted = false
+                    // A strong signal never clears a verdict that a distance raised:
+                    // Bluetooth can stay strong well past the alert distance.
+                    if overFromSignal { clearVerdict() }
+                } else if signal < Float(config.farRSSI), !signalMuted, overSince == nil {
+                    overSince = latestTime
+                    overFromSignal = true
+                }
+                // Between the two levels the last verdict stands.
             }
         }
         advanceTimers(includingEndpoint: true)
         return state
+    }
+
+    private mutating func clearVerdict() {
+        overSince = nil
+        overFromSignal = false
+        state = .armed
     }
 
     @discardableResult
@@ -132,6 +170,8 @@ public struct PTPStateMachine: Sendable {
             lastSignal = latestTime
             awaitingFirstSignal = true
         }
+        // Signal readings from before the gap must not decide anything now.
+        signalSmoother = MedianSmoother(window: config.rssiWindow)
         advanceTimers(includingEndpoint: true)
         return state
     }

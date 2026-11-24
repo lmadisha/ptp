@@ -13,7 +13,7 @@ The two test traces that pull in opposite directions (`docs/TESTING.md`):
 ## Decision
 1. **"Signal" means any sample, UWB or heartbeat.** The no-signal timer (`DetectionConfig.signalLossDelay`, 3 s) restarts on either.
    - Rejected: UWB only. A pocket or a crowd would alarm.
-2. **When UWB drops out but the heartbeat continues, the last range verdict stands.** In range stays in range. Over the threshold stays over, and its countdown carries on to Warning and Alarm. Only a new distance changes the verdict.
+2. **When UWB drops out but the heartbeat continues, the last range verdict stands.** In range stays in range. Over the threshold stays over, and its countdown carries on to Warning and Alarm. Only a new distance changes the verdict. (ADR-0009 changes this last part: without a fresh distance, the heartbeat's signal strength can change it.)
    - Rejected: treat no distance as in range (walking out of UWB range would cancel the countdown), or as out of range (a pocket would alarm).
 3. **Signal loss during Warning raises the Alarm after the same 3 s**, whichever of the two timers ends first.
    - Rejected: only the 5 s Warning timer. Switching the phone off 1 s into a Warning would buy 4 more seconds.
@@ -43,7 +43,7 @@ All delays and distances are fields of `DetectionConfig`. "I have it" restarts e
 
 ## Consequences
 - The heartbeat matters as much as UWB: while it arrives, the watch never alarms for signal loss. If Gate 0 shows the heartbeat can't stay alive in the background, decision 1 falls back to UWB alone and `pocket-crowd` needs another answer.
-- Decision 2 leaves a gap: if UWB is lost while in range and the phone is then carried off inside Bluetooth range, nothing fires until the heartbeat is lost too. The heartbeat's signal strength could close it; that's not built. Revisit with the Gate 0 traces.
+- Decision 2 leaves a gap: if UWB is lost while in range and the phone is then carried off inside Bluetooth range, nothing fires until the heartbeat is lost too. The heartbeat's signal strength now narrows it (ADR-0009), with provisional thresholds. Revisit with the Gate 0 traces.
 - "I have it" also resets the verdict to in range, because that is what the owner just said. A mistaken tap while UWB is down falls into the same gap as above until a distance or signal loss arrives.
 - There's no hysteresis around the threshold, so a distance hovering at it can flip between Armed and Warning. Tune from real traces before adding any.
 - These rules are tested with synthetic samples only until the Gate 0 recordings become fixtures.

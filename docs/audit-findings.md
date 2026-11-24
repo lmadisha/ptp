@@ -3,6 +3,17 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-24 · #67 signal strength without UWB
+
+Scope: whole repo, mainly `PTPStateMachine.swift` and `PTPWatch/HeartbeatReceiver.swift`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | A path-loss model that turns signal strength into metres. | `applied`: not built. Three bands (far, between, near) are all the signal supports. |
+| `shrink` | A second smoother type for signal strength. | `applied`: `MedianSmoother` is reused; it holds dBm in its number field. |
+| `yagni` | Per-device calibration screens and stored thresholds. | `applied`: not built. Two `DetectionConfig` numbers, set from the #67 logs. |
+| `delete` | `demoRSSI`, a debug-only launch argument that feeds a signal strength for Simulator screenshots. | `open`: delete with `demoDistance` once fixtures can drive the UI. |
+
 ## 2026-11-24 · #65 alarm log written by the app
 
 Scope: whole repo, mainly `PTPApp/AlarmHistory.swift`.

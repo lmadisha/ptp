@@ -10,7 +10,7 @@ ADR-0002 keeps all data on the device. PRIVACY.md said the app never writes the 
 
 ## Decision
 - **Test builds only** (Phase 0 until the beta): each app appends one CSV row per reading to a file in its Documents folder, one file per launch, named `ptp-<phone|watch>-<unix seconds>.diagnostics.csv`.
-- **Columns:** `t_ms,distance_m,source,app_state,battery_pct`. No location, names or device identifiers (hard rule 6).
+- **Columns:** `t_ms,distance_m,source,app_state,battery_pct,rssi_dbm` (the last one added by ADR-0009: the heartbeat's signal strength on the watch, blank elsewhere). No location, names or device identifiers (hard rule 6).
 - **Protection:** `.completeUntilFirstUserAuthentication`, because rows are written while the phone is locked. Excluded from iCloud backup.
 - **Retention:** until the user deletes the file or the app. There's no automatic deletion: a 4-hour session is a few MB, and the owner needs old sessions.
 - **Access:**

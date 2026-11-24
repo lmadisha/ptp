@@ -12,6 +12,7 @@ One file per significant decision. Never edit an accepted ADR's decision. Write 
 | [0006](0006-test-build-reading-log.md) | Keep a reading log on each device in test builds | Proposed |
 | [0007](0007-state-machine-signal-rules.md) | How the state machine treats signal loss and UWB dropouts | Proposed |
 | [0008](0008-watch-owns-session-state.md) | The watch owns the session state; the iPhone mirrors it | Proposed |
+| [0009](0009-signal-strength-without-uwb.md) | Judge by the heartbeat's signal strength when there is no UWB distance | Proposed |
 
 ## Template
 ```markdown

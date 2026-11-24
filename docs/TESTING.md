@@ -11,7 +11,7 @@ Three layers of testing:
 - Use an injected clock. Never call `Date()` or sleep in tests.
 
 ## 2. Trace replay
-Recorded distance logs from real devices live in `Packages/PTPCore/Tests/Fixtures/`. Each trace is a CSV with these columns: `t_ms, distance_m, source, app_state`.
+Recorded distance logs from real devices live in `Packages/PTPCore/Tests/Fixtures/`. Each trace is a CSV with these columns: `t_ms, distance_m, source, app_state, battery_pct, rssi_dbm`.
 
 Each trace has an expected outcome:
 

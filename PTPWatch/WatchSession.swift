@@ -22,6 +22,8 @@ final class WatchSession {
     /// Called on every state change, also in the background where SwiftUI may not update.
     var onStateChange: ((PTPState) -> Void)?
     private(set) var distanceMeters: Float?
+    /// The heartbeat's signal strength in dBm, shown when there is no distance.
+    private(set) var rssi: Int?
     private(set) var armMode: ArmMode?
     private(set) var secondsToAlarm: Int?
     var threshold: Float {
@@ -55,6 +57,8 @@ final class WatchSession {
             // Launch argument only (`-demoDistance 9`), so a stored value can't mask signal loss later.
             let arguments = UserDefaults.standard.volatileDomain(forName: UserDefaults.argumentDomain)
             let demoDistance = (arguments["demoDistance"] as? String).flatMap(Float.init)
+            // Pass the magnitude (`-demoRSSI 90` is -90 dBm): a value starting with "-" reads as the next argument.
+            let demoRSSI = (arguments["demoRSSI"] as? String).flatMap(Int.init).map { -abs($0) }
             #endif
             // The link-loss watchdog runs on the watch without reading from the phone.
             while !Task.isCancelled {
@@ -63,6 +67,8 @@ final class WatchSession {
                 #if DEBUG
                 if let demoDistance {
                     observe(distance: demoDistance, source: .uwb)
+                } else if let demoRSSI {
+                    observe(distance: nil, source: .ble, rssi: demoRSSI)
                 }
                 #endif
                 let elapsed = self.elapsed(since: armedAt)
@@ -84,13 +90,13 @@ final class WatchSession {
         handle(.markAsLost)
     }
 
-    func observe(distance: Float?, source: ReadingSource) {
+    func observe(distance: Float?, source: ReadingSource, rssi: Int? = nil) {
         guard let armedAt else { return }
-        if source == .uwb { distanceMeters = distance }
+        if source == .uwb { distanceMeters = distance } else { self.rssi = rssi }
         // Ranging also reports "no reading" (peer out of range, suspended). That is not a signal.
         guard source == .ble || distance != nil else { return }
         let elapsed = self.elapsed(since: armedAt)
-        machine.observe(DistanceSample(meters: distance, source: source, time: elapsed))
+        machine.observe(DistanceSample(meters: distance, source: source, time: elapsed, rssi: rssi))
         updateState(at: elapsed)
     }
 
@@ -156,6 +162,7 @@ final class WatchSession {
         self.armedAt = nil
         armMode = nil
         distanceMeters = nil
+        rssi = nil
     }
 
     private func updateState(at elapsed: Duration) {

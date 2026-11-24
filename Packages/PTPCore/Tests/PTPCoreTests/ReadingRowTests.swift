@@ -2,7 +2,7 @@ import PTPCore
 import Testing
 
 @Test func readingRowUsesExpectedCSVColumns() {
-    #expect(ReadingRow.csvHeader == "t_ms,distance_m,source,app_state,battery_pct")
+    #expect(ReadingRow.csvHeader == "t_ms,distance_m,source,app_state,battery_pct,rssi_dbm")
 }
 
 @Test func readingRowFormatsDistanceToTwoDecimalPlaces() {
@@ -10,7 +10,7 @@ import Testing
         tMs: 1_700_000_000_123, distanceMeters: 2.5, source: .uwb,
         appState: "active", batteryPercent: 87)
 
-    #expect(row.csvLine == "1700000000123,2.50,uwb,active,87")
+    #expect(row.csvLine == "1700000000123,2.50,uwb,active,87,")
 }
 
 @Test func readingRowLeavesMissingDistanceAndBatteryBlank() {
@@ -18,5 +18,13 @@ import Testing
         tMs: 1_700_000_000_456, distanceMeters: nil, source: .ble,
         appState: "background", batteryPercent: nil)
 
-    #expect(row.csvLine == "1700000000456,,ble,background,")
+    #expect(row.csvLine == "1700000000456,,ble,background,,")
+}
+
+@Test func readingRowWritesSignalStrengthLast() {
+    let row = ReadingRow(
+        tMs: 1_700_000_000_789, distanceMeters: nil, source: .ble,
+        appState: "background", batteryPercent: 64, rssi: -72)
+
+    #expect(row.csvLine == "1700000000789,,ble,background,64,-72")
 }

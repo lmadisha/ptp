@@ -29,7 +29,7 @@ WC = WatchConnectivity. BLE = Bluetooth Low Energy heartbeat.
 | `PTPCore.DetectionEngine` | Package | Smooths samples, applies thresholds, emits events. In code this is `MedianSmoother` plus `PTPStateMachine`; there is no third type |
 | `PTPCore.PTPStateMachine` | Package | Disarmed → Armed → Warning → Alarm → Lost |
 | `PTPCore.DetectionConfig` | Package | All timings and thresholds in one place |
-| `RangingService` | iOS + watchOS | Wraps `NISession` and the Bluetooth heartbeat; outputs `DistanceSample`s |
+| `RangingService` | iOS + watchOS | Wraps `NISession` and the Bluetooth heartbeat; outputs `DistanceSample`s. On the watch a heartbeat sample carries the connection's signal strength, which decides range when there is no fresh UWB distance (ADR-0009) |
 | `PairingService` | iOS + watchOS | Exchanges discovery tokens over WatchConnectivity, and carries the watch's state to the phone, which only mirrors it (ADR-0008). Today this is `TokenExchange` |
 | `WatchSession` | watchOS | Ticks `PTPStateMachine` on the watch's own clock so it can raise Alarm on signal loss independently of the phone. Restarts the keep-alive when it ends, treats a suspension as link start-up, and restores Alarm and Lost |
 | `ArmingService` | iOS | Event mode timers, visit learning, new-area prompt, region triggers |
