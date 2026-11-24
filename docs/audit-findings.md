@@ -3,6 +3,16 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-24 · #61 Live Activity state
+
+Scope: whole repo, mainly `PTPLiveActivity/PTPLiveActivityBundle.swift` and `PTPApp/LiveActivityController.swift`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | Linking `PTPCore` into the widget extension to pass a typed state. | `applied`: not done. The activity carries the raw string. |
+| `yagni` | A stale date and an "out of date" look for an old Alarm. | `open`: needs a freshness rule (ADR-0008); decide with the siren (2.2). |
+| `delete` | `demoWatchState`, a debug-only launch argument that feeds a watch state for Simulator screenshots. | `open`: delete with `demoDistance` once fixtures or a paired Simulator can drive the UI. |
+
 ## 2026-11-24 · #59 watch state mirrored on the iPhone
 
 Scope: whole repo, mainly `Shared/TokenExchange.swift`.

@@ -5,6 +5,7 @@ final class LiveActivityController {
     private var activityID: String?
     private var lastState: PTPActivityAttributes.ContentState?
     private var activityObserver: Task<Void, Never>?
+    private var updateTask: Task<Void, Never>?
 
     deinit {
         activityObserver?.cancel()
@@ -45,14 +46,16 @@ final class LiveActivityController {
         }
     }
 
-    func update(state: String, distance: Float?) {
+    func update(state: String, distance: Float?, watchState: String?) {
         guard let activityID else { return }
         let contentState = PTPActivityAttributes.ContentState(
-            state: state, distanceMeters: distance.map { ($0 * 10).rounded() / 10 })
+            state: state, distanceMeters: distance.map { ($0 * 10).rounded() / 10 }, watchState: watchState)
         guard contentState != lastState else { return }
 
         lastState = contentState
-        Task { @MainActor in
+        // One at a time, in order: an older state landing last could leave the Lock Screen red.
+        updateTask = Task { @MainActor [previous = updateTask] in
+            await previous?.value
             guard self.activityID == activityID,
                 let activity = Self.activity(withID: activityID)
             else { return }
