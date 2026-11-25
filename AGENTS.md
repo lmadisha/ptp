@@ -19,7 +19,7 @@ PTP (Phone Theft Prevention) is an open-source iPhone + Apple Watch app.
 | Build iOS app | `xcodebuild -scheme PTPApp -destination 'generic/platform=iOS Simulator' build` |
 | Build watch app | `xcodebuild -scheme PTPWatch -destination 'generic/platform=watchOS Simulator' build` |
 | Device compile check (no team needed) | add `-destination 'generic/platform=iOS'` (or `watchOS`) and `CODE_SIGNING_ALLOWED=NO` |
-| Format | `swift-format format -i -r PTPApp PTPWatch PTPLiveActivity Packages` |
+| Format | `swift-format format -i -r PTPApp PTPWatch PTPWatchWidget PTPLiveActivity Packages` |
 
 No Apple development team is set in the project yet, so signed device builds fail until one is added (needed before device testing). Nearby Interaction does not run in the Simulator. Don't claim a ranging change works unless it was tested on devices. Say what you could not verify.
 
@@ -27,6 +27,7 @@ No Apple development team is set in the project yet, so signed device builds fai
 ```
 PTPApp/              iOS app (SwiftUI)
 PTPWatch/            watchOS app
+PTPWatchWidget/      Quick-arm complication (watch widget extension)
 PTPLiveActivity/     Live Activity widget extension
 Packages/PTPCore/    Pure Swift logic: models, DetectionEngine, PTPStateMachine, DetectionConfig
   Tests/Fixtures/    Recorded distance traces (CSV), anonymised
