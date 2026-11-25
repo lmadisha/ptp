@@ -12,17 +12,8 @@ final class AlarmHistory {
     private var last: PTPState?
 
     init() {
-        let folder = URL.applicationSupportDirectory
-        var file = folder.appending(path: "ptp.sqlite")
-        try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
         // If the log can't be opened the app still runs; it just doesn't log.
-        log = try? AlarmLog(path: file.path, now: .now)
-        // Writable while locked, because alarms arrive then. Never in a backup.
-        try? FileManager.default.setAttributes(
-            [.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: file.path)
-        var values = URLResourceValues()
-        values.isExcludedFromBackup = true
-        try? file.setResourceValues(values)
+        log = openStore("ptp.sqlite") { try AlarmLog(path: $0, now: .now) }
 
         let events = (try? log?.events()) ?? []
         count = events.count
@@ -37,4 +28,19 @@ final class AlarmHistory {
         try? log.record(entry, at: .now)
         count = (try? log.events().count) ?? count
     }
+}
+
+/// Opens an SQLite store in Application Support. The file stays writable while the phone is locked, because
+/// alarms and region events arrive then, and is never in a backup (docs/PRIVACY.md).
+func openStore<Store>(_ name: String, _ open: (String) throws -> Store) -> Store? {
+    let folder = URL.applicationSupportDirectory
+    var file = folder.appending(path: name)
+    try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+    let store = try? open(file.path)
+    try? FileManager.default.setAttributes(
+        [.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: file.path)
+    var values = URLResourceValues()
+    values.isExcludedFromBackup = true
+    try? file.setResourceValues(values)
+    return store
 }
