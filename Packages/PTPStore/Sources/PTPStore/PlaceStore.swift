@@ -3,6 +3,7 @@ import Foundation
 /// Stores only the rounded area and UTC day of each visit, at most one per area and day (ADR-0010).
 public final class PlaceStore {
     private let database: Database
+    private let config: StoreConfig
     private let retention: TimeInterval
 
     public static func area(latitude: Double, longitude: Double, config: StoreConfig = .standard) -> String {
@@ -14,6 +15,7 @@ public final class PlaceStore {
     /// `path` is the place database file, or `:memory:` for tests.
     public init(path: String, config: StoreConfig = .standard, now: Date) throws {
         database = try Database(path: path)
+        self.config = config
         let components = config.placeRetention.components
         retention = TimeInterval(components.seconds) + TimeInterval(components.attoseconds) / 1e18
 
@@ -52,6 +54,10 @@ public final class PlaceStore {
             [.text(area), .real(seconds - retention), .real(seconds + retention)])
         guard case .real(let count)? = rows.first?.first else { return 0 }
         return Int(count)
+    }
+
+    public func isNewArea(_ area: String, now: Date) throws -> Bool {
+        try visitCount(area: area, now: now) < config.newAreaMinVisits
     }
 
     public func areaCount() throws -> Int {

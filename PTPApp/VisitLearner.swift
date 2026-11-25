@@ -3,6 +3,7 @@ import Foundation
 import Observation
 import PTPStore
 import UIKit
+import UserNotifications
 
 @MainActor
 @Observable
@@ -27,9 +28,23 @@ final class VisitLearner: NSObject, CLLocationManagerDelegate {
         try? file.setResourceValues(values)
 
         super.init()
+        // iOS shows the iPhone's actions on a notification it forwards to the watch, so "Arm" is registered here too.
+        // Chosen on the watch it runs in the watch app (NewAreaPrompt); chosen on the phone it only opens PTP,
+        // because the phone never arms the watch (ADR-0008).
+        let arm = UNNotificationAction(identifier: "ARM", title: "Arm", options: [.foreground])
+        let category = UNNotificationCategory(identifier: "NEW_AREA", actions: [arm], intentIdentifiers: [], options: [])
+        UNUserNotificationCenter.current().setNotificationCategories([category])
         areas = (try? store?.areaCount()) ?? 0
         manager.delegate = self
         updateMonitoring()
+
+        #if DEBUG
+        let arguments = UserDefaults.standard.volatileDomain(forName: UserDefaults.argumentDomain)
+        // A standalone flag has no value in the defaults argument domain.
+        if arguments["demoNewArea"] != nil || ProcessInfo.processInfo.arguments.contains("-demoNewArea") {
+            postNewAreaPrompt(trigger: UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false))
+        }
+        #endif
     }
 
     func start() {
@@ -56,13 +71,27 @@ final class VisitLearner: NSObject, CLLocationManagerDelegate {
         // iOS may report a visit at arrival, again at departure, or only once it is over.
         // The store keeps one row per area and day, so a repeat counts once.
         guard arrival != .distantPast else { return }
+        let isArrival = visit.departureDate == .distantFuture
         let area = PlaceStore.area(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
 
         Task { @MainActor [weak self] in
             guard let self, isLearning, let store else { return }
-            try? store.recordVisit(area: area, arrival: arrival, now: .now)
+            let now = Date.now
+            let isNew = isArrival && ((try? store.isNewArea(area, now: now)) ?? false)
+            try? store.recordVisit(area: area, arrival: arrival, now: now)
+            if isNew { postNewAreaPrompt() }
             areas = (try? store.areaCount()) ?? areas
         }
+    }
+
+    private func postNewAreaPrompt(trigger: UNNotificationTrigger? = nil) {
+        let content = UNMutableNotificationContent()
+        content.title = "New area"
+        content.body = "Arm PTP on your watch?"
+        content.categoryIdentifier = "NEW_AREA"
+        content.sound = .default
+        let request = UNNotificationRequest(identifier: "new-area", content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
     }
 
     private func updateMonitoring() {
@@ -71,6 +100,8 @@ final class VisitLearner: NSObject, CLLocationManagerDelegate {
         guard authorized != isLearning else { return }
         if authorized {
             manager.startMonitoringVisits()
+            // Asked once learning runs, also for owners who allowed location before the prompt existed.
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
         } else {
             manager.stopMonitoringVisits()
         }

@@ -51,6 +51,38 @@ private let start = Date(timeIntervalSince1970: 1_800_057_600)
     #expect(try store.areaCount() == 2)
 }
 
+@Test(arguments: [0, 1, 2, 3])
+func newAreaRequiresThreeEarlierVisitDaysToBecomeFamiliar(visitDays: Int) throws {
+    let store = try PlaceStore(path: ":memory:", now: start)
+    for offset in 0..<visitDays {
+        let arrival = start + day * Double(offset)
+        try store.recordVisit(area: "0:0", arrival: arrival, now: arrival)
+    }
+
+    #expect(try store.isNewArea("0:0", now: start + 3 * day) == (visitDays < 3))
+}
+
+@Test func familiarAreaBecomesNewAgainWhenAVisitDayExpires() throws {
+    let store = try PlaceStore(path: ":memory:", now: start)
+    for offset in 0..<3 {
+        let arrival = start + day * Double(offset)
+        try store.recordVisit(area: "0:0", arrival: arrival, now: arrival)
+    }
+
+    #expect(try !store.isNewArea("0:0", now: start + 60 * day))
+    #expect(try store.isNewArea("0:0", now: start + 60 * day + 1))
+}
+
+@Test func newAreaUsesConfiguredVisitThreshold() throws {
+    var config = StoreConfig.standard
+    config.newAreaMinVisits = 1
+    let store = try PlaceStore(path: ":memory:", config: config, now: start)
+
+    #expect(try store.isNewArea("0:0", now: start))
+    try store.recordVisit(area: "0:0", arrival: start, now: start)
+    #expect(try !store.isNewArea("0:0", now: start + day))
+}
+
 @Test func aRepeatedReportForTheSameAreaAndDayCountsOnce() throws {
     let store = try PlaceStore(path: ":memory:", now: start)
     // Arrival, then the same visit again at departure, then a second visit later that day.

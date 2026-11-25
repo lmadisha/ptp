@@ -3,6 +3,17 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-25 · #78 new-area prompt
+
+Scope: whole repo, mainly `PTPApp/VisitLearner.swift`, `PTPWatch/NewAreaPrompt.swift` and `PlaceStore.isNewArea`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | A phone-to-watch message, queue or reply for the prompt. | `applied`: not built. iOS forwards the phone's notification; the watch answers it locally. |
+| `yagni` | A phone handler for "Arm" that would ask the watch to arm. | `applied`: not built. The phone registers the action only so the forwarded notification shows it; on the phone it just opens PTP (ADR-0008). |
+| `yagni` | A settings switch for the prompt. | `applied`: not built. Refusing notifications turns it off; settings come in 2.3. |
+| `shrink` | `"NEW_AREA"` is spelled in two files (phone and watch). | `open`: a shared constant in `Shared/` if a third use appears. |
+
 ## 2026-11-24 · #76 visit learning
 
 Scope: whole repo, mainly `Packages/PTPStore/Sources/PTPStore/PlaceStore.swift` and `PTPApp/VisitLearner.swift`.

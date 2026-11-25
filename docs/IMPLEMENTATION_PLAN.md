@@ -110,6 +110,7 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
 - [ ] **Visit learning:** use `CLLocationManager` visit monitoring. Store rounded place areas with visit counts in SQLite (`PTPStore`, ADR-0005); delete anything older than 60 days.
   - Built (#76): cells and arrival days in `PlaceStore`, fed by `VisitLearner` on the iPhone. Not ticked until the owner's drill shows real visits arriving.
 - [ ] **New-area prompt:** on arrival somewhere visited fewer than 3 times in 60 days, the watch asks "New area. Arm PTP?". During the first 2–3 weeks, treat everywhere except home and work as unfamiliar.
+  - Built (#78): an iPhone notification forwarded to the watch, whose "Arm" action arms on the watch (ADR-0011). Still open: the first 2–3 weeks rule for home and work, which needs safe places. Not ticked until the owner's drill.
 - [ ] **Risky regulars and safe places:** region monitoring (iOS allows 20 regions per app); arm on arrival at a risky place, never at a safe one.
 - [ ] Quick-arm complication on the watch face.
 

@@ -4,9 +4,9 @@ import WatchKit
 struct ContentView: View {
     @State private var exchange = TokenExchange()
     @State private var ranging = Ranging()
-    @State private var session = WatchSession()
     @State private var heartbeat = HeartbeatReceiver()
     @Environment(\.scenePhase) private var scenePhase
+    let session: WatchSession
     private let readingLog = ReadingLog.shared
 
     var body: some View {
