@@ -32,6 +32,7 @@
 		AB1A9AC4D4DC2132142856F2 /* TokenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F532A2D9DD67A01321558C6 /* TokenExchange.swift */; };
 		C5A07ADE785A5B6CE6BD9AC8 /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879A82DC70CBBE82E466B936 /* LiveActivityController.swift */; };
 		C5A07ADE785A5B6CE6BD9AC9 /* AlarmHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879A82DC70CBBE82E466B937 /* AlarmHistory.swift */; };
+		6BE0A620DD9E4B229ACB7B21 /* VisitLearner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4783640EEAA4C8C9F30D314 /* VisitLearner.swift */; };
 		CE14F63F34E5B123BF3F7B38 /* PTPStore in Frameworks */ = {isa = PBXBuildFile; productRef = B6F8AE64C1E544B0D5B1F960 /* PTPStore */; };
 		CE14F63F34E5B123BF3F7B37 /* PTPCore in Frameworks */ = {isa = PBXBuildFile; productRef = B6F8AE64C1E544B0D5B1F95F /* PTPCore */; };
 		DE2D5BA1BFAF92B7FC2FB2A2 /* Heartbeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE0C732F363A5835C547BFB /* Heartbeat.swift */; };
@@ -96,6 +97,7 @@
 		851C2CF80BF665872BF7DA59 /* PTPWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PTPWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		879A82DC70CBBE82E466B936 /* LiveActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityController.swift; sourceTree = "<group>"; };
 		879A82DC70CBBE82E466B937 /* AlarmHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmHistory.swift; sourceTree = "<group>"; };
+		B4783640EEAA4C8C9F30D314 /* VisitLearner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitLearner.swift; sourceTree = "<group>"; };
 		6ECD754A7CB5F75C34EFFC12 /* PTPStore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PTPStore; path = Packages/PTPStore; sourceTree = SOURCE_ROOT; };
 		8AF10FB1769F0E2D31F3E07A /* Ranging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ranging.swift; sourceTree = "<group>"; };
 		962AF51CF4EFC39B43AD6F10 /* PTPApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTPApp.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 				A301009B857214162AAF4542 /* Info.plist */,
 				879A82DC70CBBE82E466B936 /* LiveActivityController.swift */,
 				879A82DC70CBBE82E466B937 /* AlarmHistory.swift */,
+				B4783640EEAA4C8C9F30D314 /* VisitLearner.swift */,
 				7BF39E944AB4BE0073FF035B /* PTPApp.entitlements */,
 				962AF51CF4EFC39B43AD6F10 /* PTPApp.swift */,
 			);
@@ -369,6 +372,7 @@
 				9F9D940F940A759F1D42DAB7 /* HeartbeatSender.swift in Sources */,
 				C5A07ADE785A5B6CE6BD9AC8 /* LiveActivityController.swift in Sources */,
 				C5A07ADE785A5B6CE6BD9AC9 /* AlarmHistory.swift in Sources */,
+				6BE0A620DD9E4B229ACB7B21 /* VisitLearner.swift in Sources */,
 				90E6FCA2A3C4C3686D8A8F55 /* PTPActivityAttributes.swift in Sources */,
 				6CE07088BD25FE699EE1322C /* PTPApp.swift in Sources */,
 				8001D6CAD3E8C4ABF9A3EC06 /* Ranging.swift in Sources */,
@@ -426,6 +430,8 @@
 				CODE_SIGN_ENTITLEMENTS = PTPApp/PTPApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = PTPApp/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "PTP learns which areas you visit often, so it can ask to arm when you are somewhere new. Areas are rounded and stay on your iPhone.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "PTP learns which areas you visit often, so it can ask to arm when you are somewhere new. Areas are rounded and stay on your iPhone.";
 				INFOPLIST_KEY_NSNearbyInteractionUsageDescription = "PTP measures the distance between your iPhone and Apple Watch so it can warn you if they are separated. The distance stays on your devices.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -449,6 +455,8 @@
 				CODE_SIGN_ENTITLEMENTS = PTPApp/PTPApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = PTPApp/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "PTP learns which areas you visit often, so it can ask to arm when you are somewhere new. Areas are rounded and stay on your iPhone.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "PTP learns which areas you visit often, so it can ask to arm when you are somewhere new. Areas are rounded and stay on your iPhone.";
 				INFOPLIST_KEY_NSNearbyInteractionUsageDescription = "PTP measures the distance between your iPhone and Apple Watch so it can warn you if they are separated. The distance stays on your devices.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

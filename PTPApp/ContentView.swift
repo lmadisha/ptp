@@ -10,6 +10,7 @@ struct ContentView: View {
     @State private var liveActivity = LiveActivityController()
     @State private var alarmHistory = AlarmHistory()
     @State private var heartbeat = HeartbeatSender(sessionID: ContentView.heartbeatID)
+    let visitLearner: VisitLearner
     private let readingLog = ReadingLog.shared
 
     private func updateLiveActivity() {
@@ -41,6 +42,14 @@ struct ContentView: View {
             Text("Watch: \(Self.watchState(exchange)?.capitalized ?? "no state received")").font(.footnote)
             Text("Log: \(readingLog.rows) rows").font(.footnote)
             Text("Alarm log: \(alarmHistory.count) events").font(.footnote)
+            Text("Places learned: \(visitLearner.areas) areas").font(.footnote)
+            if !visitLearner.isLearning {
+                Button(
+                    visitLearner.needsSettings ? "Allow location “Always” in Settings" : "Learn places",
+                    action: visitLearner.start
+                ).font(.footnote)
+            }
+            Button("Delete learned places", action: visitLearner.deleteAll).font(.footnote)
 
             // The phone can ask the watch to arm, never to disarm (ADR-0008).
             let watchState = Self.watchState(exchange).flatMap(PTPState.init(rawValue:))
