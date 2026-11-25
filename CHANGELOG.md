@@ -34,6 +34,7 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - The iPhone can ask the watch to start an event (2 or 4 hours) while the watch app is open and disarmed. The watch decides; the phone can never disarm it (ADR-0008, #73).
 - Visit learning on the iPhone: with Always location, each visit is stored as a rounded grid cell (about 250 m) and its arrival day, and deleted after 60 days. The phone shows how many areas it has learned and can delete them all (`PTPStore.PlaceStore`, ADR-0010, #76).
 - New-area prompt: arriving in an area with fewer than 3 visit days in 60 days posts "New area · Arm PTP on your watch?". Forwarded to the watch, its "Arm" action arms the watch in normal mode. On the phone the same action only opens PTP; the phone never arms the watch (ADR-0011, #78).
+- Risky and safe places: "Mark here as risky" or "Mark here as safe" on the iPhone stores the spot rounded to about 110 m (at most 20). Arriving at a risky place asks on the watch to arm; a safe place never prompts, not even as a new area (ADR-0012, #80).
 
 ### Changed
 - Gate 0 is recorded as passed on the owner's device check, with the 4-hour battery figure and the trace files still unrecorded (`docs/IMPLEMENTATION_PLAN.md`, #54).
