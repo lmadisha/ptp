@@ -1,4 +1,4 @@
-/// Retention periods and place grid size for the on-device stores (ADR-0005).
+/// Retention and place learning settings for the on-device stores (ADR-0005).
 public struct StoreConfig: Sendable, Equatable {
     /// Alarm events older than this are deleted.
     public var alarmLogRetention: Duration
@@ -6,6 +6,8 @@ public struct StoreConfig: Sendable, Equatable {
     public var placeRetention: Duration = .seconds(60 * 24 * 60 * 60)
     /// Width and height of an area cell in degrees.
     public var placeGridDegrees: Double = 0.0025
+    /// Minimum distinct visit days within retention for an area to be familiar.
+    public var newAreaMinVisits: Int = 3
 
     public static let standard = StoreConfig(alarmLogRetention: .seconds(30 * 24 * 60 * 60))
 }

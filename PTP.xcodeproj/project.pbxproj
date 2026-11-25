@@ -12,6 +12,7 @@
 		15C196EF32ADCB201CE971F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FF939DE52093130D66282A0 /* Assets.xcassets */; };
 		1CE6F7745BCD829F06F5D113 /* KeepAlive.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E91A60E8376CDA1E61000D /* KeepAlive.swift */; };
 		F65947E62B7A4F87BB60D17F /* WatchSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B43F032093F4ECD91A48C0A /* WatchSession.swift */; };
+		D7E42278AF40C56AE0155502 /* NewAreaPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E42278AF40C56AE0155503 /* NewAreaPrompt.swift */; };
 		2086FF19AB264D8EB3147C36 /* DiagnosticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2A8F0C37694136BDA2460E /* DiagnosticsView.swift */; };
 		9BE01279C5C84B4CA864DAF2 /* StateScreens.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B13A4252BF4B8B9CC47319 /* StateScreens.swift */; };
 		350DE470EA194A98E6104FEA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE1254E228F5E03BB309A86 /* ContentView.swift */; };
@@ -105,6 +106,7 @@
 		A301009B857214162AAF4542 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		B5E91A60E8376CDA1E61000D /* KeepAlive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepAlive.swift; sourceTree = "<group>"; };
 		0B43F032093F4ECD91A48C0A /* WatchSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSession.swift; sourceTree = "<group>"; };
+		D7E42278AF40C56AE0155503 /* NewAreaPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAreaPrompt.swift; sourceTree = "<group>"; };
 		5D2A8F0C37694136BDA2460E /* DiagnosticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticsView.swift; sourceTree = "<group>"; };
 		E7B13A4252BF4B8B9CC47319 /* StateScreens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateScreens.swift; sourceTree = "<group>"; };
 		BD4FD2D858C41669F1FE962C /* PTPApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = PTPApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -157,6 +159,7 @@
 				D3B8946706855FBA2066EC81 /* Info.plist */,
 				B5E91A60E8376CDA1E61000D /* KeepAlive.swift */,
 				0B43F032093F4ECD91A48C0A /* WatchSession.swift */,
+				D7E42278AF40C56AE0155503 /* NewAreaPrompt.swift */,
 				5D2A8F0C37694136BDA2460E /* DiagnosticsView.swift */,
 				E7B13A4252BF4B8B9CC47319 /* StateScreens.swift */,
 				22EC6397C3D878282050329F /* PTPWatch.entitlements */,
@@ -390,6 +393,7 @@
 				AA6EADFCA75B25BFFE6F6AFD /* HeartbeatReceiver.swift in Sources */,
 				1CE6F7745BCD829F06F5D113 /* KeepAlive.swift in Sources */,
 				F65947E62B7A4F87BB60D17F /* WatchSession.swift in Sources */,
+				D7E42278AF40C56AE0155502 /* NewAreaPrompt.swift in Sources */,
 				2086FF19AB264D8EB3147C36 /* DiagnosticsView.swift in Sources */,
 				9BE01279C5C84B4CA864DAF2 /* StateScreens.swift in Sources */,
 				52127AC36FBF895C95C89CBB /* PTPWatchApp.swift in Sources */,

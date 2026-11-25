@@ -33,6 +33,7 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - Event mode on the watch: "Event 2 hours" and "Event 4 hours" arm with the 4 m alert distance and disarm by themselves when the time is up, unless a Warning or an Alarm is showing (#69).
 - The iPhone can ask the watch to start an event (2 or 4 hours) while the watch app is open and disarmed. The watch decides; the phone can never disarm it (ADR-0008, #73).
 - Visit learning on the iPhone: with Always location, each visit is stored as a rounded grid cell (about 250 m) and its arrival day, and deleted after 60 days. The phone shows how many areas it has learned and can delete them all (`PTPStore.PlaceStore`, ADR-0010, #76).
+- New-area prompt: arriving in an area with fewer than 3 visit days in 60 days posts "New area · Arm PTP on your watch?". Forwarded to the watch, its "Arm" action arms the watch in normal mode; the phone never arms it (ADR-0011, #78).
 
 ### Changed
 - Gate 0 is recorded as passed on the owner's device check, with the 4-hour battery figure and the trace files still unrecorded (`docs/IMPLEMENTATION_PLAN.md`, #54).
