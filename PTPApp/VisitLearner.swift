@@ -30,7 +30,8 @@ final class VisitLearner: NSObject, CLLocationManagerDelegate {
     }
 
     func start() {
-        if manager.authorizationStatus == .notDetermined {
+        // iOS grants While Using first; asking again once that is granted offers the upgrade to Always.
+        if manager.authorizationStatus != .authorizedAlways {
             manager.requestAlwaysAuthorization()
         }
         updateMonitoring()
