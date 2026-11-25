@@ -11,6 +11,7 @@ struct ContentView: View {
     @State private var alarmHistory = AlarmHistory()
     @State private var heartbeat = HeartbeatSender(sessionID: ContentView.heartbeatID)
     let visitLearner: VisitLearner
+    let placeWatcher: PlaceWatcher
     private let readingLog = ReadingLog.shared
 
     private func updateLiveActivity() {
@@ -50,6 +51,19 @@ struct ContentView: View {
                 ).font(.footnote)
             }
             Button("Delete learned places", action: visitLearner.deleteAll).font(.footnote)
+            Text("Risky places: \(placeWatcher.riskyCount) · Safe places: \(placeWatcher.safeCount)").font(.footnote)
+            Group {
+                Button("Mark here as risky") { placeWatcher.mark(.risky) }
+                Button("Mark here as safe") { placeWatcher.mark(.safe) }
+            }
+            .font(.footnote)
+            .disabled(placeWatcher.isLocating || !visitLearner.isLearning)
+            if let problem = placeWatcher.markProblem {
+                Text(problem).font(.footnote).multilineTextAlignment(.center)
+            }
+            Button("Remove chosen places", action: placeWatcher.deleteAll)
+                .font(.footnote)
+                .disabled(placeWatcher.isLocating)
 
             // The phone can ask the watch to arm, never to disarm (ADR-0008).
             let watchState = Self.watchState(exchange).flatMap(PTPState.init(rawValue:))

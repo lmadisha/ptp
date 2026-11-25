@@ -8,6 +8,14 @@ public struct StoreConfig: Sendable, Equatable {
     public var placeGridDegrees: Double = 0.0025
     /// Minimum distinct visit days within retention for an area to be familiar.
     public var newAreaMinVisits: Int = 3
+    /// Decimal places retained for chosen-place coordinates.
+    public var chosenPlaceDecimals: Int = 3
+    /// Radius of a chosen place in metres.
+    public var chosenPlaceRadius: Double = 150
+    /// Maximum number of chosen places stored and monitored.
+    public var maxChosenPlaces: Int = 20
+    /// A location fix less certain than this (metres) is not used to mark a place.
+    public var chosenPlaceMaxUncertainty: Double = 100
 
     public static let standard = StoreConfig(alarmLogRetention: .seconds(30 * 24 * 60 * 60))
 }

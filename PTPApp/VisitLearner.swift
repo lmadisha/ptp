@@ -12,6 +12,7 @@ final class VisitLearner: NSObject, CLLocationManagerDelegate {
     private(set) var isLearning = false
     /// iOS asks only once; after a refusal or "Keep Only While Using" the owner must use Settings.
     private(set) var needsSettings = false
+    var isInChosenPlace: ((Double, Double) -> Bool)?
 
     private let manager = CLLocationManager()
     private let store: PlaceStore?
@@ -72,14 +73,16 @@ final class VisitLearner: NSObject, CLLocationManagerDelegate {
         // The store keeps one row per area and day, so a repeat counts once.
         guard arrival != .distantPast else { return }
         let isArrival = visit.departureDate == .distantFuture
-        let area = PlaceStore.area(latitude: visit.coordinate.latitude, longitude: visit.coordinate.longitude)
+        let latitude = visit.coordinate.latitude
+        let longitude = visit.coordinate.longitude
+        let area = PlaceStore.area(latitude: latitude, longitude: longitude)
 
         Task { @MainActor [weak self] in
             guard let self, isLearning, let store else { return }
             let now = Date.now
             let isNew = isArrival && ((try? store.isNewArea(area, now: now)) ?? false)
             try? store.recordVisit(area: area, arrival: arrival, now: now)
-            if isNew { postNewAreaPrompt() }
+            if isNew, isInChosenPlace?(latitude, longitude) != true { postNewAreaPrompt() }
             areas = (try? store.areaCount()) ?? areas
         }
     }
