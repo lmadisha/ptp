@@ -20,7 +20,7 @@ private let start = Date(timeIntervalSince1970: 1_800_057_600)
     defer { try? FileManager.default.removeItem(atPath: path) }
     let arrival = Date(timeIntervalSince1970: -1)
     let store = try PlaceStore(path: path, now: arrival)
-    try store.recordVisit(area: "0:0", at: arrival)
+    try store.recordVisit(area: "0:0", arrival: arrival, now: arrival)
 
     let database = try Database(path: path)
     #expect(try database.run("SELECT area, visited_day FROM place_visit") == [[.text("0:0"), .real(-day)]])
@@ -28,45 +28,57 @@ private let start = Date(timeIntervalSince1970: 1_800_057_600)
 
 @Test func visitsAreCountedByAreaWithinTheRetentionBoundary() throws {
     let store = try PlaceStore(path: ":memory:", now: start)
-    try store.recordVisit(area: "0:0", at: start)
-    try store.recordVisit(area: "0:0", at: start + day)
-    try store.recordVisit(area: "1:0", at: start + day)
+    try store.recordVisit(area: "0:0", arrival: start, now: start)
+    try store.recordVisit(area: "0:0", arrival: start + day, now: start + day)
+    try store.recordVisit(area: "1:0", arrival: start + day, now: start + day)
 
     #expect(try store.visitCount(area: "0:0", now: start + 60 * day) == 2)
     #expect(try store.visitCount(area: "0:0", now: start + 60 * day + 1) == 1)
     #expect(try store.visitCount(area: "1:0", now: start + 60 * day + 1) == 1)
 
-    try store.recordVisit(area: "2:0", at: start + 61 * day + 1)
+    try store.recordVisit(area: "2:0", arrival: start + 61 * day + 1, now: start + 61 * day + 1)
     #expect(try store.areaCount() == 1)
 }
 
 @Test func visitsTooFarInTheFutureAreExcludedAndPruned() throws {
     let store = try PlaceStore(path: ":memory:", now: start)
-    try store.recordVisit(area: "0:0", at: start + 60 * day)
-    try store.recordVisit(area: "1:0", at: start + 61 * day)
+    try store.recordVisit(area: "0:0", arrival: start + 60 * day, now: start + 60 * day)
+    try store.recordVisit(area: "1:0", arrival: start + 61 * day, now: start + 61 * day)
 
     #expect(try store.visitCount(area: "0:0", now: start) == 1)
     #expect(try store.visitCount(area: "1:0", now: start) == 0)
-    try store.recordVisit(area: "2:0", at: start)
+    try store.recordVisit(area: "2:0", arrival: start, now: start)
     #expect(try store.areaCount() == 2)
 }
 
 @Test func aRepeatedReportForTheSameAreaAndDayCountsOnce() throws {
     let store = try PlaceStore(path: ":memory:", now: start)
     // Arrival, then the same visit again at departure, then a second visit later that day.
-    try store.recordVisit(area: "0:0", at: start + 100)
-    try store.recordVisit(area: "0:0", at: start + 100)
-    try store.recordVisit(area: "0:0", at: start + 5_000)
-    try store.recordVisit(area: "1:0", at: start + 100)
+    try store.recordVisit(area: "0:0", arrival: start + 100, now: start + 100)
+    try store.recordVisit(area: "0:0", arrival: start + 100, now: start + 100)
+    try store.recordVisit(area: "0:0", arrival: start + 5_000, now: start + 5_000)
+    try store.recordVisit(area: "1:0", arrival: start + 100, now: start + 100)
     #expect(try store.visitCount(area: "0:0", now: start + day) == 1)
     #expect(try store.visitCount(area: "1:0", now: start + day) == 1)
 }
 
+@Test func aLateReportPrunesByTheCurrentTimeNotTheArrival() throws {
+    let store = try PlaceStore(path: ":memory:", now: start)
+    try store.recordVisit(area: "0:0", arrival: start, now: start)
+    // A visit reported 62 days after its arrival: the old row expires, and so does the late one.
+    try store.recordVisit(area: "1:0", arrival: start + day, now: start + 62 * day)
+    #expect(try store.areaCount() == 0)
+    // Reported 2 days late but still within 60 days: kept, while the first visit has expired.
+    try store.recordVisit(area: "2:0", arrival: start + 59 * day, now: start + 61 * day)
+    #expect(try store.areaCount() == 1)
+    #expect(try store.visitCount(area: "2:0", now: start + 61 * day) == 1)
+}
+
 @Test func deletingLearnedPlacesClearsEveryArea() throws {
     let store = try PlaceStore(path: ":memory:", now: start)
-    try store.recordVisit(area: "0:0", at: start)
-    try store.recordVisit(area: "0:0", at: start)
-    try store.recordVisit(area: "1:0", at: start)
+    try store.recordVisit(area: "0:0", arrival: start, now: start)
+    try store.recordVisit(area: "0:0", arrival: start, now: start)
+    try store.recordVisit(area: "1:0", arrival: start, now: start)
     #expect(try store.areaCount() == 2)
 
     try store.deleteAll()
@@ -77,7 +89,7 @@ private let start = Date(timeIntervalSince1970: 1_800_057_600)
 @Test func placeTextIsStoredAsData() throws {
     let store = try PlaceStore(path: ":memory:", now: start)
     let area = "x'); DROP TABLE place_visit; --"
-    try store.recordVisit(area: area, at: start)
+    try store.recordVisit(area: area, arrival: start, now: start)
     #expect(try store.visitCount(area: area, now: start) == 1)
 }
 
@@ -86,8 +98,8 @@ private let start = Date(timeIntervalSince1970: 1_800_057_600)
     defer { try? FileManager.default.removeItem(atPath: path) }
     do {
         let store = try PlaceStore(path: path, now: start)
-        try store.recordVisit(area: "0:0", at: start)
-        try store.recordVisit(area: "1:0", at: start + day)
+        try store.recordVisit(area: "0:0", arrival: start, now: start)
+        try store.recordVisit(area: "1:0", arrival: start + day, now: start + day)
     }
 
     let now = start + 60 * day + 1

@@ -2,12 +2,15 @@ import CoreLocation
 import Foundation
 import Observation
 import PTPStore
+import UIKit
 
 @MainActor
 @Observable
 final class VisitLearner: NSObject, CLLocationManagerDelegate {
     private(set) var areas = 0
     private(set) var isLearning = false
+    /// iOS asks only once; after a refusal or "Keep Only While Using" the owner must use Settings.
+    private(set) var needsSettings = false
 
     private let manager = CLLocationManager()
     private let store: PlaceStore?
@@ -30,11 +33,11 @@ final class VisitLearner: NSObject, CLLocationManagerDelegate {
     }
 
     func start() {
-        // iOS grants While Using first; asking again once that is granted offers the upgrade to Always.
-        if manager.authorizationStatus != .authorizedAlways {
+        if manager.authorizationStatus == .notDetermined {
             manager.requestAlwaysAuthorization()
+        } else if let settings = URL(string: UIApplication.openSettingsURLString) {
+            UIApplication.shared.open(settings)
         }
-        updateMonitoring()
     }
 
     func deleteAll() {
@@ -57,13 +60,14 @@ final class VisitLearner: NSObject, CLLocationManagerDelegate {
 
         Task { @MainActor [weak self] in
             guard let self, isLearning, let store else { return }
-            try? store.recordVisit(area: area, at: arrival)
+            try? store.recordVisit(area: area, arrival: arrival, now: .now)
             areas = (try? store.areaCount()) ?? areas
         }
     }
 
     private func updateMonitoring() {
         let authorized = manager.authorizationStatus == .authorizedAlways
+        needsSettings = !authorized && manager.authorizationStatus != .notDetermined
         guard authorized != isLearning else { return }
         if authorized {
             manager.startMonitoringVisits()

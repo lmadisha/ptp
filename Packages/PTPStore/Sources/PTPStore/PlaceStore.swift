@@ -34,13 +34,15 @@ public final class PlaceStore {
         try deleteExpired(now: now)
     }
 
-    public func recordVisit(area: String, at time: Date) throws {
+    /// `arrival` sets the stored day; `now` decides what has expired. iOS can report a visit days after its
+    /// arrival, so an arrival already past the retention is deleted straight away.
+    public func recordVisit(area: String, arrival: Date, now: Date) throws {
         let secondsPerDay: TimeInterval = 86_400
-        let visitedDay = floor(time.timeIntervalSince1970 / secondsPerDay) * secondsPerDay
+        let visitedDay = floor(arrival.timeIntervalSince1970 / secondsPerDay) * secondsPerDay
         try database.run(
             "INSERT OR IGNORE INTO place_visit (area, visited_day) VALUES (?, ?)",
             [.text(area), .real(visitedDay)])
-        try deleteExpired(now: time)
+        try deleteExpired(now: now)
     }
 
     public func visitCount(area: String, now: Date) throws -> Int {

@@ -44,7 +44,10 @@ struct ContentView: View {
             Text("Alarm log: \(alarmHistory.count) events").font(.footnote)
             Text("Places learned: \(visitLearner.areas) areas").font(.footnote)
             if !visitLearner.isLearning {
-                Button("Learn places", action: visitLearner.start).font(.footnote)
+                Button(
+                    visitLearner.needsSettings ? "Allow location “Always” in Settings" : "Learn places",
+                    action: visitLearner.start
+                ).font(.footnote)
             }
             Button("Delete learned places", action: visitLearner.deleteAll).font(.footnote)
 
