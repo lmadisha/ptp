@@ -11,7 +11,7 @@ Scope: whole repo, mainly `PTPApp/PlaceWatcher.swift` and `PTPStore/ChosenPlaceS
 |---|---|---|
 | `yagni` | A map picker, place names and a per-place list. | `applied`: not built. "Mark here" is the owner's choice; editing waits for Settings (2.3). |
 | `yagni` | A second notification category for risky places. | `applied`: reuses `NEW_AREA`, whose "Arm" action already arms on the watch. |
-| `shrink` | `PlaceWatcher` repeats the file protection and backup setup a third time (`AlarmHistory`, `VisitLearner`). | `open`: the third copy the #76 entry waited for. Fold the three into one helper in a follow-up. |
+| `shrink` | `PlaceWatcher` repeats the file protection and backup setup a third time (`AlarmHistory`, `VisitLearner`). | `open`: the third copy the #76 entry waited for. Follow-up #82. |
 | `shrink` | `place(containingLatitude:longitude:)` scans every row with a flat-earth distance. | `applied`: at most 20 rows and a 150 m radius; marked with a `ponytail:` comment. |
 
 ## 2026-11-25 · #78 new-area prompt
