@@ -43,7 +43,7 @@ import Testing
     defer { try? FileManager.default.removeItem(atPath: path) }
     let store = try ChosenPlaceStore(path: path)
     try store.add(.risky, latitude: 0, longitude: 0)
-    try store.add(.safe, latitude: 0, longitude: 0)
+    try store.add(.safe, latitude: 0.01, longitude: 0)
 
     let database = try Database(path: path)
     #expect(try database.run("SELECT kind, typeof(kind) FROM chosen_place ORDER BY id") ==
@@ -66,10 +66,19 @@ import Testing
 @Test func chosenPlaceContainmentUsesTheRadiusAndReturnsTheFirstMatch() throws {
     let store = try ChosenPlaceStore(path: ":memory:")
     let first = try store.add(.risky, latitude: 0, longitude: 0)
-    try store.add(.safe, latitude: 0.001, longitude: 0)
+    try store.add(.safe, latitude: 0.01, longitude: 0)
 
     #expect(try store.place(containingLatitude: 0.001, longitude: 0) == first)
     #expect(try store.place(containingLatitude: 0.003, longitude: 0) == nil)
+}
+
+@Test func markingASpotAgainReplacesTheEarlierMarkingNearby() throws {
+    let store = try ChosenPlaceStore(path: ":memory:")
+    let far = try store.add(.risky, latitude: 0.01, longitude: 0)
+    try store.add(.risky, latitude: 0, longitude: 0)
+    // 111 m away: inside the 150 m radius, so the risky place there becomes this safe one.
+    let safe = try store.add(.safe, latitude: 0.001, longitude: 0)
+    #expect(try store.places() == [far, safe])
 }
 
 private func temporaryChosenPlacePath() -> String {

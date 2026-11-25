@@ -58,6 +58,9 @@ struct ContentView: View {
             }
             .font(.footnote)
             .disabled(placeWatcher.isLocating || !visitLearner.isLearning)
+            if placeWatcher.markFailed {
+                Text("Couldn't get a precise location. Try again outdoors.").font(.footnote)
+            }
             Button("Remove chosen places", action: placeWatcher.deleteAll)
                 .font(.footnote)
                 .disabled(placeWatcher.isLocating)

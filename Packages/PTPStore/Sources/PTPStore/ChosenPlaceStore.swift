@@ -41,6 +41,10 @@ public final class ChosenPlaceStore {
         let scale = pow(10, Double(config.chosenPlaceDecimals))
         let latitude = (latitude * scale).rounded() / scale
         let longitude = (longitude * scale).rounded() / scale
+        // The newest marking wins: a spot marked safe stops being risky, and the other way round.
+        for place in try places() where distance(place, latitude, longitude) <= config.chosenPlaceRadius {
+            try database.run("DELETE FROM chosen_place WHERE id = ?", [.real(Double(place.id))])
+        }
         try database.run(
             """
             INSERT INTO chosen_place (kind, latitude, longitude)
@@ -73,14 +77,16 @@ public final class ChosenPlaceStore {
     }
 
     public func place(containingLatitude latitude: Double, longitude: Double) throws -> ChosenPlace? {
+        try places().first { distance($0, latitude, longitude) <= config.chosenPlaceRadius }
+    }
+
+    /// Metres from a stored place to a point.
+    // ponytail: flat-earth distance over at most 20 rows; fine for a 150 m radius, wrong across the poles.
+    private func distance(_ place: ChosenPlace, _ latitude: Double, _ longitude: Double) -> Double {
         let radiansPerDegree = Double.pi / 180
-        let earthRadius = 6_371_000.0
-        // ponytail: Scan at most 20 places by default and approximate distance for a 150 m radius.
-        return try places().first { place in
-            let latitudeDelta = (latitude - place.latitude) * radiansPerDegree
-            let longitudeDelta = (longitude - place.longitude).remainder(dividingBy: 360) * radiansPerDegree
-            let meanLatitude = (latitude + place.latitude) * radiansPerDegree / 2
-            return earthRadius * hypot(latitudeDelta, longitudeDelta * cos(meanLatitude)) <= config.chosenPlaceRadius
-        }
+        let latitudeDelta = (latitude - place.latitude) * radiansPerDegree
+        let longitudeDelta = (longitude - place.longitude).remainder(dividingBy: 360) * radiansPerDegree
+        let meanLatitude = (latitude + place.latitude) * radiansPerDegree / 2
+        return 6_371_000 * hypot(latitudeDelta, longitudeDelta * cos(meanLatitude))
     }
 }

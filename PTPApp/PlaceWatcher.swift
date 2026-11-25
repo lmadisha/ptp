@@ -11,6 +11,8 @@ final class PlaceWatcher: NSObject, CLLocationManagerDelegate {
     private(set) var riskyCount = 0
     private(set) var safeCount = 0
     private(set) var isLocating = false
+    /// The last "Mark here" got no fix precise enough to use.
+    private(set) var markFailed = false
 
     private let manager = CLLocationManager()
     private let config = StoreConfig.standard
@@ -18,6 +20,8 @@ final class PlaceWatcher: NSObject, CLLocationManagerDelegate {
     private var pendingKind: ChosenPlaceKind?
     private var isRemoving = false
     private var monitor: CLMonitor?
+    /// Background region events need an explicit Always session held while places are watched (iOS 18).
+    private var serviceSession: CLServiceSession?
     private var monitorStartup: Task<Void, Never>?
 
     override init() {
@@ -33,6 +37,11 @@ final class PlaceWatcher: NSObject, CLLocationManagerDelegate {
 
         super.init()
         manager.delegate = self
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        // Created at launch, so a background relaunch for a region event gets it back at once.
+        if manager.authorizationStatus == .authorizedAlways {
+            serviceSession = CLServiceSession(authorization: .always)
+        }
         refreshCounts()
 
         let startup = Task { [weak self] in
@@ -71,7 +80,9 @@ final class PlaceWatcher: NSObject, CLLocationManagerDelegate {
 
     func mark(_ kind: ChosenPlaceKind) {
         guard !isLocating, !isRemoving, manager.authorizationStatus == .authorizedAlways else { return }
+        if serviceSession == nil { serviceSession = CLServiceSession(authorization: .always) }
         pendingKind = kind
+        markFailed = false
         isLocating = true
         manager.requestLocation()
     }
@@ -98,15 +109,27 @@ final class PlaceWatcher: NSObject, CLLocationManagerDelegate {
     nonisolated func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let latitude = locations.last?.coordinate.latitude
         let longitude = locations.last?.coordinate.longitude
+        let uncertainty = locations.last?.horizontalAccuracy ?? -1
         Task { @MainActor [weak self] in
             guard let self, let kind = pendingKind else { return }
             pendingKind = nil
             defer { isLocating = false }
-            guard let latitude, let longitude else { return }
+            // A negative accuracy means no fix; a coarse one could mark the wrong place.
+            guard let latitude, let longitude, uncertainty >= 0, uncertainty <= config.chosenPlaceMaxUncertainty
+            else {
+                markFailed = true
+                return
+            }
             await monitorStartup?.value
             guard let place = try? store?.add(kind, latitude: latitude, longitude: longitude) else { return }
-            await monitor?.add(condition(for: place), identifier: identifier(for: place), assuming: .satisfied)
             refreshCounts()
+            guard let monitor else { return }
+            // Adding may have replaced a nearby place; stop watching it.
+            let stored = Set(((try? store?.places()) ?? []).map(identifier(for:)))
+            for old in await monitor.identifiers where !stored.contains(old) {
+                await monitor.remove(old)
+            }
+            await monitor.add(condition(for: place), identifier: identifier(for: place), assuming: .satisfied)
         }
     }
 
@@ -114,6 +137,7 @@ final class PlaceWatcher: NSObject, CLLocationManagerDelegate {
         Task { @MainActor [weak self] in
             guard let self, pendingKind != nil else { return }
             pendingKind = nil
+            markFailed = true
             isLocating = false
         }
     }
