@@ -26,6 +26,7 @@ final class WatchSession {
     /// The heartbeat's signal strength in dBm, shown when there is no distance.
     private(set) var rssi: Int?
     private(set) var armMode: ArmMode?
+    private var restored = false
     /// When the running event ends. Wall-clock time, so it survives a restart of the app.
     private(set) var eventEndsAt: Date?
     private(set) var secondsToAlarm: Int?
@@ -128,7 +129,10 @@ final class WatchSession {
         UserDefaults.standard.removeObject(forKey: Self.armModeKey)
     }
 
+    /// Runs once per launch: the view and a notification action (`NewAreaPrompt`) both call it, in either order.
     func restore() {
+        guard !restored else { return }
+        restored = true
         // Read first: arm() runs updateState, which clears the stored value.
         let latched = UserDefaults.standard.string(forKey: Self.latchedKey)
         if latched == "lost" {

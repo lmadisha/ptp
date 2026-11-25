@@ -28,6 +28,8 @@ final class NewAreaPrompt: NSObject, UNUserNotificationCenterDelegate {
         }
 
         Task { @MainActor in
+            // A cold launch from the action can come before the view restores a stored Alarm, Lost or event.
+            session.restore()
             session.arm(.normal)
             completionHandler()
         }
