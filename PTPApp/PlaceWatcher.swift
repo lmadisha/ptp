@@ -11,8 +11,8 @@ final class PlaceWatcher: NSObject, CLLocationManagerDelegate {
     private(set) var riskyCount = 0
     private(set) var safeCount = 0
     private(set) var isLocating = false
-    /// The last "Mark here" got no fix precise enough to use.
-    private(set) var markFailed = false
+    /// Why the last "Mark here" saved nothing, shown under the buttons.
+    private(set) var markProblem: String?
 
     private let manager = CLLocationManager()
     private let config = StoreConfig.standard
@@ -82,7 +82,7 @@ final class PlaceWatcher: NSObject, CLLocationManagerDelegate {
         guard !isLocating, !isRemoving, manager.authorizationStatus == .authorizedAlways else { return }
         if serviceSession == nil { serviceSession = CLServiceSession(authorization: .always) }
         pendingKind = kind
-        markFailed = false
+        markProblem = nil
         isLocating = true
         manager.requestLocation()
     }
@@ -117,15 +117,22 @@ final class PlaceWatcher: NSObject, CLLocationManagerDelegate {
             // A negative accuracy means no fix; a coarse one could mark the wrong place.
             guard let latitude, let longitude, uncertainty >= 0, uncertainty <= config.chosenPlaceMaxUncertainty
             else {
-                markFailed = true
+                markProblem = "Couldn't get a precise location. Try again outdoors."
                 return
             }
             await monitorStartup?.value
-            guard let place = try? store?.add(kind, latitude: latitude, longitude: longitude) else { return }
+            guard let store else { return }
+            let place: ChosenPlace
+            do {
+                place = try store.add(kind, latitude: latitude, longitude: longitude)
+            } catch {
+                markProblem = "Couldn't save this place. PTP keeps at most \(config.maxChosenPlaces); remove some first."
+                return
+            }
             refreshCounts()
             guard let monitor else { return }
             // Adding may have replaced a nearby place; stop watching it.
-            let stored = Set(((try? store?.places()) ?? []).map(identifier(for:)))
+            let stored = Set(((try? store.places()) ?? []).map(identifier(for:)))
             for old in await monitor.identifiers where !stored.contains(old) {
                 await monitor.remove(old)
             }
@@ -137,7 +144,7 @@ final class PlaceWatcher: NSObject, CLLocationManagerDelegate {
         Task { @MainActor [weak self] in
             guard let self, pendingKind != nil else { return }
             pendingKind = nil
-            markFailed = true
+            markProblem = "Couldn't get a precise location. Try again outdoors."
             isLocating = false
         }
     }
