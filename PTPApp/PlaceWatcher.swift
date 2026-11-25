@@ -25,15 +25,7 @@ final class PlaceWatcher: NSObject, CLLocationManagerDelegate {
     private var monitorStartup: Task<Void, Never>?
 
     override init() {
-        let folder = URL.applicationSupportDirectory
-        var file = folder.appending(path: "chosen-places.sqlite")
-        try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-        store = try? ChosenPlaceStore(path: file.path)
-        try? FileManager.default.setAttributes(
-            [.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: file.path)
-        var values = URLResourceValues()
-        values.isExcludedFromBackup = true
-        try? file.setResourceValues(values)
+        store = openStore("chosen-places.sqlite") { try ChosenPlaceStore(path: $0) }
 
         super.init()
         manager.delegate = self

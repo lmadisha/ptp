@@ -3,6 +3,15 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-25 · #82 shared store-file setup
+
+Scope: `openStore` in `PTPApp/AlarmHistory.swift` and its three callers (`AlarmHistory`, `VisitLearner`, `PlaceWatcher`).
+
+| Tag | Finding | Status |
+|---|---|---|
+| `shrink` | Three copies of the folder, file protection and backup-exclusion setup. | `applied`: one generic `openStore(_:_:)`, 27 lines to 15. |
+| `yagni` | A new file or a store protocol for the helper. | `applied`: not added. A free function next to its first caller; no pbxproj change. |
+
 ## 2026-11-25 · #83 quick-arm complication
 
 Scope: whole repo, mainly `PTPWatchWidget/QuickArmWidget.swift` and the `onOpenURL` handler in `PTPWatch/PTPWatchApp.swift`.
@@ -21,7 +30,7 @@ Scope: whole repo, mainly `PTPApp/PlaceWatcher.swift` and `PTPStore/ChosenPlaceS
 |---|---|---|
 | `yagni` | A map picker, place names and a per-place list. | `applied`: not built. "Mark here" is the owner's choice; editing waits for Settings (2.3). |
 | `yagni` | A second notification category for risky places. | `applied`: reuses `NEW_AREA`, whose "Arm" action already arms on the watch. |
-| `shrink` | `PlaceWatcher` repeats the file protection and backup setup a third time (`AlarmHistory`, `VisitLearner`). | `open`: the third copy the #76 entry waited for. Follow-up #82. |
+| `shrink` | `PlaceWatcher` repeats the file protection and backup setup a third time (`AlarmHistory`, `VisitLearner`). | `applied` in #82: one `openStore` helper. |
 | `shrink` | `place(containingLatitude:longitude:)` scans every row with a flat-earth distance. | `applied`: at most 20 rows and a 150 m radius; marked with a `ponytail:` comment. |
 
 ## 2026-11-25 · #78 new-area prompt

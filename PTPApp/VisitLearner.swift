@@ -18,15 +18,7 @@ final class VisitLearner: NSObject, CLLocationManagerDelegate {
     private let store: PlaceStore?
 
     override init() {
-        let folder = URL.applicationSupportDirectory
-        var file = folder.appending(path: "places.sqlite")
-        try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-        store = try? PlaceStore(path: file.path, now: .now)
-        try? FileManager.default.setAttributes(
-            [.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: file.path)
-        var values = URLResourceValues()
-        values.isExcludedFromBackup = true
-        try? file.setResourceValues(values)
+        store = openStore("places.sqlite") { try PlaceStore(path: $0, now: .now) }
 
         super.init()
         // iOS shows the iPhone's actions on a notification it forwards to the watch, so "Arm" is registered here too.
