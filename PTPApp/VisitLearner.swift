@@ -28,7 +28,11 @@ final class VisitLearner: NSObject, CLLocationManagerDelegate {
         try? file.setResourceValues(values)
 
         super.init()
-        let category = UNNotificationCategory(identifier: "NEW_AREA", actions: [], intentIdentifiers: [], options: [])
+        // iOS shows the iPhone's actions on a notification it forwards to the watch, so "Arm" is registered here too.
+        // Chosen on the watch it runs in the watch app (NewAreaPrompt); chosen on the phone it only opens PTP,
+        // because the phone never arms the watch (ADR-0008).
+        let arm = UNNotificationAction(identifier: "ARM", title: "Arm", options: [.foreground])
+        let category = UNNotificationCategory(identifier: "NEW_AREA", actions: [arm], intentIdentifiers: [], options: [])
         UNUserNotificationCenter.current().setNotificationCategories([category])
         areas = (try? store?.areaCount()) ?? 0
         manager.delegate = self

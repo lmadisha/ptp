@@ -10,7 +10,7 @@ Scope: whole repo, mainly `PTPApp/VisitLearner.swift`, `PTPWatch/NewAreaPrompt.s
 | Tag | Finding | Status |
 |---|---|---|
 | `yagni` | A phone-to-watch message, queue or reply for the prompt. | `applied`: not built. iOS forwards the phone's notification; the watch answers it locally. |
-| `yagni` | An "Arm" action on the phone that would ask the watch to arm. | `applied`: not built. The phone's category has no action, so it can't arm the watch (ADR-0008). |
+| `yagni` | A phone handler for "Arm" that would ask the watch to arm. | `applied`: not built. The phone registers the action only so the forwarded notification shows it; on the phone it just opens PTP (ADR-0008). |
 | `yagni` | A settings switch for the prompt. | `applied`: not built. Refusing notifications turns it off; settings come in 2.3. |
 | `shrink` | `"NEW_AREA"` is spelled in two files (phone and watch). | `open`: a shared constant in `Shared/` if a third use appears. |
 
