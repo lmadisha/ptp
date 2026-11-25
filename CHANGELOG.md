@@ -37,6 +37,7 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - Risky and safe places: "Mark here as risky" or "Mark here as safe" on the iPhone stores the spot rounded to about 110 m (at most 20). Arriving at a risky place asks on the watch to arm; a safe place never prompts, not even as a new area (ADR-0012, #80).
 
 ### Changed
+- The planned iPhone siren (2.2) also vibrates and flashes, with the iOS limits noted: no torch or screen flash in the background, and background vibration is best effort (#85).
 - Gate 0 is recorded as passed on the owner's device check, with the 4-hour battery figure and the trace files still unrecorded (`docs/IMPLEMENTATION_PLAN.md`, #54).
 - On-device stores (places, alarm log) will use SQLite through the system `SQLite3` library in a `PTPStore` package, not SwiftData (ADR-0005, #30).
 - The iPhone shows the watch's state (Disarmed, Armed, Warning, Alarm, Lost), sent over WatchConnectivity. The watch owns the state; the phone only mirrors it (ADR-0008, #59).

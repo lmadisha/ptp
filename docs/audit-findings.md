@@ -3,6 +3,14 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-25 · #85 siren vibration and flash
+
+Scope: the diff. Docs only: four lines under the 2.2 siren task in `IMPLEMENTATION_PLAN.md`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | A separate plan task for flash and vibration. | `applied`: kept as a sub-bullet of the siren task; they share its trigger and its Face ID stop. |
+
 ## 2026-11-25 · #80 risky and safe places
 
 Scope: whole repo, mainly `PTPApp/PlaceWatcher.swift` and `PTPStore/ChosenPlaceStore.swift`.

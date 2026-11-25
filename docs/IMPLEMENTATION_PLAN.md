@@ -117,6 +117,10 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
 
 ### 2.2 Response
 - [ ] iPhone siren: full-screen alarm and full-volume audio while the app is alive; the owner stops it with Face ID.
+  - Also vibrates and flashes, so a phone left behind is easier to find (#85). iOS limits:
+    - Audio plays in the background while the app is alive, even with the silent switch on. It can't force the volume up.
+    - Vibration in the background isn't guaranteed; pulse it with the siren as best effort.
+    - Torch and screen flash work only while PTP is in the foreground. The camera is unavailable in the background, and an app can't light a locked screen.
 - [ ] Mark as Lost hand-off: open Find Devices on the watch, with a fallback instruction to use icloud.com/find on another device.
 - [ ] "I have it" stops the alarm and logs the event for tuning.
 
