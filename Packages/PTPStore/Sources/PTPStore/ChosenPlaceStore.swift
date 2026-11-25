@@ -41,18 +41,26 @@ public final class ChosenPlaceStore {
         let scale = pow(10, Double(config.chosenPlaceDecimals))
         let latitude = (latitude * scale).rounded() / scale
         let longitude = (longitude * scale).rounded() / scale
-        // The newest marking wins: a spot marked safe stops being risky, and the other way round.
-        for place in try places() where distance(place, latitude, longitude) <= config.chosenPlaceRadius {
-            try database.run("DELETE FROM chosen_place WHERE id = ?", [.real(Double(place.id))])
-        }
-        try database.run(
-            """
-            INSERT INTO chosen_place (kind, latitude, longitude)
-            SELECT ?, ?, ? WHERE (SELECT COUNT(*) FROM chosen_place) < ?
-            """,
-            [.text(kind.rawValue), .real(latitude), .real(longitude), .real(Double(config.maxChosenPlaces))])
-        guard try database.run("SELECT changes()") == [[.real(1)]] else {
-            throw StoreError(message: "too many chosen places")
+        // One transaction: a failed insert must not leave the replaced marking deleted.
+        try database.run("BEGIN IMMEDIATE")
+        do {
+            // The newest marking wins: a spot marked safe stops being risky, and the other way round.
+            for place in try places() where distance(place, latitude, longitude) <= config.chosenPlaceRadius {
+                try database.run("DELETE FROM chosen_place WHERE id = ?", [.real(Double(place.id))])
+            }
+            try database.run(
+                """
+                INSERT INTO chosen_place (kind, latitude, longitude)
+                SELECT ?, ?, ? WHERE (SELECT COUNT(*) FROM chosen_place) < ?
+                """,
+                [.text(kind.rawValue), .real(latitude), .real(longitude), .real(Double(config.maxChosenPlaces))])
+            guard try database.run("SELECT changes()") == [[.real(1)]] else {
+                throw StoreError(message: "too many chosen places")
+            }
+            try database.run("COMMIT")
+        } catch {
+            try? database.run("ROLLBACK")
+            throw error
         }
         guard case .real(let id)? = try database.run("SELECT last_insert_rowid()").first?.first else {
             throw StoreError(message: "missing chosen-place ID")

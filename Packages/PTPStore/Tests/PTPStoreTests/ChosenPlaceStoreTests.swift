@@ -81,6 +81,18 @@ import Testing
     #expect(try store.places() == [far, safe])
 }
 
+@Test func aRefusedMarkingKeepsTheOneItWouldHaveReplaced() throws {
+    let path = temporaryChosenPlacePath()
+    defer { try? FileManager.default.removeItem(atPath: path) }
+    let kept = try ChosenPlaceStore(path: path).add(.risky, latitude: 0, longitude: 0)
+    // With room for none, the nearby delete runs and then the insert is refused: both must roll back.
+    var config = StoreConfig.standard
+    config.maxChosenPlaces = 0
+    let full = try ChosenPlaceStore(path: path, config: config)
+    #expect(throws: StoreError.self) { try full.add(.safe, latitude: 0.001, longitude: 0) }
+    #expect(try full.places() == [kept])
+}
+
 private func temporaryChosenPlacePath() -> String {
     FileManager.default.temporaryDirectory.appending(path: "ptp-chosen-places-\(UUID().uuidString).sqlite").path
 }
