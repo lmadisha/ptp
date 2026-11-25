@@ -93,6 +93,17 @@ import Testing
     #expect(try full.places() == [kept])
 }
 
+@Test func markingsWhoseCirclesWouldOverlapReplaceEachOther() throws {
+    let store = try ChosenPlaceStore(path: ":memory:")
+    try store.add(.risky, latitude: 0, longitude: 0)
+    // 222 m apart: the two 150 m circles would overlap, so the earlier one goes.
+    let safe = try store.add(.safe, latitude: 0.002, longitude: 0)
+    #expect(try store.places() == [safe])
+    // 333 m apart: no overlap, both stay.
+    let risky = try store.add(.risky, latitude: 0.005, longitude: 0)
+    #expect(try store.places() == [safe, risky])
+}
+
 private func temporaryChosenPlacePath() -> String {
     FileManager.default.temporaryDirectory.appending(path: "ptp-chosen-places-\(UUID().uuidString).sqlite").path
 }

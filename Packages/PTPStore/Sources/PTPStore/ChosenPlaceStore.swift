@@ -45,7 +45,8 @@ public final class ChosenPlaceStore {
         try database.run("BEGIN IMMEDIATE")
         do {
             // The newest marking wins: a spot marked safe stops being risky, and the other way round.
-            for place in try places() where distance(place, latitude, longitude) <= config.chosenPlaceRadius {
+            // Twice the radius, so no two circles overlap and no spot is both risky and safe.
+            for place in try places() where distance(place, latitude, longitude) <= 2 * config.chosenPlaceRadius {
                 try database.run("DELETE FROM chosen_place WHERE id = ?", [.real(Double(place.id))])
             }
             try database.run(
