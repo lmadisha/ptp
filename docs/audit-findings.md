@@ -3,6 +3,16 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-25 · #83 quick-arm complication
+
+Scope: whole repo, mainly `PTPWatchWidget/QuickArmWidget.swift` and the `onOpenURL` handler in `PTPWatch/PTPWatchApp.swift`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | An App Group so the complication shows the live state (Armed, Alarm). | `applied`: not built. The complication is a button; add the group when the face should show the state. |
+| `yagni` | A `ptp` URL scheme in the watch Info.plist. | `applied`: not added. Tested in the Simulator: the complication's link reaches the app without it. |
+| `native` | A separate arm path for the complication. | `applied`: reuses `restore()` then `arm(.normal)`, the same two calls as the new-area "Arm" action. |
+
 ## 2026-11-25 · #80 risky and safe places
 
 Scope: whole repo, mainly `PTPApp/PlaceWatcher.swift` and `PTPStore/ChosenPlaceStore.swift`.

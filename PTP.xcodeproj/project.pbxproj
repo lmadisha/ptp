@@ -40,6 +40,8 @@
 		DE2D5BA1BFAF92B7FC2FB2A2 /* Heartbeat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE0C732F363A5835C547BFB /* Heartbeat.swift */; };
 		DE2D5BA1BFAF92B7FC2FB2A3 /* ReadingLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CE0C732F363A5835C547BFC /* ReadingLog.swift */; };
 		E4C48889C03EBEFD1E8B705C /* PTPCore in Frameworks */ = {isa = PBXBuildFile; productRef = 8CB63A8E9277B0A1F1B70E43 /* PTPCore */; };
+		4EAD2C4AFA4D54D64D67CE54 /* QuickArmWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1895625FF2C38FF95114130B /* QuickArmWidget.swift */; };
+		91065202F080D7C7533B2FA2 /* PTPWatchWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AFCD32751D9C836104BA9A5E /* PTPWatchWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 3647813BBC68CD1F3FBEFACB;
 			remoteInfo = PTPWatch;
+		};
+		45CAF8C38FFC7017A48B1B68 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0746A2EAB413EB4B8B126D65 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 31FDC469AD8686CCA6BAB514;
+			remoteInfo = PTPWatchWidget;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -78,6 +87,17 @@
 			dstSubfolderSpec = 13;
 			files = (
 				406898674957C5F469A15939 /* PTPLiveActivity.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		413EBC82433026CF733F3841 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				91065202F080D7C7533B2FA2 /* PTPWatchWidget.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -119,6 +139,9 @@
 		F0A4AF4C1CDC23382F25EA7A /* HeartbeatSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartbeatSender.swift; sourceTree = "<group>"; };
 		F727274378F79784E341B380 /* HeartbeatReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartbeatReceiver.swift; sourceTree = "<group>"; };
 		FDDF95AB4B898308373648ED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1895625FF2C38FF95114130B /* QuickArmWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickArmWidget.swift; sourceTree = "<group>"; };
+		45157CD7CF84C5BE7D50BFE4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		AFCD32751D9C836104BA9A5E /* PTPWatchWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = PTPWatchWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +199,7 @@
 				BD4FD2D858C41669F1FE962C /* PTPApp.app */,
 				9C16D94875D63FC71B21C4C2 /* PTPLiveActivity.appex */,
 				851C2CF80BF665872BF7DA59 /* PTPWatch.app */,
+				AFCD32751D9C836104BA9A5E /* PTPWatchWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -213,6 +237,7 @@
 				81DD2A70676A0683A70E02A4 /* PTPApp */,
 				0AC46FB841A94CA1D6A3D7F4 /* PTPLiveActivity */,
 				2D9C29AC12694464F5309F4D /* PTPWatch */,
+				98C51384B1ED97854D42D39B /* PTPWatchWidget */,
 				CBA268C54FE3652B933F77FD /* Shared */,
 				5DC55408BAD120AE3859436D /* Products */,
 			);
@@ -236,6 +261,15 @@
 				4F532A2D9DD67A01321558C6 /* TokenExchange.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		98C51384B1ED97854D42D39B /* PTPWatchWidget */ = {
+			isa = PBXGroup;
+			children = (
+				45157CD7CF84C5BE7D50BFE4 /* Info.plist */,
+				1895625FF2C38FF95114130B /* QuickArmWidget.swift */,
+			);
+			path = PTPWatchWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -273,10 +307,12 @@
 				58703D26B7A7EA2E44E5F9B7 /* Sources */,
 				788CFC4A7AED6FB4DE2581FE /* Resources */,
 				7C2CD525EC535FB77CECC5A0 /* Frameworks */,
+				413EBC82433026CF733F3841 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				705453A5D1BED94C530202CD /* PBXTargetDependency */,
 			);
 			name = PTPWatch;
 			packageProductDependencies = (
@@ -303,6 +339,23 @@
 			productReference = 9C16D94875D63FC71B21C4C2 /* PTPLiveActivity.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		31FDC469AD8686CCA6BAB514 /* PTPWatchWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 15570B17C5DCD0C5A0D01B82 /* Build configuration list for PBXNativeTarget "PTPWatchWidget" */;
+			buildPhases = (
+				0B0F76CF741439F5804B7CBA /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PTPWatchWidget;
+			packageProductDependencies = (
+			);
+			productName = PTPWatchWidget;
+			productReference = AFCD32751D9C836104BA9A5E /* PTPWatchWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -319,6 +372,9 @@
 						ProvisioningStyle = Automatic;
 					};
 					6E84B6199E5A7A966BE421D2 = {
+						ProvisioningStyle = Automatic;
+					};
+					31FDC469AD8686CCA6BAB514 = {
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -344,6 +400,7 @@
 				337BE883A0438C56AF0D37A0 /* PTPApp */,
 				3647813BBC68CD1F3FBEFACB /* PTPWatch */,
 				6E84B6199E5A7A966BE421D2 /* PTPLiveActivity */,
+				31FDC469AD8686CCA6BAB514 /* PTPWatchWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -415,6 +472,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0B0F76CF741439F5804B7CBA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4EAD2C4AFA4D54D64D67CE54 /* QuickArmWidget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -427,6 +492,11 @@
 			isa = PBXTargetDependency;
 			target = 6E84B6199E5A7A966BE421D2 /* PTPLiveActivity */;
 			targetProxy = 5FAFECDD787A1E21D3FEB560 /* PBXContainerItemProxy */;
+		};
+		705453A5D1BED94C530202CD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 31FDC469AD8686CCA6BAB514 /* PTPWatchWidget */;
+			targetProxy = 45CAF8C38FFC7017A48B1B68 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -682,6 +752,42 @@
 			};
 			name = Debug;
 		};
+		2BD26F667C8F2F4558338F62 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = PTPWatchWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PTP;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lmadisha.ptp.watchkitapp.widget;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Debug;
+		};
+		0D01F6BB98E17369C136C0DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = PTPWatchWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PTP;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lmadisha.ptp.watchkitapp.widget;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -720,6 +826,15 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
+		};
+		15570B17C5DCD0C5A0D01B82 /* Build configuration list for PBXNativeTarget "PTPWatchWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2BD26F667C8F2F4558338F62 /* Debug */,
+				0D01F6BB98E17369C136C0DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

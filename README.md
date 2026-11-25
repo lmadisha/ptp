@@ -31,6 +31,7 @@ An iPhone + Apple Watch app that warns you within seconds when your phone is mov
 PTP.xcodeproj
 PTPApp/              iOS app (SwiftUI): settings, onboarding, siren, Live Activity host
 PTPWatch/            watchOS app: arm, armed, warning, alarm screens; link-loss watchdog
+PTPWatchWidget/      Quick-arm complication
 PTPLiveActivity/     Widget extension for the Live Activity
 Packages/PTPCore/    Platform-independent logic: models, detection engine, state machine
   Tests/Fixtures/    Recorded distance traces replayed in unit tests

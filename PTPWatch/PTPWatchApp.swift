@@ -12,6 +12,14 @@ struct PTPWatchApp: App {
     }
 
     var body: some Scene {
-        WindowGroup { ContentView(session: session) }
+        WindowGroup {
+            ContentView(session: session)
+                .onOpenURL { url in
+                    // The quick-arm complication. Restore first, so a cold launch can't arm over a saved state.
+                    guard url.scheme == "ptp", url.host == "arm" else { return }
+                    session.restore()
+                    session.arm(.normal)
+                }
+        }
     }
 }

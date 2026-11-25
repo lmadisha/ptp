@@ -114,6 +114,7 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
 - [ ] **Risky regulars and safe places:** region monitoring (iOS allows 20 regions per app); arm on arrival at a risky place, never at a safe one.
   - Built (#80): marked where you stand, watched with `CLMonitor`; a risky place asks on the watch to arm instead of arming by itself (owner's choice, ADR-0012). Not ticked until the owner's drill.
 - [ ] Quick-arm complication on the watch face.
+  - Built (#83): tapping "Arm PTP" opens PTP armed (checked in the Simulator). It shows a fixed icon, not the state. Not ticked until the owner's drill.
 
 ### 2.2 Response
 - [ ] iPhone siren: full-screen alarm and full-volume audio while the app is alive; the owner stops it with Face ID.
