@@ -35,7 +35,12 @@ final class PlaceWatcher: NSObject, CLLocationManagerDelegate {
             serviceSession = CLServiceSession(authorization: .always)
         }
         refreshCounts()
+        // A CLMonitor makes iOS ask for location, so before the owner has answered it waits for the first mark
+        // (onboarding asks after its reason, ADR-0017). Without permission there are no places to watch.
+        if manager.authorizationStatus != .notDetermined { startMonitor() }
+    }
 
+    private func startMonitor() {
         let startup = Task { [weak self] in
             let monitor = await CLMonitor("PTPPlaces")  // Letters only: CLMonitor rejects "ptp-places" at launch.
             guard let self else { return }
@@ -73,6 +78,7 @@ final class PlaceWatcher: NSObject, CLLocationManagerDelegate {
     func mark(_ kind: ChosenPlaceKind) {
         guard !isLocating, !isRemoving, manager.authorizationStatus == .authorizedAlways else { return }
         if serviceSession == nil { serviceSession = CLServiceSession(authorization: .always) }
+        if monitorStartup == nil { startMonitor() }
         pendingKind = kind
         markProblem = nil
         isLocating = true

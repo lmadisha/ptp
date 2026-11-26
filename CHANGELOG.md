@@ -36,6 +36,7 @@ All notable changes are recorded here. Format: [Keep a Changelog](https://keepac
 - New-area prompt: arriving in an area with fewer than 3 visit days in 60 days posts "New area · Arm PTP on your watch?". Forwarded to the watch, its "Arm" action arms the watch in normal mode. On the phone the same action only opens PTP; the phone never arms the watch (ADR-0011, #78).
 - Risky and safe places: "Mark here as risky" or "Mark here as safe" on the iPhone stores the spot rounded to about 110 m (at most 20). Arriving at a risky place asks on the watch to arm; a safe place never prompts, not even as a new area (ADR-0012, #80).
 - Quick-arm complication (`PTPWatchWidget`): an "Arm PTP" complication for the circular, corner and inline slots. Tapping it opens PTP on the watch and arms in normal mode when Disarmed; otherwise it leaves the state alone (#83).
+- First-launch onboarding on the iPhone: watch pairing, then Bluetooth, Nearby Interaction, notifications and location, each asked after a page that gives the reason, up to 3 risky places, and a walk-away test alarm. Bluetooth and ranging start only once onboarding has run, and the risky-place monitor no longer makes iOS ask for location at launch (ADR-0017, #98).
 
 ### Changed
 - Gate 0 is recorded as passed on the owner's device check, with the 4-hour battery figure and the trace files still unrecorded (`docs/IMPLEMENTATION_PLAN.md`, #54).

@@ -10,6 +10,7 @@ struct ContentView: View {
     @State private var liveActivity = LiveActivityController()
     @State private var alarmHistory = AlarmHistory()
     @State private var heartbeat = HeartbeatSender(sessionID: ContentView.heartbeatID)
+    @AppStorage(OnboardingView.finishedKey) private var onboarded = false
     let visitLearner: VisitLearner
     let placeWatcher: PlaceWatcher
     private let readingLog = ReadingLog.shared
@@ -102,9 +103,15 @@ struct ContentView: View {
             alarmHistory.watchStateChanged(to: Self.watchState(exchange).flatMap(PTPState.init(rawValue:)))
             #endif
             exchange.publishHeartbeatID(Self.heartbeatID)
-            ranging.start(exchange: exchange)
+            // Before onboarding, its pages start these so iOS asks for each permission after its reason.
+            if onboarded { ranging.start(exchange: exchange) }
             exchange.start()
-            heartbeat.start()
+            if onboarded { heartbeat.start() }
+        }
+        .fullScreenCover(isPresented: .constant(!onboarded)) {
+            OnboardingView(
+                exchange: exchange, visitLearner: visitLearner, placeWatcher: placeWatcher,
+                startBluetooth: { heartbeat.start() }, startRanging: { ranging.start(exchange: exchange) })
         }
         .onChange(of: scenePhase, initial: true) {
             guard scenePhase == .active else { return }

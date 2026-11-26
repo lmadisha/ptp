@@ -16,6 +16,8 @@ final class TokenExchange: NSObject {
     private(set) var tokenStatus = "Waiting to exchange tokens…"
     /// True while the other device's app can receive a message right now.
     private(set) var isReachable = false
+    private(set) var isPaired = false
+    private(set) var isWatchAppInstalled = false
     /// Phone only: the last event request could not be delivered.
     private(set) var eventRequestFailed = false
     /// Watch only: the phone asks for an event of this length. The watch decides (ADR-0008).
@@ -114,6 +116,8 @@ final class TokenExchange: NSObject {
         let reachability = reachable ? "reachable" : "not reachable"
         #if os(iOS)
         let session = WCSession.default
+        isPaired = session.isPaired
+        isWatchAppInstalled = session.isWatchAppInstalled
         let pairing = session.isPaired ? "paired" : "not paired"
         let installation = session.isWatchAppInstalled ? "app installed" : "app not installed"
         linkStatus = "Watch link: \(pairing) · \(installation) · \(reachability)"
