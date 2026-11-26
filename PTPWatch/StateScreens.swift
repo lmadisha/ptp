@@ -96,14 +96,28 @@ struct AlarmView: View {
     }
 }
 
+/// The hand-off to Find My. watchOS lets no third-party app open Find Devices, so PTP shows the fastest path
+/// to it instead (ADR-0014).
 struct LostView: View {
     let session: WatchSession
 
+    private static let steps = [
+        "Press the Digital Crown.",
+        "Open Find Devices.",
+        "Tap your iPhone.",
+        "Turn on Mark As Lost.",
+    ]
+
     var body: some View {
         ScrollView {
-            VStack {
+            VStack(alignment: .leading, spacing: 6) {
                 Text("Mark your iPhone as lost").font(.headline).accessibilityAddTraits(.isHeader)
-                Text("Open Find Devices on this watch, or icloud.com/find on another device.")
+                ForEach(Array(Self.steps.enumerated()), id: \.offset) { index, step in
+                    Text("\(index + 1). \(step)")
+                }
+                Text("Or use icloud.com/find on another device.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
                 Button("Done") { session.reset() }
             }
         }

@@ -3,6 +3,15 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-26 · #90 Mark as Lost hand-off
+
+Scope: `LostView` in `PTPWatch/StateScreens.swift`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `delete` | Trying undocumented Find My URL schemes before showing the steps. | `applied`: not built. Unsupported, can break silently, against the spirit of hard rule 2 (ADR-0014). |
+| `yagni` | A debug argument to open the Lost screen for evidence. | `applied`: not added. The existing `latchedState` restore takes a launch argument (`-latchedState lost`). |
+
 ## 2026-11-25 · #82 shared store-file setup
 
 Scope: `openStore` in `PTPApp/AlarmHistory.swift` and its three callers (`AlarmHistory`, `VisitLearner`, `PlaceWatcher`).
