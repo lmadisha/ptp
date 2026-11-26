@@ -57,9 +57,9 @@ Rules the table doesn't show ([ADR-0007](adr/0007-state-machine-signal-rules.md)
 - Alarm latches: coming back in range doesn't cancel it.
 - Lost is final for a session.
 
-Defaults:
-- Normal alert distance: 8 m
-- Event mode alert distance: 4 m
+Defaults (the owner can change them in Settings, ADR-0016):
+- Normal alert distance: 8 m, settable 5–15 m
+- Event mode alert distance: 4 m, settable 2–8 m
 
 ## Design rules
 1. **`PTPCore` has no Apple UI or device framework imports.** All logic is tested by replaying recorded traces.

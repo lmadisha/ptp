@@ -10,8 +10,11 @@ final class WatchSession {
     private static let armModeKey = "armMode"
     private static let latchedKey = "latchedState"
     private static let eventEndKey = "eventEndsAt"
+    private static let alertDistanceKey = "alertDistance"
+    private static let eventAlertDistanceKey = "eventAlertDistance"
 
-    private let config = DetectionConfig.standard
+    /// Read again at every arm, so new alert distances from the phone apply from the next session.
+    private var config = DetectionConfig.standard
     private var machine = PTPStateMachine(config: .standard)
     private let clock = ContinuousClock()
     private var armedAt: ContinuousClock.Instant?
@@ -54,8 +57,19 @@ final class WatchSession {
         arm(.event)
     }
 
+    /// The owner's alert distances from the phone, kept so the watch arms with them without the phone (ADR-0016).
+    func storeAlertDistances(alert: Double?, event: Double?) {
+        if let alert { UserDefaults.standard.set(alert, forKey: Self.alertDistanceKey) }
+        if let event { UserDefaults.standard.set(event, forKey: Self.eventAlertDistanceKey) }
+    }
+
     func arm(_ mode: ArmMode) {
         guard state == .disarmed else { return }
+        let defaults = UserDefaults.standard
+        config = DetectionConfig.standard.withOwnerDistances(
+            alert: (defaults.object(forKey: Self.alertDistanceKey) as? Double).map(Float.init),
+            event: (defaults.object(forKey: Self.eventAlertDistanceKey) as? Double).map(Float.init))
+        machine = PTPStateMachine(config: config)
         armedAt = clock.now
         lastActive = .zero
         machine.handle(.arm(mode), at: .zero)

@@ -3,6 +3,17 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-26 · #96 settings screen
+
+Scope: `SettingsView`, `DetectionConfig.withOwnerDistances`, the distance sync in `TokenExchange`, `WatchSession.arm`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | A settings model object and a settings store type. | `applied`: `@AppStorage` on the phone, two `UserDefaults` keys on the watch. |
+| `native` | App-group storage for settings (ADR-0002). | `applied`: the app's own `UserDefaults`; no extension reads them (ADR-0016). |
+| `shrink` | A wrapper type to pass the received context to the main actor. | `applied`: reverted. Two more values are extracted the way the others are; it also keeps the diff off #89's lines. |
+| `yagni` | Applying a new distance mid-session. | `applied`: not built. The watch reads the distances at arm, so the machine never changes threshold under a running verdict. |
+
 ## 2026-11-25 · #82 shared store-file setup
 
 Scope: `openStore` in `PTPApp/AlarmHistory.swift` and its three callers (`AlarmHistory`, `VisitLearner`, `PlaceWatcher`).

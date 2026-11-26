@@ -46,6 +46,7 @@ struct ContentView: View {
                 readingLog.log(distance: nil, source: .ble, rssi: rssi)
             }
             exchange.onHeartbeatID = { [heartbeat] in heartbeat.expect($0) }
+            exchange.onAlertDistances = { [session] in session.storeAlertDistances(alert: $0, event: $1) }
             session.onStateChange = { [exchange] in exchange.publishState($0) }
             exchange.onArmEventRequest = { [session] in
                 // The keep-alive can only start while the app is active. Arming off screen would leave the

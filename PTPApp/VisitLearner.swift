@@ -74,7 +74,9 @@ final class VisitLearner: NSObject, CLLocationManagerDelegate {
             let now = Date.now
             let isNew = isArrival && ((try? store.isNewArea(area, now: now)) ?? false)
             try? store.recordVisit(area: area, arrival: arrival, now: now)
-            if isNew, isInChosenPlace?(latitude, longitude) != true { postNewAreaPrompt() }
+            if isNew, isInChosenPlace?(latitude, longitude) != true, SettingsView.isOn(SettingsView.promptNewAreasKey) {
+                postNewAreaPrompt()
+            }
             areas = (try? store.areaCount()) ?? areas
         }
     }

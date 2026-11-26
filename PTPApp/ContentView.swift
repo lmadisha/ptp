@@ -31,6 +31,10 @@ struct ContentView: View {
     }
 
     var body: some View {
+        NavigationStack { main }
+    }
+
+    private var main: some View {
         VStack {
             Text("PTP").font(.largeTitle).bold()
             Text("Phone Theft Prevention — setup build · core \(PTPCore.version)")
@@ -43,27 +47,9 @@ struct ContentView: View {
             Text("Watch: \(Self.watchState(exchange)?.capitalized ?? "no state received")").font(.footnote)
             Text("Log: \(readingLog.rows) rows").font(.footnote)
             Text("Alarm log: \(alarmHistory.count) events").font(.footnote)
-            Text("Places learned: \(visitLearner.areas) areas").font(.footnote)
-            if !visitLearner.isLearning {
-                Button(
-                    visitLearner.needsSettings ? "Allow location “Always” in Settings" : "Learn places",
-                    action: visitLearner.start
-                ).font(.footnote)
+            NavigationLink("Settings") {
+                SettingsView(exchange: exchange, visitLearner: visitLearner, placeWatcher: placeWatcher)
             }
-            Button("Delete learned places", action: visitLearner.deleteAll).font(.footnote)
-            Text("Risky places: \(placeWatcher.riskyCount) · Safe places: \(placeWatcher.safeCount)").font(.footnote)
-            Group {
-                Button("Mark here as risky") { placeWatcher.mark(.risky) }
-                Button("Mark here as safe") { placeWatcher.mark(.safe) }
-            }
-            .font(.footnote)
-            .disabled(placeWatcher.isLocating || !visitLearner.isLearning)
-            if let problem = placeWatcher.markProblem {
-                Text(problem).font(.footnote).multilineTextAlignment(.center)
-            }
-            Button("Remove chosen places", action: placeWatcher.deleteAll)
-                .font(.footnote)
-                .disabled(placeWatcher.isLocating)
 
             // The phone can ask the watch to arm, never to disarm (ADR-0008).
             let watchState = Self.watchState(exchange).flatMap(PTPState.init(rawValue:))
@@ -102,6 +88,7 @@ struct ContentView: View {
             alarmHistory.watchStateChanged(to: Self.watchState(exchange).flatMap(PTPState.init(rawValue:)))
             #endif
             exchange.publishHeartbeatID(Self.heartbeatID)
+            SettingsView.publishAlertDistances(to: exchange)
             ranging.start(exchange: exchange)
             exchange.start()
             heartbeat.start()
