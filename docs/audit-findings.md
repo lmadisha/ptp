@@ -3,6 +3,18 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-26 · #98 onboarding
+
+Scope: `PTPApp/OnboardingView.swift`, the onboarding hooks in `PTPApp/ContentView.swift`, and the pairing flags in `Shared/TokenExchange.swift`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `shrink` | First draft moved the whole launch `.task` into a new wrapper view to switch between onboarding and the main screen. | `applied`: a `fullScreenCover` on the existing view; the launch code stays put, two starts gained an `if`. |
+| `shrink` | `PlaceWatcher` created its `CLMonitor` at launch, which made iOS ask for location before onboarding's page. | `applied`: the existing startup moved into `startMonitor()`, run at launch once location is answered or at the first mark. |
+| `reuse` | Risky-place marking during onboarding. | `applied`: calls `PlaceWatcher.mark(.risky)`; no second marking path. |
+| `yagni` | Considered saving the current page so a relaunch mid-onboarding resumes. | `wontfix`: eight short pages; starting over costs seconds, and iOS remembers answered prompts. |
+| `yagni` | Considered a simulated test alarm triggered from the phone. | `wontfix`: a real walk-away alarm tests the whole path and needs no new message (ADR-0017). |
+
 ## 2026-11-25 · #82 shared store-file setup
 
 Scope: `openStore` in `PTPApp/AlarmHistory.swift` and its three callers (`AlarmHistory`, `VisitLearner`, `PlaceWatcher`).

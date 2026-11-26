@@ -6,6 +6,7 @@
 | Data | Why | Where | How long |
 |---|---|---|---|
 | Settings | To work the way you set it up | iPhone + watch | Until you delete the app |
+| Whether you finished onboarding (one yes/no flag) | So the setup pages show only once | UserDefaults on the iPhone | Until you delete the app |
 | Arm mode on the watch (normal or event) | So the watch stays armed and can alarm without the phone if the app restarts | UserDefaults on the watch | Until disarm or marking the phone as lost |
 | The watch's state (one word: disarmed, armed, warning, alarm or lost) | So the iPhone can show what the watch is doing | Handed to the system's WatchConnectivity link, which keeps the latest value on your iPhone and watch | Replaced on every state change; removed from each device when you delete PTP on that device |
 | The end time of a running event on the watch | So Event mode ends when you chose, also after the watch app restarts | UserDefaults on the watch | Until the event ends, you disarm, or you mark the phone as lost. If an Alarm is showing when the event ends, until you leave the Alarm |
@@ -23,7 +24,7 @@
 |---|---|---|
 | Nearby Interaction | Measuring the distance between phone and watch | The app can't work; Bluetooth-only mode is offered |
 | Location (Always) | New-area prompt and risky or safe places | Event mode and manual arming still work |
-| Notifications | New-area prompt (asked when place learning starts; the notification says only "New area" and carries no place) and alarms | No new-area prompt; places are still learned. Alarms only show while the app is open |
+| Notifications | New-area prompt (asked during onboarding, after its reason, or when place learning starts; the notification says only "New area" and carries no place) and alarms | No new-area prompt; places are still learned. Alarms only show while the app is open |
 | Bluetooth | A heartbeat between your iPhone and watch. The watch asks once per interval, and the phone answers with a random session ID plus a counter, so the watch notices when the phone is gone. The session ID is new every time the app starts, isn't stored, and is shared with the watch only over its private link. Any nearby Bluetooth device could read that random ID, but it identifies nothing and changes every launch | Distance falls back to UWB only; the heartbeat signal is lost |
 | Health (workouts, write only) | Phase 0 spike: a workout session is started only to keep the watch app running while armed. No health data is read, and no workout is saved to Health. | The workout keep-alive mode can't start; the extended-runtime mode still works |
 
