@@ -119,6 +119,7 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
 ### 2.2 Response
 - [ ] iPhone siren: full-screen alarm and full-volume audio while the app is alive; the owner stops it with Face ID.
 - [ ] Mark as Lost hand-off: open Find Devices on the watch, with a fallback instruction to use icloud.com/find on another device.
+  - Built (#90): watchOS lets no third-party app open Find Devices, so the Lost screen shows four numbered steps to Mark As Lost, then the icloud.com/find fallback (ADR-0014). Not ticked until the owner's drill times it against the 15 s Gate 2 target.
 - [ ] "I have it" stops the alarm and logs the event for tuning.
 
 ### 2.3 Settings and onboarding
