@@ -37,7 +37,7 @@ WC = WatchConnectivity. BLE = Bluetooth Low Energy heartbeat.
 | `PlaceWatcher` | iOS | Risky and safe places the owner marks where they stand, stored rounded in `PTPStore.ChosenPlaceStore` and watched with `CLMonitor`. Entering a risky place posts "Risky place · Arm PTP on your watch?" in the `NEW_AREA` category; safe places post nothing and silence the new-area prompt (ADR-0012) |
 | `PTPWatchWidget` | watchOS | The quick-arm complication. It shows a fixed icon and links to `ptp://arm`; the watch app restores its saved state and arms in normal mode if Disarmed. No phone involved |
 | `SirenService` | iOS | Audio session and full-screen alarm |
-| `EventLog` | iOS | Local alarm history and diagnostics export. The store is `PTPStore.AlarmLog`: a SQLite log of alarm events (a time and one word), deleted after `StoreConfig.alarmLogRetention` (30 days). `AlarmHistory` in the app writes an entry when the watch reports an Alarm and when the Alarm ends (ADR-0005) |
+| `EventLog` | iOS | Local alarm history and diagnostics export. The store is `PTPStore.AlarmLog`: a SQLite log of alarm events (a time and one word), deleted after `StoreConfig.alarmLogRetention` (30 days). `AlarmHistory` in the app writes an entry when the watch reports an Alarm and when the Alarm ends (ADR-0005). "Export alarm log" shares it as `ptp-alarm-log.csv` (`AlarmLog.csv`) |
 
 ## State machine
 

@@ -49,6 +49,12 @@ public final class AlarmLog {
         }
     }
 
+    /// The export the owner shares: a header, then one line per event, oldest first, times in UTC.
+    public static func csv(_ events: [AlarmEvent]) -> String {
+        let lines = events.sorted { $0.time < $1.time }.map { "\($0.time.formatted(.iso8601)),\($0.kind)" }
+        return (["time,event"] + lines).joined(separator: "\n") + "\n"
+    }
+
     private func deleteExpired(now: Date) throws {
         // Also drop events dated far in the future (a wrong device clock), or they would never expire.
         let seconds = now.timeIntervalSince1970

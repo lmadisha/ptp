@@ -1,3 +1,4 @@
+import CoreTransferable
 import Foundation
 import Observation
 import PTPCore
@@ -10,10 +11,11 @@ final class AlarmHistory {
     private(set) var count = 0
     private let log: AlarmLog?
     private var last: PTPState?
+    nonisolated static let fileName = "ptp.sqlite"
 
     init() {
         // If the log can't be opened the app still runs; it just doesn't log.
-        log = openStore("ptp.sqlite") { try AlarmLog(path: $0, now: .now) }
+        log = openStore(Self.fileName) { try AlarmLog(path: $0, now: .now) }
 
         let events = (try? log?.events()) ?? []
         count = events.count
@@ -43,4 +45,17 @@ func openStore<Store>(_ name: String, _ open: (String) throws -> Store) -> Store
     values.isExcludedFromBackup = true
     try? file.setResourceValues(values)
     return store
+}
+
+/// The alarm log as `ptp-alarm-log.csv`: times and words only (docs/PRIVACY.md). It leaves the phone only if the
+/// owner shares it, and is read then, not on every screen update.
+struct AlarmLogExport: Transferable {
+    static var transferRepresentation: some TransferRepresentation {
+        DataRepresentation(exportedContentType: .commaSeparatedText) { _ in
+            let file = URL.applicationSupportDirectory.appending(path: AlarmHistory.fileName)
+            let log = try AlarmLog(path: file.path, now: .now)
+            return Data(AlarmLog.csv(try log.events()).utf8)
+        }
+        .suggestedFileName("ptp-alarm-log.csv")
+    }
 }

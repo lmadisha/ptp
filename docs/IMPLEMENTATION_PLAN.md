@@ -125,6 +125,7 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
 - [ ] Settings screen: alert distance, arming triggers, risky regulars, safe places, siren on/off, Event mode defaults.
 - [ ] Onboarding: pair the watch, ask permissions one at a time with a reason each, ask for 1–3 risky regulars, run a test alarm.
 - [ ] "Export diagnostics": save the alarm log as a file the user can share.
+  - Built (#94): "Export alarm log" on the iPhone opens the share sheet with `ptp-alarm-log.csv`. The reading logs still go through Files. Not ticked until the owner's drill.
 - [ ] Bluetooth-only mode for devices without UWB, labelled as less precise.
 
 ### Gate 2

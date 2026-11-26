@@ -43,6 +43,9 @@ struct ContentView: View {
             Text("Watch: \(Self.watchState(exchange)?.capitalized ?? "no state received")").font(.footnote)
             Text("Log: \(readingLog.rows) rows").font(.footnote)
             Text("Alarm log: \(alarmHistory.count) events").font(.footnote)
+            ShareLink("Export alarm log", item: AlarmLogExport(), preview: SharePreview("PTP alarm log"))
+                .font(.footnote)
+                .disabled(alarmHistory.count == 0)
             Text("Places learned: \(visitLearner.areas) areas").font(.footnote)
             if !visitLearner.isLearning {
                 Button(

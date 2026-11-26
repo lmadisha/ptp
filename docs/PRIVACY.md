@@ -30,6 +30,7 @@
 ## Sharing
 - Nothing is shared automatically.
 - **Export diagnostics** saves a file on your phone. It goes to the developer only if you choose to send it.
+- **Export alarm log** (iPhone) opens the share sheet with `ptp-alarm-log.csv`: the alarm history's times (UTC) and words, nothing else. PTP sends it nowhere; where it goes is your choice in the share sheet. A copy you save or send is outside PTP's 30-day deletion.
 
 ## Your control
 - Delete all learned places with "Delete learned places" on the iPhone (Settings › Places once settings exist).
