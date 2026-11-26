@@ -3,6 +3,16 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-26 · #94 export alarm log
+
+Scope: `AlarmLog.csv` in `PTPStore`, `AlarmLogExport` in `PTPApp/AlarmHistory.swift`, the share button.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `native` | Writing a temporary file and handing its URL to a share sheet. | `applied`: a `Transferable` with `.suggestedFileName`; `ShareLink` makes the file, and nothing lingers in tmp. |
+| `shrink` | Reading the log into the view on every render to build the share item. | `applied`: the export reads the log only when the owner shares. |
+| `yagni` | Bundling the reading logs into the same export. | `applied`: not built. They're in Files already; add when "Export diagnostics" needs one file. |
+
 ## 2026-11-25 · #82 shared store-file setup
 
 Scope: `openStore` in `PTPApp/AlarmHistory.swift` and its three callers (`AlarmHistory`, `VisitLearner`, `PlaceWatcher`).

@@ -108,3 +108,12 @@ private func temporaryPath() -> String {
     let database = try Database(path: ":memory:")
     #expect(throws: StoreError.self) { try database.run("CREATE TABLE a (x); CREATE TABLE b (x)") }
 }
+
+@Test func theExportListsEventsOldestFirstInUTC() {
+    let csv = AlarmLog.csv([AlarmEvent(time: start + 5, kind: "armed"), AlarmEvent(time: start, kind: "alarm")])
+    #expect(csv == "time,event\n2027-01-15T08:00:00Z,alarm\n2027-01-15T08:00:05Z,armed\n")
+}
+
+@Test func anEmptyExportHasOnlyTheHeader() {
+    #expect(AlarmLog.csv([]) == "time,event\n")
+}
