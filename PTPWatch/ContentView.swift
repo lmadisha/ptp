@@ -47,6 +47,7 @@ struct ContentView: View {
             }
             exchange.onHeartbeatID = { [heartbeat] in heartbeat.expect($0) }
             session.onStateChange = { [exchange] in exchange.publishState($0) }
+            session.onIHaveIt = { [exchange] in exchange.logIHaveIt(at: $0) }
             exchange.onArmEventRequest = { [session] in
                 // The keep-alive can only start while the app is active. Arming off screen would leave the
                 // watch armed but suspended, with the phone showing "Armed".

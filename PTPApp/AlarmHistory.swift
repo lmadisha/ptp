@@ -17,15 +17,25 @@ final class AlarmHistory {
 
         let events = (try? log?.events()) ?? []
         count = events.count
-        // So a relaunch during an Alarm doesn't log it a second time.
-        last = events.first.flatMap { PTPState(rawValue: $0.kind) }
+        // So a relaunch during an Alarm doesn't log it a second time. "ihaveit" rows aren't states.
+        last = events.lazy.compactMap { PTPState(rawValue: $0.kind) }.first
     }
 
     func watchStateChanged(to state: PTPState?) {
         guard let state else { return }
         defer { last = state }
-        guard let entry = state.alarmLogEntry(after: last), let log else { return }
-        try? log.record(entry, at: .now)
+        guard let entry = state.alarmLogEntry(after: last) else { return }
+        record(entry, at: .now)
+    }
+
+    /// The owner's "I have it" on the watch, timed by the watch: a Warning or an Alarm they say was false.
+    func iHaveIt(at time: Date) {
+        record("ihaveit", at: time)
+    }
+
+    private func record(_ kind: String, at time: Date) {
+        guard let log else { return }
+        try? log.record(kind, at: time)
         count = (try? log.events().count) ?? count
     }
 }

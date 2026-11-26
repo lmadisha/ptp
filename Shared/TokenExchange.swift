@@ -11,6 +11,7 @@ final class TokenExchange: NSObject {
     private nonisolated static let heartbeatIDKey = "heartbeatID"
     private nonisolated static let watchStateKey = "watchState"
     private nonisolated static let armEventKey = "armEventSeconds"
+    private nonisolated static let iHaveItKey = "iHaveItAt"
 
     private(set) var linkStatus = "Connecting to companion device…"
     private(set) var tokenStatus = "Waiting to exchange tokens…"
@@ -28,6 +29,8 @@ final class TokenExchange: NSObject {
     }
     /// A callback, not SwiftUI observation, so it also runs while the phone is locked.
     var onWatchState: (@MainActor (PTPState?) -> Void)?
+    /// Phone only: the owner tapped "I have it" on the watch at this time (ADR-0015).
+    var onIHaveIt: (@MainActor (Date) -> Void)?
 
     private var pendingToken: Data?
     private var pendingHeartbeatID: Data?
@@ -69,6 +72,13 @@ final class TokenExchange: NSObject {
         pendingState = state.rawValue
         contextPublished = false
         sendContext()
+    }
+
+    /// Queued, not a context: every tap reaches the phone's alarm log in order, also hours later (ADR-0015).
+    func logIHaveIt(at time: Date) {
+        let session = WCSession.default
+        guard session.activationState == .activated else { return }
+        session.transferUserInfo([Self.iHaveItKey: time.timeIntervalSince1970])
     }
     #endif
 
@@ -232,6 +242,11 @@ extension TokenExchange: WCSessionDelegate {
         var values = URLResourceValues()
         values.isExcludedFromBackup = true
         try? destination.setResourceValues(values)
+    }
+
+    nonisolated func session(_ session: WCSession, didReceiveUserInfo userInfo: [String: Any] = [:]) {
+        guard let seconds = userInfo[Self.iHaveItKey] as? Double else { return }
+        Task { @MainActor in onIHaveIt?(Date(timeIntervalSince1970: seconds)) }
     }
 
     nonisolated func sessionWatchStateDidChange(_ session: WCSession) {

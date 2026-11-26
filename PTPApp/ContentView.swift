@@ -97,6 +97,7 @@ struct ContentView: View {
                 alarmHistory.watchStateChanged(to: $0)
                 updateLiveActivity()
             }
+            exchange.onIHaveIt = { [alarmHistory] in alarmHistory.iHaveIt(at: $0) }
             #if DEBUG
             // Simulator evidence only: feeds the debug argument's state into the log.
             alarmHistory.watchStateChanged(to: Self.watchState(exchange).flatMap(PTPState.init(rawValue:)))

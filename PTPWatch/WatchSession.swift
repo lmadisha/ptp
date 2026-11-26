@@ -22,6 +22,8 @@ final class WatchSession {
     private(set) var state: PTPState = .disarmed
     /// Called on every state change, also in the background where SwiftUI may not update.
     var onStateChange: ((PTPState) -> Void)?
+    /// Called when "I have it" ends a Warning or an Alarm, for the phone's alarm log (ADR-0015).
+    var onIHaveIt: ((Date) -> Void)?
     private(set) var distanceMeters: Float?
     /// The heartbeat's signal strength in dBm, shown when there is no distance.
     private(set) var rssi: Int?
@@ -104,7 +106,9 @@ final class WatchSession {
     }
 
     func iHaveIt() {
+        let before = state
         handle(.iHaveIt)
+        if state != before { onIHaveIt?(.now) }
     }
 
     func markAsLost() {
