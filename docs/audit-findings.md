@@ -3,6 +3,16 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-26 · #92 log "I have it"
+
+Scope: `iHaveIt()` in `PTPWatch/WatchSession.swift`, `logIHaveIt` and `didReceiveUserInfo` in `Shared/TokenExchange.swift`, `AlarmHistory`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | A log-event type with a kind field, for words beyond `ihaveit`. | `applied`: not built. One key holding the time; add a kind when a second event needs the channel. |
+| `native` | Sending the tap in the application context or with `sendMessage`. | `applied`: `transferUserInfo`, the system's queue, delivers every tap in order without retry code. |
+| `shrink` | `AlarmHistory` wrote to the log in two places. | `applied`: one private `record(_:at:)`. |
+
 ## 2026-11-25 · #82 shared store-file setup
 
 Scope: `openStore` in `PTPApp/AlarmHistory.swift` and its three callers (`AlarmHistory`, `VisitLearner`, `PlaceWatcher`).
