@@ -20,6 +20,10 @@ public struct DetectionConfig: Sendable, Equatable {
 
     public var alertDistance: Float
     public var eventAlertDistance: Float
+    /// The alert distances the owner may choose in Settings, and the step between choices.
+    public var alertDistanceRange: ClosedRange<Float>
+    public var eventAlertDistanceRange: ClosedRange<Float>
+    public var ownerDistanceStep: Float
     /// The lengths the owner can pick for Event mode.
     public var eventDurations: [Duration]
     /// For this long after an event's end the watch first confirms the phone is still there before it disarms.
@@ -49,6 +53,9 @@ public struct DetectionConfig: Sendable, Equatable {
         nearRSSI: -70,
         alertDistance: 8,
         eventAlertDistance: 4,
+        alertDistanceRange: 5...15,
+        eventAlertDistanceRange: 2...8,
+        ownerDistanceStep: 1,
         eventDurations: [.seconds(2 * 60 * 60), .seconds(4 * 60 * 60)],
         eventEndGrace: .seconds(15 * 60),
         warningDelay: .seconds(2),
@@ -58,4 +65,19 @@ public struct DetectionConfig: Sendable, Equatable {
         linkStartupDelay: .seconds(10),
         suspensionGap: .seconds(3)
     )
+
+    /// This config with the owner's alert distances, clamped to the allowed ranges. Nil keeps the current value.
+    /// The values come from the phone, so the watch never trusts them as they are.
+    public func withOwnerDistances(alert: Float?, event: Float?) -> DetectionConfig {
+        var config = self
+        if let alert, alert.isFinite { config.alertDistance = alert.clamped(to: alertDistanceRange) }
+        if let event, event.isFinite { config.eventAlertDistance = event.clamped(to: eventAlertDistanceRange) }
+        return config
+    }
+}
+
+extension Float {
+    fileprivate func clamped(to range: ClosedRange<Float>) -> Float {
+        Swift.min(Swift.max(self, range.lowerBound), range.upperBound)
+    }
 }

@@ -60,7 +60,8 @@ final class PlaceWatcher: NSObject, CLLocationManagerDelegate {
                     guard let self else { return }
                     guard !isRemoving, event.identifier.hasPrefix("risky-"), event.state == .satisfied,
                         let places = try? store?.places(),
-                        places.contains(where: { identifier(for: $0) == event.identifier })
+                        places.contains(where: { identifier(for: $0) == event.identifier }),
+                        SettingsView.isOn(SettingsView.promptRiskyPlacesKey)
                     else { continue }
                     postRiskyPlacePrompt()
                 }

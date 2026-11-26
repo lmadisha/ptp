@@ -11,6 +11,8 @@ final class TokenExchange: NSObject {
     private nonisolated static let heartbeatIDKey = "heartbeatID"
     private nonisolated static let watchStateKey = "watchState"
     private nonisolated static let armEventKey = "armEventSeconds"
+    private nonisolated static let alertDistanceKey = "alertDistance"
+    private nonisolated static let eventAlertDistanceKey = "eventAlertDistance"
 
     private(set) var linkStatus = "Connecting to companion device…"
     private(set) var tokenStatus = "Waiting to exchange tokens…"
@@ -22,6 +24,8 @@ final class TokenExchange: NSObject {
     var onArmEventRequest: (@MainActor (Duration) -> Void)?
     var onPeerToken: (@MainActor (NIDiscoveryToken) -> Void)?
     var onHeartbeatID: (@MainActor (UUID) -> Void)?
+    /// Watch only: the owner's alert distances from the phone's Settings, normal then Event mode (ADR-0016).
+    var onAlertDistances: (@MainActor (Double?, Double?) -> Void)?
     /// The watch owns the session (ADR-0008). This is the last state it reported, which may be stale.
     private(set) var watchState: PTPState? {
         didSet { if watchState != oldValue { onWatchState?(watchState) } }
@@ -32,6 +36,7 @@ final class TokenExchange: NSObject {
     private var pendingToken: Data?
     private var pendingHeartbeatID: Data?
     private var pendingState: String?
+    private var pendingDistances: [Double]?
     private var lastPeerToken: Data?
     private var contextPublished = false
 
@@ -89,6 +94,16 @@ final class TokenExchange: NSObject {
     }
     #endif
 
+    #if os(iOS)
+    /// The owner's alert distances. The watch uses them from its next arm (ADR-0016).
+    func publishAlertDistances(alert: Double, event: Double) {
+        guard pendingDistances != [alert, event] else { return }
+        pendingDistances = [alert, event]
+        contextPublished = false
+        sendContext()
+    }
+    #endif
+
     func publish(_ token: NIDiscoveryToken) {
         contextPublished = false
         pendingToken = try? NSKeyedArchiver.archivedData(
@@ -131,6 +146,8 @@ final class TokenExchange: NSObject {
         context[Self.tokenKey] = pendingToken
         context[Self.heartbeatIDKey] = pendingHeartbeatID
         context[Self.watchStateKey] = pendingState
+        context[Self.alertDistanceKey] = pendingDistances?[0]
+        context[Self.eventAlertDistanceKey] = pendingDistances?[1]
         guard !context.isEmpty else { return }
 
         do {
@@ -150,8 +167,9 @@ final class TokenExchange: NSObject {
         }
     }
 
-    private func receiveContext(token: Data?, heartbeatID: Data?, state: String?) {
+    private func receiveContext(token: Data?, heartbeatID: Data?, state: String?, distances: [Double?] = []) {
         if let state = state.flatMap(PTPState.init(rawValue:)) { watchState = state }
+        if distances.count == 2, distances.contains(where: { $0 != nil }) { onAlertDistances?(distances[0], distances[1]) }
         guard token != nil || heartbeatID != nil else { return }
         sendContext()  // the peer exists now, so retry an unpublished context first
         if let heartbeatID, let id = Heartbeat.decodeID(heartbeatID) {
@@ -193,6 +211,7 @@ extension TokenExchange: WCSessionDelegate {
         let token = context[Self.tokenKey] as? Data
         let heartbeatID = context[Self.heartbeatIDKey] as? Data
         let state = context[Self.watchStateKey] as? String
+        let distances = [context[Self.alertDistanceKey] as? Double, context[Self.eventAlertDistanceKey] as? Double]
         Task { @MainActor in
             updateLinkStatus(reachable: reachable)
             guard activated else {
@@ -200,7 +219,7 @@ extension TokenExchange: WCSessionDelegate {
                 return
             }
             sendContext()
-            receiveContext(token: token, heartbeatID: heartbeatID, state: state)
+            receiveContext(token: token, heartbeatID: heartbeatID, state: state, distances: distances)
         }
     }
 
@@ -218,7 +237,10 @@ extension TokenExchange: WCSessionDelegate {
         let token = applicationContext[Self.tokenKey] as? Data
         let heartbeatID = applicationContext[Self.heartbeatIDKey] as? Data
         let state = applicationContext[Self.watchStateKey] as? String
-        Task { @MainActor in receiveContext(token: token, heartbeatID: heartbeatID, state: state) }
+        let distances = [
+            applicationContext[Self.alertDistanceKey] as? Double, applicationContext[Self.eventAlertDistanceKey] as? Double,
+        ]
+        Task { @MainActor in receiveContext(token: token, heartbeatID: heartbeatID, state: state, distances: distances) }
     }
 
     #if os(iOS)

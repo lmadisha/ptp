@@ -36,3 +36,29 @@ import Testing
     #expect(config.suspensionGap == .seconds(3))
     #expect(config.suspensionGap >= config.signalLossDelay)
 }
+
+@Test func standardOwnerDistanceRangesHoldTheDefaults() {
+    let config = DetectionConfig.standard
+    #expect(config.alertDistanceRange == 5...15)
+    #expect(config.eventAlertDistanceRange == 2...8)
+    #expect(config.ownerDistanceStep == 1)
+    #expect(config.alertDistanceRange.contains(config.alertDistance))
+    #expect(config.eventAlertDistanceRange.contains(config.eventAlertDistance))
+}
+
+@Test func ownerDistancesAreUsedWithinTheirRanges() {
+    let config = DetectionConfig.standard.withOwnerDistances(alert: 12, event: 3)
+    #expect(config.alertDistance == 12)
+    #expect(config.eventAlertDistance == 3)
+}
+
+@Test func ownerDistancesAreClampedToTheirRanges() {
+    let config = DetectionConfig.standard.withOwnerDistances(alert: 100, event: 0)
+    #expect(config.alertDistance == 15)
+    #expect(config.eventAlertDistance == 2)
+}
+
+@Test func missingOrInvalidOwnerDistancesKeepTheStandardOnes() {
+    let config = DetectionConfig.standard.withOwnerDistances(alert: nil, event: .nan)
+    #expect(config == DetectionConfig.standard)
+}
