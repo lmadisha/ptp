@@ -16,6 +16,7 @@ One file per significant decision. Never edit an accepted ADR's decision. Write 
 | [0010](0010-place-visits-as-rounded-cells.md) | Learn places as rounded grid cells, one row per visit day | Proposed |
 | [0011](0011-new-area-prompt-via-notification.md) | The new-area prompt is an iPhone notification the watch answers | Proposed |
 | [0012](0012-risky-and-safe-places.md) | Risky and safe places are marked where you stand and watched with CLMonitor | Proposed |
+| [0013](0013-iphone-siren-on-live-alarm.md) | The iPhone siren sounds only on a live, fresh Alarm from the watch | Proposed |
 
 ## Template
 ```markdown
