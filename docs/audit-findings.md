@@ -3,6 +3,17 @@
 Results of each `ponytail-audit` run (over-engineering only). Newest first.
 Status: `applied` (fixed in that change), `open`, `wontfix` (with reason).
 
+## 2026-11-26 · #88 iPhone siren
+
+Scope: whole repo, mainly `PTPApp/Siren.swift`, `PTPCore/WatchReport.swift` and the stamped state in `Shared/TokenExchange.swift`.
+
+| Tag | Finding | Status |
+|---|---|---|
+| `yagni` | A persistent sequence counter for watch states, as ADR-0008 suggested. | `applied`: not built. The paired devices share the clock, so the send time orders states and survives relaunches (ADR-0013). |
+| `native` | A bundled siren audio file. | `applied`: not added. A 30-line `AVAudioSourceNode` square wave; no asset, no pbxproj resource. |
+| `yagni` | A notification or Critical Alert fallback when the app is in the background. | `applied`: not built. Waits on the #88 drill showing what iOS allows a woken app to do. |
+| `yagni` | A separate `SirenService` file for the full-screen view. | `applied`: `SirenView` lives next to its one caller in `ContentView.swift`. |
+
 ## 2026-11-25 · #82 shared store-file setup
 
 Scope: `openStore` in `PTPApp/AlarmHistory.swift` and its three callers (`AlarmHistory`, `VisitLearner`, `PlaceWatcher`).

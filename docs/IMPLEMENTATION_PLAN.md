@@ -118,6 +118,7 @@ PTP — Phone Theft Prevention is an iPhone + Apple Watch app. It alerts the own
 
 ### 2.2 Response
 - [ ] iPhone siren: full-screen alarm and full-volume audio while the app is alive; the owner stops it with Face ID.
+  - Built (#88): on a live, fresh Alarm message from the watch (ADR-0013), checked in the Simulator. Full volume means full player volume, since apps can't raise the system volume. Not ticked until the owner's drill.
 - [ ] Mark as Lost hand-off: open Find Devices on the watch, with a fallback instruction to use icloud.com/find on another device.
 - [ ] "I have it" stops the alarm and logs the event for tuning.
 

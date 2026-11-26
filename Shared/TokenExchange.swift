@@ -10,6 +10,7 @@ final class TokenExchange: NSObject {
     private nonisolated static let tokenKey = "niDiscoveryToken"
     private nonisolated static let heartbeatIDKey = "heartbeatID"
     private nonisolated static let watchStateKey = "watchState"
+    private nonisolated static let watchStateSentAtKey = "watchStateSentAt"
     private nonisolated static let armEventKey = "armEventSeconds"
 
     private(set) var linkStatus = "Connecting to companion device…"
@@ -28,10 +29,15 @@ final class TokenExchange: NSObject {
     }
     /// A callback, not SwiftUI observation, so it also runs while the phone is locked.
     var onWatchState: (@MainActor (PTPState?) -> Void)?
+    /// Phone only: every report newer than the last one. `live` is true for a message the watch just sent,
+    /// false for the stored application context, which may be old (ADR-0013).
+    var onWatchReport: (@MainActor (WatchReport, _ live: Bool) -> Void)?
+    private var lastReport: WatchReport?
 
     private var pendingToken: Data?
     private var pendingHeartbeatID: Data?
     private var pendingState: String?
+    private var pendingStateSentAt: Double?
     private var lastPeerToken: Data?
     private var contextPublished = false
 
@@ -66,9 +72,16 @@ final class TokenExchange: NSObject {
     /// Fire-and-forget: nothing on the watch waits for the phone to hear this.
     func publishState(_ state: PTPState) {
         guard pendingState != state.rawValue else { return }
+        let sentAt = Date.now.timeIntervalSince1970
         pendingState = state.rawValue
+        pendingStateSentAt = sentAt
         contextPublished = false
         sendContext()
+        // Also live, so the phone can sound its siren (ADR-0013). Never queued: a late alarm is no use.
+        let session = WCSession.default
+        guard session.activationState == .activated, session.isReachable else { return }
+        session.sendMessage(
+            [Self.watchStateKey: state.rawValue, Self.watchStateSentAtKey: sentAt], replyHandler: nil)
     }
     #endif
 
@@ -131,6 +144,7 @@ final class TokenExchange: NSObject {
         context[Self.tokenKey] = pendingToken
         context[Self.heartbeatIDKey] = pendingHeartbeatID
         context[Self.watchStateKey] = pendingState
+        context[Self.watchStateSentAtKey] = pendingStateSentAt
         guard !context.isEmpty else { return }
 
         do {
@@ -150,8 +164,18 @@ final class TokenExchange: NSObject {
         }
     }
 
-    private func receiveContext(token: Data?, heartbeatID: Data?, state: String?) {
-        if let state = state.flatMap(PTPState.init(rawValue:)) { watchState = state }
+    private func receiveState(_ state: String?, sentAt: Double?, live: Bool) {
+        guard let state = state.flatMap(PTPState.init(rawValue:)) else { return }
+        // A watch build from before ADR-0013 sends no stamp; its state counts as new.
+        let report = WatchReport(state: state, sentAt: sentAt.map(Date.init(timeIntervalSince1970:)) ?? .now)
+        guard report.isNewer(than: lastReport) else { return }
+        lastReport = report
+        watchState = state
+        onWatchReport?(report, live)
+    }
+
+    private func receiveContext(token: Data?, heartbeatID: Data?, state: String?, sentAt: Double?) {
+        receiveState(state, sentAt: sentAt, live: false)
         guard token != nil || heartbeatID != nil else { return }
         sendContext()  // the peer exists now, so retry an unpublished context first
         if let heartbeatID, let id = Heartbeat.decodeID(heartbeatID) {
@@ -193,6 +217,7 @@ extension TokenExchange: WCSessionDelegate {
         let token = context[Self.tokenKey] as? Data
         let heartbeatID = context[Self.heartbeatIDKey] as? Data
         let state = context[Self.watchStateKey] as? String
+        let sentAt = context[Self.watchStateSentAtKey] as? Double
         Task { @MainActor in
             updateLinkStatus(reachable: reachable)
             guard activated else {
@@ -200,7 +225,7 @@ extension TokenExchange: WCSessionDelegate {
                 return
             }
             sendContext()
-            receiveContext(token: token, heartbeatID: heartbeatID, state: state)
+            receiveContext(token: token, heartbeatID: heartbeatID, state: state, sentAt: sentAt)
         }
     }
 
@@ -218,7 +243,8 @@ extension TokenExchange: WCSessionDelegate {
         let token = applicationContext[Self.tokenKey] as? Data
         let heartbeatID = applicationContext[Self.heartbeatIDKey] as? Data
         let state = applicationContext[Self.watchStateKey] as? String
-        Task { @MainActor in receiveContext(token: token, heartbeatID: heartbeatID, state: state) }
+        let sentAt = applicationContext[Self.watchStateSentAtKey] as? Double
+        Task { @MainActor in receiveContext(token: token, heartbeatID: heartbeatID, state: state, sentAt: sentAt) }
     }
 
     #if os(iOS)
@@ -232,6 +258,12 @@ extension TokenExchange: WCSessionDelegate {
         var values = URLResourceValues()
         values.isExcludedFromBackup = true
         try? destination.setResourceValues(values)
+    }
+
+    nonisolated func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
+        let state = message[Self.watchStateKey] as? String
+        let sentAt = message[Self.watchStateSentAtKey] as? Double
+        Task { @MainActor in receiveState(state, sentAt: sentAt, live: true) }
     }
 
     nonisolated func sessionWatchStateDidChange(_ session: WCSession) {
@@ -249,6 +281,7 @@ extension TokenExchange: WCSessionDelegate {
         Task { @MainActor in
             contextPublished = false
             watchState = nil  // a different watch may be paired next
+            lastReport = nil
             isReachable = false
             lastPeerToken = nil
             WCSession.default.activate()

@@ -9,6 +9,7 @@ struct ContentView: View {
     @State private var ranging = Ranging()
     @State private var liveActivity = LiveActivityController()
     @State private var alarmHistory = AlarmHistory()
+    @State private var siren = Siren()
     @State private var heartbeat = HeartbeatSender(sessionID: ContentView.heartbeatID)
     let visitLearner: VisitLearner
     let placeWatcher: PlaceWatcher
@@ -87,12 +88,16 @@ struct ContentView: View {
             }
         }
         .padding()
+        .fullScreenCover(isPresented: Binding(get: { siren.isSounding }, set: { _ in })) {
+            SirenView(siren: siren)
+        }
         .task {
             ranging.onChange = { [liveActivity, exchange] in
                 liveActivity.update(state: $0, distance: $1, watchState: Self.watchState(exchange))
             }
             ranging.onSample = { [readingLog] in readingLog.log(distance: $0, source: .uwb) }
             heartbeat.onBeat = { [readingLog] in readingLog.log(distance: nil, source: .ble) }
+            exchange.onWatchReport = { [siren] in siren.receive($0, live: $1) }
             exchange.onWatchState = { [alarmHistory] in
                 alarmHistory.watchStateChanged(to: $0)
                 updateLiveActivity()
@@ -100,6 +105,11 @@ struct ContentView: View {
             #if DEBUG
             // Simulator evidence only: feeds the debug argument's state into the log.
             alarmHistory.watchStateChanged(to: Self.watchState(exchange).flatMap(PTPState.init(rawValue:)))
+            // Simulator evidence only: the siren as a live, fresh Alarm would start it.
+            let arguments = UserDefaults.standard.volatileDomain(forName: UserDefaults.argumentDomain)
+            if arguments["demoSiren"] != nil {
+                siren.receive(WatchReport(state: .alarm, sentAt: .now), live: true)
+            }
             #endif
             exchange.publishHeartbeatID(Self.heartbeatID)
             ranging.start(exchange: exchange)
@@ -111,5 +121,29 @@ struct ContentView: View {
             liveActivity.start()
             updateLiveActivity()
         }
+    }
+}
+
+/// Full screen while the siren sounds. Only the owner's Face ID or passcode, or the watch, stops it.
+private struct SirenView: View {
+    let siren: Siren
+
+    var body: some View {
+        VStack(spacing: 24) {
+            Image(systemName: "exclamationmark.shield.fill").font(.system(size: 96))
+            Text("PTP alarm").font(.largeTitle).bold()
+            Text("This iPhone is away from its owner's Apple Watch.")
+                .multilineTextAlignment(.center)
+            Button("Stop siren") { Task { await siren.stopAsOwner() } }
+                .buttonStyle(.borderedProminent)
+                .tint(.white)
+                .foregroundStyle(.red)
+                .accessibilityHint("Asks for Face ID or the passcode")
+        }
+        .padding()
+        .foregroundStyle(.white)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.red)
+        .interactiveDismissDisabled()
     }
 }

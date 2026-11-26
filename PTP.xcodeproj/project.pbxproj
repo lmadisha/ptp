@@ -33,6 +33,7 @@
 		AB1A9AC4D4DC2132142856F2 /* TokenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F532A2D9DD67A01321558C6 /* TokenExchange.swift */; };
 		C5A07ADE785A5B6CE6BD9AC8 /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879A82DC70CBBE82E466B936 /* LiveActivityController.swift */; };
 		C5A07ADE785A5B6CE6BD9AC9 /* AlarmHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 879A82DC70CBBE82E466B937 /* AlarmHistory.swift */; };
+		B1C2D3E4F5061728394A5B6C /* Siren.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B5C /* Siren.swift */; };
 		6BE0A620DD9E4B229ACB7B21 /* VisitLearner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4783640EEAA4C8C9F30D314 /* VisitLearner.swift */; };
 		DF8A1FBD510A454FAFF84808 /* PlaceWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B72B945A0842E6B749F096 /* PlaceWatcher.swift */; };
 		CE14F63F34E5B123BF3F7B38 /* PTPStore in Frameworks */ = {isa = PBXBuildFile; productRef = B6F8AE64C1E544B0D5B1F960 /* PTPStore */; };
@@ -119,6 +120,7 @@
 		851C2CF80BF665872BF7DA59 /* PTPWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PTPWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		879A82DC70CBBE82E466B936 /* LiveActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityController.swift; sourceTree = "<group>"; };
 		879A82DC70CBBE82E466B937 /* AlarmHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmHistory.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B5C /* Siren.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Siren.swift; sourceTree = "<group>"; };
 		B4783640EEAA4C8C9F30D314 /* VisitLearner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisitLearner.swift; sourceTree = "<group>"; };
 		A5B72B945A0842E6B749F096 /* PlaceWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceWatcher.swift; sourceTree = "<group>"; };
 		6ECD754A7CB5F75C34EFFC12 /* PTPStore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = PTPStore; path = Packages/PTPStore; sourceTree = SOURCE_ROOT; };
@@ -213,6 +215,7 @@
 				A301009B857214162AAF4542 /* Info.plist */,
 				879A82DC70CBBE82E466B936 /* LiveActivityController.swift */,
 				879A82DC70CBBE82E466B937 /* AlarmHistory.swift */,
+				A1B2C3D4E5F60718293A4B5C /* Siren.swift */,
 				B4783640EEAA4C8C9F30D314 /* VisitLearner.swift */,
 				A5B72B945A0842E6B749F096 /* PlaceWatcher.swift */,
 				7BF39E944AB4BE0073FF035B /* PTPApp.entitlements */,
@@ -435,6 +438,7 @@
 				9F9D940F940A759F1D42DAB7 /* HeartbeatSender.swift in Sources */,
 				C5A07ADE785A5B6CE6BD9AC8 /* LiveActivityController.swift in Sources */,
 				C5A07ADE785A5B6CE6BD9AC9 /* AlarmHistory.swift in Sources */,
+				B1C2D3E4F5061728394A5B6C /* Siren.swift in Sources */,
 				6BE0A620DD9E4B229ACB7B21 /* VisitLearner.swift in Sources */,
 				DF8A1FBD510A454FAFF84808 /* PlaceWatcher.swift in Sources */,
 				90E6FCA2A3C4C3686D8A8F55 /* PTPActivityAttributes.swift in Sources */,

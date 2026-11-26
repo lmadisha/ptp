@@ -36,6 +36,9 @@ public struct DetectionConfig: Sendable, Equatable {
     /// A gap between two calls into the session longer than this means the app was not running.
     /// Keep it at least as long as `signalLossDelay`, so a late tick can't pass for a suspension.
     public var suspensionGap: Duration
+    /// The phone sounds its siren only for a live Alarm message from the watch sent less than this long ago
+    /// (ADR-0013). Older news may be over already.
+    public var sirenFreshness: Duration
 
     public static let standard = DetectionConfig(
         heartbeatInterval: .seconds(1),
@@ -56,6 +59,7 @@ public struct DetectionConfig: Sendable, Equatable {
         alarmRepeatInterval: .seconds(1),
         signalLossDelay: .seconds(3),
         linkStartupDelay: .seconds(10),
-        suspensionGap: .seconds(3)
+        suspensionGap: .seconds(3),
+        sirenFreshness: .seconds(30)
     )
 }
